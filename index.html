@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows XP - Definitely Not a Virus Edition</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Tahoma", sans-serif;
+            overflow: hidden;
+        }
+
+        /* Loading Screen */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 30% 30%, rgba(135, 206, 250, 0.3), transparent 50%),
+                radial-gradient(ellipse at 70% 70%, rgba(144, 238, 144, 0.2), transparent 50%),
+                linear-gradient(180deg, 
+                    #000814 0%,
+                    #001d3d 20%,
+                    #003566 40%,
+                    #004080 60%,
+                    #0066cc 80%,
+                    #0080ff 100%
+                );
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            overflow: hidden;
+        }
+
+        #loading-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255, 255, 255, 0.02) 2px,
+                    rgba(255, 255, 255, 0.02) 4px
+                );
+            pointer-events: none;
+        }
+
+        #loading-screen::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            background: radial-gradient(ellipse at bottom, 
+                rgba(50, 150, 50, 0.3) 0%,
+                rgba(100, 200, 100, 0.2) 30%,
+                transparent 70%
+            );
+            pointer-events: none;
+        }
+
+        .win2000-bars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .bar {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, rgba(0, 191, 255, 0.8), transparent);
+            animation: scrollBar 3s linear infinite;
+            box-shadow: 0 0 20px rgba(0, 191, 255, 0.5);
+        }
+
+        @keyframes scrollBar {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(200%); }
+        }
+
+        .clouds {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .cloud {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 100px;
+            animation: floatCloud linear infinite;
+        }
+
+        @keyframes floatCloud {
+            0% { transform: translateX(-200px); }
+            100% { transform: translateX(calc(100vw + 200px)); }
+        }
+
+        .xp-logo {
+            font-size: 72px;
+            font-weight: bold;
+            background: linear-gradient(to right, #00D4FF, #0080FF, #00D4FF);
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 30px;
+            animation: pulse 2s infinite, shimmer 3s linear infinite;
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.8);
+            filter: drop-shadow(0 0 20px rgba(0, 128, 255, 0.6));
+            position: relative;
+            z-index: 10;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        .loading-bar-container {
+            width: 300px;
+            height: 20px;
+            background: rgba(0, 53, 128, 0.8);
+            border: 2px solid #00D4FF;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+
+        .loading-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #0080FF, #00D4FF, #0080FF);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            width: 0%;
+        }
+
+        @keyframes loading {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        .loading-text {
+            color: #00D4FF;
+            margin-top: 20px;
+            font-size: 14px;
+            position: relative;
+            z-index: 10;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.8), 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .loading-dots::after {
+            content: '';
+            animation: dots 1.5s steps(4, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60% { content: '...'; }
+            80%, 100% { content: ''; }
+        }
+
+        .funny-messages {
+            color: #00D4FF;
+            margin-top: 30px;
+            height: 40px;
+            font-size: 12px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.8), 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Desktop */
+        #desktop {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(to bottom, #5A8BB4 0%, #3A6EA5 100%);
+            position: relative;
+        }
+
+        .desktop-icons {
+            padding: 20px;
+        }
+
+        .icon {
+            width: 80px;
+            text-align: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .icon:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px dotted #fff;
+        }
+
+        .icon-img {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 5px;
+            background: linear-gradient(135deg, #4A90E2, #357ABD);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .icon-label {
+            color: #fff;
+            font-size: 11px;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        /* Taskbar */
+        .taskbar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: linear-gradient(to bottom, #245EDC 0%, #1941A5 100%);
+            border-top: 2px solid #4A90E2;
+            display: flex;
+            align-items: center;
+            padding: 0 5px;
+        }
+
+        .start-button {
+            height: 32px;
+            background: linear-gradient(to bottom, #3FA142 0%, #2E7D32 100%);
+            border: 2px outset #4CAF50;
+            border-radius: 5px;
+            padding: 0 15px;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .start-button:active {
+            border-style: inset;
+        }
+
+        .start-icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #FF0000, #FF6B00);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .taskbar-items {
+            flex: 1;
+            margin-left: 10px;
+        }
+
+        .clock {
+            color: white;
+            font-size: 12px;
+            padding: 0 10px;
+            background: rgba(0, 0, 0, 0.2);
+            height: 32px;
+            display: flex;
+            align-items: center;
+            border: 1px inset #1941A5;
+        }
+
+        /* Start Menu */
+        .start-menu {
+            display: none;
+            position: absolute;
+            bottom: 42px;
+            left: 5px;
+            width: 350px;
+            background: #3C5A99;
+            border: 2px solid #4A90E2;
+            border-radius: 8px 8px 0 0;
+            overflow: hidden;
+            box-shadow: 3px 3px 10px rgba(0,0,0,0.5);
+        }
+
+        .start-menu-header {
+            background: linear-gradient(to right, #245EDC, #4A90E2);
+            color: white;
+            padding: 40px 20px 10px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .start-menu-items {
+            background: #D4D0C8;
+            padding: 10px;
+        }
+
+        .start-menu-item {
+            padding: 8px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-radius: 3px;
+        }
+
+        .start-menu-item:hover {
+            background: #3C5A99;
+            color: white;
+        }
+
+        /* Window */
+        .window {
+            position: absolute;
+            width: 500px;
+            height: 350px;
+            background: #ECE9D8;
+            border: 2px solid #0054E3;
+            border-radius: 8px 8px 0 0;
+            box-shadow: 3px 3px 10px rgba(0,0,0,0.5);
+            display: none;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .window-title {
+            background: linear-gradient(to bottom, #0997FF 0%, #0053EE 100%);
+            color: white;
+            padding: 5px 10px;
+            font-size: 13px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: move;
+        }
+
+        .window-buttons {
+            display: flex;
+            gap: 3px;
+        }
+
+        .window-button {
+            width: 21px;
+            height: 21px;
+            background: linear-gradient(to bottom, #E8E5DC 0%, #C8C5BC 100%);
+            border: 1px outset #fff;
+            font-size: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .window-button:active {
+            border-style: inset;
+        }
+
+        .window-content {
+            padding: 20px;
+            height: calc(100% - 30px);
+            overflow: auto;
+            background: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="clouds" id="clouds"></div>
+        <div class="win2000-bars" id="win2000bars"></div>
+        <div class="xp-logo">Windows XP</div>
+        <div class="loading-bar-container">
+            <div class="loading-bar" id="loadingBar"></div>
+        </div>
+        <div class="loading-text">Spouštím systém<span class="loading-dots"></span></div>
+        <div class="funny-messages" id="funnyMessage"></div>
+    </div>
+
+    <!-- Desktop -->
+    <div id="desktop">
+        <div class="desktop-icons">
+            <div class="icon" onclick="openWindow('myComputer')">
+                <div class="icon-img">💻</div>
+                <div class="icon-label">Můj počítač</div>
+            </div>
+            <div class="icon" onclick="openWindow('recycleBin')">
+                <div class="icon-img">🗑️</div>
+                <div class="icon-label">Koš (plný)</div>
+            </div>
+            <div class="icon" onclick="openWindow('ie')">
+                <div class="icon-img">🌐</div>
+                <div class="icon-label">Internet Explorer</div>
+            </div>
+            <div class="icon" onclick="openWindow('minesweeper')">
+                <div class="icon-img">💣</div>
+                <div class="icon-label">Hledání min</div>
+            </div>
+            <div class="icon" onclick="openWindow('paint')">
+                <div class="icon-img">🎨</div>
+                <div class="icon-label">Malování</div>
+            </div>
+            <div class="icon" onclick="openWindow('virus')">
+                <div class="icon-img">🦠</div>
+                <div class="icon-label">určitě_ne_virus.exe</div>
+            </div>
+            <div class="icon" onclick="window.open('loading.html', '_blank')">
+                <div class="icon-img" style="background: linear-gradient(135deg, #FF1744, #D50000);">🇷🇺</div>
+                <div class="icon-label">Gopnik Simulator</div>
+            </div>
+            <div class="icon" onclick="window.open('login.html', '_blank')">
+                <div class="icon-img" style="background: linear-gradient(135deg, #FFEB3B, #FBC02D);">👻</div>
+                <div class="icon-label">Pac-Man Deluxe</div>
+            </div>
+        </div>
+
+        <!-- Taskbar -->
+        <div class="taskbar">
+            <div class="start-button" onclick="toggleStartMenu()">
+                <div class="start-icon">⊞</div>
+                <span>Start</span>
+            </div>
+            <div class="taskbar-items"></div>
+            <div class="clock" id="clock">13:37</div>
+        </div>
+
+        <!-- Start Menu -->
+        <div class="start-menu" id="startMenu">
+            <div class="start-menu-header">Windows XP</div>
+            <div class="start-menu-items">
+                <div class="start-menu-item" onclick="playClickSound(); alert('Tohle ještě nefunguje, sorry 😅')">📁 Dokumenty</div>
+                <div class="start-menu-item" onclick="playClickSound(); alert('Asi bych to měl dodělat, co? 🤔')">⚙️ Nastavení</div>
+                <div class="start-menu-item" onclick="playClickSound(); alert('Hledáš smysl života? Já taky! 🔍')">🔍 Hledat</div>
+                <div class="start-menu-item" onclick="playClickSound(); alert('Nápověda: Vypni to a jdi ven! ☀️')">❓ Nápověda</div>
+                <div class="start-menu-item" onclick="shutdown()">🔴 Vypnout počítač</div>
+            </div>
+        </div>
+
+        <!-- Windows -->
+        <div class="window" id="myComputer">
+            <div class="window-title">
+                <span>💻 Můj počítač</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="closeWindow('myComputer')">✕</div>
+                </div>
+            </div>
+            <div class="window-content">
+                <h3>Pevné disky:</h3>
+                <p>📀 Disk C: (997 MB volných z 1 GB)</p>
+                <p>📀 Disk D: (Vložte disk)</p>
+                <br>
+                <h3>Systémové informace:</h3>
+                <p>⚡ Procesor: Pentium 4 (skoro)</p>
+                <p>💾 RAM: 256 MB (nestačí)</p>
+                <p>🎮 Grafika: Integrovaná (laguje)</p>
+            </div>
+        </div>
+
+        <div class="window" id="recycleBin">
+            <div class="window-title">
+                <span>🗑️ Koš</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="closeWindow('recycleBin')">✕</div>
+                </div>
+            </div>
+            <div class="window-content">
+                <h3>Položky v koši:</h3>
+                <p>📄 moje_dusevno.txt</p>
+                <p>📄 zdravy_zivotni_styl.doc</p>
+                <p>📄 novy_rocni_predsevzeti_2024.xls</p>
+                <p>📄 cviceni_od_zitra.ppt</p>
+                <p>💰 penize_po_vanoce.jpg</p>
+                <p>🎯 produktivita.exe</p>
+                <p>💔 vztah_ktery_fungoval.pdf</p>
+                <p>🎓 diploma_ze_skoly_zivota.doc</p>
+                <p>🍕 dieta_od_pondeli.txt</p>
+                <p>😴 normalni_spanek.mp3</p>
+                <p>🎮 cas_na_konicek.avi</p>
+                <p>👴 mladost.zip</p>
+                <br>
+                <button onclick="playErrorSound(); alert('Smazáno! (stejně už to nikdy nebudeš potřebovat)')">Vysypat koš</button>
+            </div>
+        </div>
+
+        <div class="window" id="ie">
+            <div class="window-title">
+                <span>🌐 Internet Explorer</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="closeWindow('ie')">✕</div>
+                </div>
+            </div>
+            <div class="window-content">
+                <h3>Připojování k internetu...</h3>
+                <p>📡 Modem: *píííííííp* *krrrrrr* *bzzzzz*</p>
+                <p>⏱️ Odhadovaný čas: 15 minut</p>
+                <p>💸 Cena za připojení: Tvoje duše</p>
+                <br>
+                <p><strong>Oblíbené stránky:</strong></p>
+                <p>🎵 <a href="#" onclick="playErrorSound(); alert('404: Nostalgie not found')">Seznam.cz</a></p>
+                <p>🎮 <a href="#" onclick="playErrorSound(); alert('Prohlížeč spadl! (překvapení)')">Flashgames</a></p>
+                <p>💾 <a href="#" onclick="playErrorSound(); alert('Virus detected! (ale vlastně ne)')">Stahuj.cz</a></p>
+            </div>
+        </div>
+
+        <div class="window" id="minesweeper">
+            <div class="window-title">
+                <span>💣 Hledání min</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="closeWindow('minesweeper')">✕</div>
+                </div>
+            </div>
+            <div class="window-content">
+                <h2 style="text-align: center; margin-top: 50px;">💥 BOOM! 💥</h2>
+                <p style="text-align: center; margin-top: 20px;">Prohráls! (jako vždycky)</p>
+                <p style="text-align: center;">⏱️ Čas: 0:03</p>
+                <p style="text-align: center;">🏆 Nejlepší čas: ∞</p>
+                <div style="text-align: center; margin-top: 30px;">
+                    <button onclick="playErrorSound(); alert('Klikl jsi na další minu! 💣')">Nová hra</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="window" id="paint">
+            <div class="window-title">
+                <span>🎨 Malování</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="closeWindow('paint')">✕</div>
+                </div>
+            </div>
+            <div class="window-content">
+                <div style="border: 1px solid #000; height: 200px; background: white; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; font-size: 48px;">
+                    🎨
+                </div>
+                <p>Nástroje: Tužka (nefunguje) | Guma (maže vše) | Plechovka (rozleje se)</p>
+                <p style="margin-top: 10px; color: #888; font-size: 12px;">
+                    💡 Tip: Všechna tvoje umělecká díla ze základky jsou navždy ztracena
+                </p>
+            </div>
+        </div>
+
+        <div class="window" id="virus">
+            <div class="window-title">
+                <span>🦠 Určitě ne virus</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="closeWindow('virus')">✕</div>
+                </div>
+            </div>
+            <div class="window-content">
+                <h2 style="color: red; text-align: center;">⚠️ VAROVÁNÍ ⚠️</h2>
+                <p style="text-align: center; margin: 20px 0;">
+                    Tvůj počítač byl infikován virem!<br>
+                    (Ne doopravdy, to je jen sranda)
+                </p>
+                <div style="background: #000; color: #0f0; padding: 15px; font-family: 'Courier New'; margin: 20px 0;">
+                    > Instaluji_mining_software.exe<br>
+                    > Kraduji_tvoje_hesla.bat<br>
+                    > Prodavam_data_na_darkweb.sh<br>
+                    > <span style="animation: blink 1s infinite;">█</span>
+                </div>
+                <p style="text-align: center; color: #888; font-size: 12px;">
+                    Naser, že nostalgie těžko hledá 😄
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sound effects using Web Audio API
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playBeep(frequency = 800, duration = 0.1, volume = 0.3) {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = frequency;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration);
+        }
+
+        function playStartupSound() {
+            playBeep(523, 0.15, 0.2);
+            setTimeout(() => playBeep(659, 0.15, 0.2), 150);
+            setTimeout(() => playBeep(784, 0.15, 0.2), 300);
+            setTimeout(() => playBeep(1047, 0.3, 0.25), 450);
+        }
+
+        function playClickSound() {
+            playBeep(1200, 0.05, 0.15);
+        }
+
+        function playErrorSound() {
+            playBeep(300, 0.1, 0.3);
+            setTimeout(() => playBeep(250, 0.2, 0.3), 100);
+        }
+
+        function playShutdownSound() {
+            playBeep(1047, 0.15, 0.2);
+            setTimeout(() => playBeep(784, 0.15, 0.2), 150);
+            setTimeout(() => playBeep(659, 0.15, 0.2), 300);
+            setTimeout(() => playBeep(523, 0.3, 0.25), 450);
+        }
+
+        // Generate Windows 2000 style loading bars
+        function generateWin2000Bars() {
+            const container = document.getElementById('win2000bars');
+            for (let i = 0; i < 10; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+                bar.style.top = (i * 10) + '%';
+                bar.style.width = '100%';
+                bar.style.height = '4px';
+                bar.style.animationDelay = (i * 0.3) + 's';
+                container.appendChild(bar);
+            }
+        }
+
+        // Generate floating clouds
+        function generateClouds() {
+            const container = document.getElementById('clouds');
+            for (let i = 0; i < 6; i++) {
+                const cloud = document.createElement('div');
+                cloud.className = 'cloud';
+                cloud.style.width = (100 + Math.random() * 150) + 'px';
+                cloud.style.height = (50 + Math.random() * 50) + 'px';
+                cloud.style.top = (10 + Math.random() * 60) + '%';
+                cloud.style.animationDuration = (30 + Math.random() * 40) + 's';
+                cloud.style.animationDelay = (Math.random() * -30) + 's';
+                container.appendChild(cloud);
+            }
+        }
+
+        generateWin2000Bars();
+        generateClouds();
+
+        // Funny loading messages
+        const funnyMessages = [
+            "Hledám smysl života...",
+            "Počítám ovečky... 🐑",
+            "Nahrávám pixely...",
+            "Instalujem Ask Toolbar...",
+            "Připojujem se k SeznamKamérám...",
+            "Hledám Clippy... 📎",
+            "Kopíruju floppy disky...",
+            "Bootuju z CD-ROMky...",
+            "Defragmentuju hard disk...",
+            "Připojujem modem... *píííp*",
+            "Mazání důležitých souborů... (jk)",
+            "Tahám updaty z Windows Update...",
+            "Instaluju IE toolbars...",
+            "Stahuju Limewire z Limewire... 🎵",
+            "Čekám na ukončení ICQ... 📟",
+            "Kontroluju Y2K bug...",
+            "Instaluju RealPlayer... (sorry)",
+            "Hledám WinRAR licenci... 💀",
+            "Načítám MSN Messenger...",
+            "Formátuju A:\\ disk... 💾",
+            "Spouštím Norton Antivirus (RIP PC)",
+            "Scanujem SpyBot... 🕷️",
+            "Čistím registry... (nic to nedělá)",
+            "Hledám Bonzi Buddy... 🐵"
+        ];
+
+        let messageIndex = 0;
+        let progress = 0;
+
+        function updateLoading() {
+            const funnyMessage = document.getElementById('funnyMessage');
+            const loadingBar = document.getElementById('loadingBar');
+            
+            funnyMessage.textContent = funnyMessages[messageIndex];
+            messageIndex = (messageIndex + 1) % funnyMessages.length;
+            
+            // Random beep sound
+            if (Math.random() > 0.6) {
+                playBeep(600 + Math.random() * 400, 0.05, 0.1);
+            }
+            
+            progress += Math.random() * 15;
+            loadingBar.style.width = Math.min(progress, 100) + '%';
+            
+            if (progress >= 100) {
+                setTimeout(() => {
+                    document.getElementById('loading-screen').style.display = 'none';
+                    document.getElementById('desktop').style.display = 'block';
+                    playStartupSound();
+                    updateClock();
+                }, 500);
+            } else {
+                setTimeout(updateLoading, 800);
+            }
+        }
+
+        // Start loading
+        setTimeout(updateLoading, 500);
+
+        // Clock
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('clock').textContent = `${hours}:${minutes}`;
+            setTimeout(updateClock, 1000);
+        }
+
+        // Start menu
+        function toggleStartMenu() {
+            const menu = document.getElementById('startMenu');
+            playClickSound();
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Close start menu when clicking outside
+        document.addEventListener('click', (e) => {
+            const menu = document.getElementById('startMenu');
+            const startBtn = document.querySelector('.start-button');
+            if (!menu.contains(e.target) && !startBtn.contains(e.target)) {
+                menu.style.display = 'none';
+            }
+        });
+
+        // Window functions
+        function openWindow(id) {
+            playClickSound();
+            document.getElementById(id).style.display = 'block';
+            document.getElementById('startMenu').style.display = 'none';
+        }
+
+        function closeWindow(id) {
+            playClickSound();
+            document.getElementById(id).style.display = 'none';
+        }
+
+        function shutdown() {
+            playShutdownSound();
+            document.getElementById('desktop').style.display = 'none';
+            document.getElementById('loading-screen').style.display = 'flex';
+            document.querySelector('.xp-logo').textContent = 'Windows se vypíná...';
+            document.querySelector('.loading-text').innerHTML = 'Můžeš vypnout počítač<span class="loading-dots"></span>';
+            document.getElementById('funnyMessage').textContent = 'Díky za použití! (ale proč vlastně?)';
+            document.getElementById('loadingBar').style.width = '100%';
+        }
+
+        // Blink animation for cursor
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes blink {
+                0%, 50% { opacity: 1; }
+                51%, 100% { opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
