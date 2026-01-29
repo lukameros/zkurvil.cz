@@ -23,183 +23,93 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
-                radial-gradient(ellipse at 30% 30%, rgba(135, 206, 250, 0.3), transparent 50%),
-                radial-gradient(ellipse at 70% 70%, rgba(144, 238, 144, 0.2), transparent 50%),
-                linear-gradient(180deg, 
-                    #000814 0%,
-                    #001d3d 20%,
-                    #003566 40%,
-                    #004080 60%,
-                    #0066cc 80%,
-                    #0080ff 100%
-                );
+            background: #000;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            overflow: hidden;
         }
 
-        #loading-screen::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
+        /* Classic XP Loading Screen */
+        .xp-boot-screen {
             width: 100%;
             height: 100%;
-            background-image: 
-                repeating-linear-gradient(
-                    0deg,
-                    transparent,
-                    transparent 2px,
-                    rgba(255, 255, 255, 0.02) 2px,
-                    rgba(255, 255, 255, 0.02) 4px
-                );
-            pointer-events: none;
-        }
-
-        #loading-screen::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 40%;
-            background: radial-gradient(ellipse at bottom, 
-                rgba(50, 150, 50, 0.3) 0%,
-                rgba(100, 200, 100, 0.2) 30%,
-                transparent 70%
-            );
-            pointer-events: none;
-        }
-
-        .win2000-bars {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            opacity: 0.15;
-            pointer-events: none;
-        }
-
-        .bar {
-            position: absolute;
-            background: linear-gradient(90deg, transparent, rgba(0, 191, 255, 0.8), transparent);
-            animation: scrollBar 3s linear infinite;
-            box-shadow: 0 0 20px rgba(0, 191, 255, 0.5);
-        }
-
-        @keyframes scrollBar {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(200%); }
-        }
-
-        .clouds {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            pointer-events: none;
-        }
-
-        .cloud {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 100px;
-            animation: floatCloud linear infinite;
-        }
-
-        @keyframes floatCloud {
-            0% { transform: translateX(-200px); }
-            100% { transform: translateX(calc(100vw + 200px)); }
-        }
-
-        .xp-logo {
-            font-size: 72px;
-            font-weight: bold;
-            background: linear-gradient(to right, #00D4FF, #0080FF, #00D4FF);
-            background-size: 200% 100%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 30px;
-            animation: pulse 2s infinite, shimmer 3s linear infinite;
-            text-shadow: 0 0 30px rgba(0, 212, 255, 0.8);
-            filter: drop-shadow(0 0 20px rgba(0, 128, 255, 0.6));
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             position: relative;
-            z-index: 10;
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        @keyframes shimmer {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 200% 50%; }
-        }
-
-        .loading-bar-container {
-            width: 300px;
-            height: 20px;
-            background: rgba(0, 53, 128, 0.8);
-            border: 2px solid #00D4FF;
-            border-radius: 10px;
-            overflow: hidden;
-            position: relative;
-            z-index: 10;
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
-        }
-
-        .loading-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #0080FF, #00D4FF, #0080FF);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-            width: 0%;
-        }
-
-        @keyframes loading {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 200% 50%; }
-        }
-
-        .loading-text {
-            color: #00D4FF;
-            margin-top: 20px;
-            font-size: 14px;
-            position: relative;
-            z-index: 10;
-            text-shadow: 0 0 10px rgba(0, 212, 255, 0.8), 0 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        .loading-dots::after {
-            content: '';
-            animation: dots 1.5s steps(4, end) infinite;
-        }
-
-        @keyframes dots {
-            0%, 20% { content: '.'; }
-            40% { content: '..'; }
-            60% { content: '...'; }
-            80%, 100% { content: ''; }
-        }
-
-        .funny-messages {
-            color: #00D4FF;
-            margin-top: 30px;
-            height: 40px;
-            font-size: 12px;
+        .xp-logo-container {
             text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .xp-logo-text {
+            font-size: 48px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .xp-logo-subtitle {
+            color: #fff;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        /* Classic loading bar */
+        .classic-loading-container {
+            width: 250px;
+            height: 12px;
+            background: #000;
+            border: 1px solid #3C3C3C;
             position: relative;
-            z-index: 10;
-            text-shadow: 0 0 10px rgba(0, 212, 255, 0.8), 0 2px 4px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .classic-loading-bar {
+            height: 100%;
+            width: 0%;
+            background: #3C3C3C;
+            position: relative;
+        }
+
+        .loading-blocks {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            display: flex;
+            gap: 2px;
+        }
+
+        .loading-block {
+            width: 20px;
+            height: 100%;
+            background: linear-gradient(to bottom, #5A9FD4, #2E5C8A);
+            animation: slideBlocks 1.5s linear infinite;
+        }
+
+        @keyframes slideBlocks {
+            0% { transform: translateX(-300px); }
+            100% { transform: translateX(300px); }
+        }
+
+        .xp-footer {
+            position: absolute;
+            bottom: 30px;
+            color: #fff;
+            font-size: 11px;
+            text-align: center;
+        }
+
+        .xp-copyright {
+            margin-bottom: 5px;
         }
 
         /* Desktop */
@@ -221,11 +131,22 @@
             margin-bottom: 20px;
             cursor: pointer;
             user-select: none;
+            position: absolute;
         }
 
         .icon:hover {
             background: rgba(255, 255, 255, 0.2);
             border: 1px dotted #fff;
+        }
+
+        .icon.selected {
+            background: rgba(51, 153, 255, 0.3);
+            border: 1px dotted #fff;
+        }
+
+        .icon.dragging {
+            opacity: 0.7;
+            z-index: 1000;
         }
 
         .icon-img {
@@ -293,6 +214,28 @@
         .taskbar-items {
             flex: 1;
             margin-left: 10px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .taskbar-item {
+            height: 32px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px outset #4A90E2;
+            border-radius: 3px;
+            padding: 0 10px;
+            color: white;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            max-width: 150px;
+        }
+
+        .taskbar-item.active {
+            border-style: inset;
+            background: rgba(0, 0, 0, 0.2);
         }
 
         .clock {
@@ -347,6 +290,12 @@
             color: white;
         }
 
+        .start-menu-separator {
+            height: 1px;
+            background: #808080;
+            margin: 3px 0;
+        }
+
         /* Window */
         .window {
             position: absolute;
@@ -357,9 +306,13 @@
             border-radius: 8px 8px 0 0;
             box-shadow: 3px 3px 10px rgba(0,0,0,0.5);
             display: none;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            z-index: 100;
+            left: 100px;
+            top: 100px;
+        }
+
+        .window.active {
+            z-index: 200;
         }
 
         .window-title {
@@ -372,6 +325,10 @@
             justify-content: space-between;
             align-items: center;
             cursor: move;
+        }
+
+        .window-title.inactive {
+            background: linear-gradient(to bottom, #7A96DF 0%, #5177D6 100%);
         }
 
         .window-buttons {
@@ -401,55 +358,227 @@
             overflow: auto;
             background: white;
         }
+
+        /* Context Menu */
+        .context-menu {
+            position: fixed;
+            background: #D4D0C8;
+            border: 2px outset #fff;
+            box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+            padding: 2px;
+            min-width: 200px;
+            display: none;
+            z-index: 10000;
+        }
+
+        .context-menu-item {
+            padding: 5px 25px 5px 30px;
+            cursor: pointer;
+            position: relative;
+            font-size: 12px;
+        }
+
+        .context-menu-item:hover {
+            background: #0A246A;
+            color: white;
+        }
+
+        .context-menu-item.disabled {
+            color: #888;
+            cursor: default;
+        }
+
+        .context-menu-item.disabled:hover {
+            background: transparent;
+            color: #888;
+        }
+
+        .context-menu-separator {
+            height: 1px;
+            background: #808080;
+            margin: 2px 0;
+        }
+
+        .context-menu-item .icon-left {
+            position: absolute;
+            left: 5px;
+        }
+
+        /* Selection box */
+        .selection-box {
+            position: absolute;
+            border: 1px solid #0A246A;
+            background: rgba(10, 36, 106, 0.1);
+            pointer-events: none;
+            display: none;
+            z-index: 999;
+        }
+
+        /* Minimize/Maximize effects */
+        @keyframes minimize {
+            to {
+                transform: scale(0) translate(-50%, 100%);
+                opacity: 0;
+            }
+        }
+
+        @keyframes maximize {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .minimizing {
+            animation: minimize 0.3s forwards;
+        }
+
+        .maximizing {
+            animation: maximize 0.3s forwards;
+        }
     </style>
 </head>
 <body>
     <!-- Loading Screen -->
     <div id="loading-screen">
-        <div class="clouds" id="clouds"></div>
-        <div class="win2000-bars" id="win2000bars"></div>
-        <div class="xp-logo">Windows XP</div>
-        <div class="loading-bar-container">
-            <div class="loading-bar" id="loadingBar"></div>
+        <div class="xp-boot-screen">
+            <div class="xp-logo-container">
+                <div class="xp-logo-text">Microsoft Windows XP</div>
+                <div class="xp-logo-subtitle">Professional</div>
+            </div>
+            
+            <div class="classic-loading-container">
+                <div class="loading-blocks" id="loadingBlocks">
+                    <div class="loading-block"></div>
+                    <div class="loading-block" style="animation-delay: 0.2s;"></div>
+                    <div class="loading-block" style="animation-delay: 0.4s;"></div>
+                </div>
+            </div>
+
+            <div class="xp-footer">
+                <div class="xp-copyright">Copyright © Microsoft Corporation</div>
+                <div style="margin-top: 15px; color: #666;">Načítání...</div>
+            </div>
         </div>
-        <div class="loading-text">Spouštím systém<span class="loading-dots"></span></div>
-        <div class="funny-messages" id="funnyMessage"></div>
     </div>
 
     <!-- Desktop -->
     <div id="desktop">
-        <div class="desktop-icons">
-            <div class="icon" onclick="openWindow('myComputer')">
+        <div class="desktop-icons" id="desktopIcons">
+            <div class="icon" data-icon-id="myComputer">
                 <div class="icon-img">💻</div>
                 <div class="icon-label">Můj počítač</div>
             </div>
-            <div class="icon" onclick="openWindow('recycleBin')">
+            <div class="icon" data-icon-id="recycleBin">
                 <div class="icon-img">🗑️</div>
                 <div class="icon-label">Koš (plný)</div>
             </div>
-            <div class="icon" onclick="openWindow('ie')">
+            <div class="icon" data-icon-id="ie">
                 <div class="icon-img">🌐</div>
                 <div class="icon-label">Internet Explorer</div>
             </div>
-            <div class="icon" onclick="openWindow('minesweeper')">
+            <div class="icon" data-icon-id="minesweeper">
                 <div class="icon-img">💣</div>
                 <div class="icon-label">Hledání min</div>
             </div>
-            <div class="icon" onclick="openWindow('paint')">
+            <div class="icon" data-icon-id="paint">
                 <div class="icon-img">🎨</div>
                 <div class="icon-label">Malování</div>
             </div>
-            <div class="icon" onclick="openWindow('virus')">
+            <div class="icon" data-icon-id="virus">
                 <div class="icon-img">🦠</div>
                 <div class="icon-label">určitě_ne_virus.exe</div>
             </div>
-            <div class="icon" onclick="window.open('gopnik/loading.html', '_blank')">
+            <div class="icon" data-icon-id="notepad">
+                <div class="icon-img">📝</div>
+                <div class="icon-label">Poznámkový blok</div>
+            </div>
+            <div class="icon" data-icon-id="calculator">
+                <div class="icon-img">🔢</div>
+                <div class="icon-label">Kalkulačka</div>
+            </div>
+            <div class="icon" data-icon-id="gopnik">
                 <div class="icon-img" style="background: linear-gradient(135deg, #FF1744, #D50000);">🇷🇺</div>
                 <div class="icon-label">Gopnik Simulator</div>
             </div>
-            <div class="icon" onclick="window.open('login.html', '_blank')">
+            <div class="icon" data-icon-id="pacman">
                 <div class="icon-img" style="background: linear-gradient(135deg, #FFEB3B, #FBC02D);">👻</div>
                 <div class="icon-label">Pac-Man Deluxe</div>
+            </div>
+            <div class="icon" data-icon-id="myDocuments">
+                <div class="icon-img">📁</div>
+                <div class="icon-label">Dokumenty</div>
+            </div>
+            <div class="icon" data-icon-id="myMusic">
+                <div class="icon-img">🎵</div>
+                <div class="icon-label">Hudba</div>
+            </div>
+            <div class="icon" data-icon-id="myPictures">
+                <div class="icon-img">🖼️</div>
+                <div class="icon-label">Obrázky</div>
+            </div>
+            <div class="icon" data-icon-id="network">
+                <div class="icon-img">🌐</div>
+                <div class="icon-label">Síťové připojení</div>
+            </div>
+        </div>
+
+        <!-- Selection box -->
+        <div class="selection-box" id="selectionBox"></div>
+
+        <!-- Context menus -->
+        <div class="context-menu" id="desktopContextMenu">
+            <div class="context-menu-item" onclick="desktopRefresh()">
+                <span class="icon-left">🔄</span>
+                Aktualizovat
+            </div>
+            <div class="context-menu-separator"></div>
+            <div class="context-menu-item" onclick="arrangeIcons()">
+                <span class="icon-left">📋</span>
+                Uspořádat ikony
+            </div>
+            <div class="context-menu-item" onclick="playClickSound(); alert('Tato funkce je jen pro parádu 😄')">
+                <span class="icon-left">🖼️</span>
+                Vložit
+            </div>
+            <div class="context-menu-separator"></div>
+            <div class="context-menu-item" onclick="createNewFile()">
+                <span class="icon-left">📄</span>
+                Nový ▶
+            </div>
+            <div class="context-menu-separator"></div>
+            <div class="context-menu-item" onclick="openWindow('myComputer')">
+                <span class="icon-left">⚙️</span>
+                Vlastnosti
+            </div>
+        </div>
+
+        <div class="context-menu" id="iconContextMenu">
+            <div class="context-menu-item" onclick="openSelectedIcon()">
+                <span class="icon-left">📂</span>
+                Otevřít
+            </div>
+            <div class="context-menu-separator"></div>
+            <div class="context-menu-item" onclick="playClickSound(); alert('Zkopírováno! (ne doopravdy)')">
+                <span class="icon-left">📋</span>
+                Kopírovat
+            </div>
+            <div class="context-menu-item" onclick="deleteToRecycleBin()">
+                <span class="icon-left">🗑️</span>
+                Odstranit
+            </div>
+            <div class="context-menu-item" onclick="playClickSound(); alert('Přejmenováno na: Nový název 😎')">
+                <span class="icon-left">✏️</span>
+                Přejmenovat
+            </div>
+            <div class="context-menu-separator"></div>
+            <div class="context-menu-item" onclick="playClickSound(); alert('Vlastnosti: Velikost neznámá 🤷')">
+                <span class="icon-left">📊</span>
+                Vlastnosti
             </div>
         </div>
 
@@ -459,7 +588,7 @@
                 <div class="start-icon">⊞</div>
                 <span>Start</span>
             </div>
-            <div class="taskbar-items"></div>
+            <div class="taskbar-items" id="taskbarItems"></div>
             <div class="clock" id="clock">13:37</div>
         </div>
 
@@ -467,10 +596,29 @@
         <div class="start-menu" id="startMenu">
             <div class="start-menu-header">Windows XP</div>
             <div class="start-menu-items">
-                <div class="start-menu-item" onclick="playClickSound(); alert('Tohle ještě nefunguje, sorry 😅')">📁 Dokumenty</div>
-                <div class="start-menu-item" onclick="playClickSound(); alert('Asi bych to měl dodělat, co? 🤔')">⚙️ Nastavení</div>
-                <div class="start-menu-item" onclick="playClickSound(); alert('Hledáš smysl života? Já taky! 🔍')">🔍 Hledat</div>
+                <div class="start-menu-item" onclick="openWindow('myDocuments'); toggleStartMenu();">📁 Dokumenty</div>
+                <div class="start-menu-item" onclick="openWindow('myPictures'); toggleStartMenu();">🖼️ Obrázky</div>
+                <div class="start-menu-item" onclick="openWindow('myMusic'); toggleStartMenu();">🎵 Hudba</div>
+                <div class="start-menu-separator"></div>
+                <div class="start-menu-item" onclick="openWindow('myComputer'); toggleStartMenu();">💻 Můj počítač</div>
+                <div class="start-menu-item" onclick="openWindow('network'); toggleStartMenu();">🌐 Síťové připojení</div>
+                <div class="start-menu-separator"></div>
+                <div class="start-menu-item" onclick="openWindow('notepad'); toggleStartMenu();">📝 Poznámkový blok</div>
+                <div class="start-menu-item" onclick="openWindow('wordpad'); toggleStartMenu();">📝 WordPad</div>
+                <div class="start-menu-item" onclick="openWindow('calculator'); toggleStartMenu();">🔢 Kalkulačka</div>
+                <div class="start-menu-item" onclick="openWindow('paint'); toggleStartMenu();">🎨 Malování</div>
+                <div class="start-menu-separator"></div>
+                <div class="start-menu-item" onclick="openWindow('cmd'); toggleStartMenu();">⚫ Příkazový řádek</div>
+                <div class="start-menu-item" onclick="openWindow('taskManager'); toggleStartMenu();">📊 Správce úloh</div>
+                <div class="start-menu-item" onclick="openWindow('runDialog'); toggleStartMenu();">▶️ Spustit...</div>
+                <div class="start-menu-separator"></div>
+                <div class="start-menu-item" onclick="openWindow('diskCleanup'); toggleStartMenu();">🧹 Vyčištění disku</div>
+                <div class="start-menu-item" onclick="openWindow('defrag'); toggleStartMenu();">💿 Defragmentace</div>
+                <div class="start-menu-item" onclick="openWindow('systemRestore'); toggleStartMenu();">🔄 Obnovení systému</div>
+                <div class="start-menu-separator"></div>
                 <div class="start-menu-item" onclick="playClickSound(); alert('Nápověda: Vypni to a jdi ven! ☀️')">❓ Nápověda</div>
+                <div class="start-menu-item" onclick="playClickSound(); alert('Hledáš smysl života? Já taky! 🔍')">🔍 Hledat</div>
+                <div class="start-menu-separator"></div>
                 <div class="start-menu-item" onclick="shutdown()">🔴 Vypnout počítač</div>
             </div>
         </div>
@@ -480,6 +628,8 @@
             <div class="window-title">
                 <span>💻 Můj počítač</span>
                 <div class="window-buttons">
+                    <div class="window-button" onclick="minimizeWindow('myComputer')">_</div>
+                    <div class="window-button" onclick="maximizeWindow('myComputer')">□</div>
                     <div class="window-button" onclick="closeWindow('myComputer')">✕</div>
                 </div>
             </div>
@@ -499,6 +649,8 @@
             <div class="window-title">
                 <span>🗑️ Koš</span>
                 <div class="window-buttons">
+                    <div class="window-button" onclick="minimizeWindow('recycleBin')">_</div>
+                    <div class="window-button" onclick="maximizeWindow('recycleBin')">□</div>
                     <div class="window-button" onclick="closeWindow('recycleBin')">✕</div>
                 </div>
             </div>
@@ -525,6 +677,8 @@
             <div class="window-title">
                 <span>🌐 Internet Explorer</span>
                 <div class="window-buttons">
+                    <div class="window-button" onclick="minimizeWindow('ie')">_</div>
+                    <div class="window-button" onclick="maximizeWindow('ie')">□</div>
                     <div class="window-button" onclick="closeWindow('ie')">✕</div>
                 </div>
             </div>
@@ -545,6 +699,8 @@
             <div class="window-title">
                 <span>💣 Hledání min</span>
                 <div class="window-buttons">
+                    <div class="window-button" onclick="minimizeWindow('minesweeper')">_</div>
+                    <div class="window-button" onclick="maximizeWindow('minesweeper')">□</div>
                     <div class="window-button" onclick="closeWindow('minesweeper')">✕</div>
                 </div>
             </div>
@@ -559,21 +715,26 @@
             </div>
         </div>
 
-        <div class="window" id="paint">
+        <div class="window" id="paint" style="width: 600px; height: 450px;">
             <div class="window-title">
-                <span>🎨 Malování</span>
+                <span>🎨 Malování - Bez názvu</span>
                 <div class="window-buttons">
+                    <div class="window-button" onclick="minimizeWindow('paint')">_</div>
+                    <div class="window-button" onclick="maximizeWindow('paint')">□</div>
                     <div class="window-button" onclick="closeWindow('paint')">✕</div>
                 </div>
             </div>
-            <div class="window-content">
-                <div style="border: 1px solid #000; height: 200px; background: white; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; font-size: 48px;">
-                    🎨
+            <div class="window-content" style="padding: 5px;">
+                <div style="background: #D4D0C8; padding: 5px; margin-bottom: 5px; border: 1px solid #888;">
+                    <button onclick="selectTool('pen')" id="toolPen" style="padding: 5px 10px; margin: 2px; background: #fff; border: 2px outset #888;">✏️ Tužka</button>
+                    <button onclick="selectTool('eraser')" id="toolEraser" style="padding: 5px 10px; margin: 2px; background: #E0E0E0; border: 2px outset #888;">🧹 Guma</button>
+                    <button onclick="clearCanvas()" style="padding: 5px 10px; margin: 2px; background: #E0E0E0; border: 2px outset #888;">🗑️ Smazat vše</button>
+                    <span style="margin-left: 20px;">Barva:</span>
+                    <input type="color" id="colorPicker" value="#000000" style="margin-left: 5px; cursor: pointer;">
+                    <span style="margin-left: 10px;">Velikost:</span>
+                    <input type="range" id="brushSize" min="1" max="20" value="3" style="width: 100px; vertical-align: middle;">
                 </div>
-                <p>Nástroje: Tužka (nefunguje) | Guma (maže vše) | Plechovka (rozleje se)</p>
-                <p style="margin-top: 10px; color: #888; font-size: 12px;">
-                    💡 Tip: Všechna tvoje umělecká díla ze základky jsou navždy ztracena
-                </p>
+                <canvas id="paintCanvas" width="580" height="350" style="border: 2px inset #888; background: white; cursor: crosshair; display: block;"></canvas>
             </div>
         </div>
 
@@ -581,6 +742,8 @@
             <div class="window-title">
                 <span>🦠 Určitě ne virus</span>
                 <div class="window-buttons">
+                    <div class="window-button" onclick="minimizeWindow('virus')">_</div>
+                    <div class="window-button" onclick="maximizeWindow('virus')">□</div>
                     <div class="window-button" onclick="closeWindow('virus')">✕</div>
                 </div>
             </div>
@@ -599,6 +762,487 @@
                 <p style="text-align: center; color: #888; font-size: 12px;">
                     Naser, že nostalgie těžko hledá 😄
                 </p>
+            </div>
+        </div>
+
+        <div class="window" id="notepad">
+            <div class="window-title">
+                <span>📝 Poznámkový blok - Bez názvu</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="minimizeWindow('notepad')">_</div>
+                    <div class="window-button" onclick="maximizeWindow('notepad')">□</div>
+                    <div class="window-button" onclick="closeWindow('notepad')">✕</div>
+                </div>
+            </div>
+            <div class="window-content" style="padding: 5px;">
+                <textarea style="width: 100%; height: 100%; border: none; outline: none; font-family: 'Courier New'; font-size: 13px; resize: none;" placeholder="Začni psát...">Vážený deníčku,
+
+Dnes jsem objevil Windows XP simulátor.
+Je to jako cesta do minulosti...
+
+Vzpomínám si, jak jsem celé dny hrál Hledání min
+a snažil se připojit na internet přes modem.
+
+Ah, nostalgie! 🥺
+
+PS: Stále nevím, kde je ten Clippy...</textarea>
+            </div>
+        </div>
+
+        <div class="window" id="calculator">
+            <div class="window-title">
+                <span>🔢 Kalkulačka</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="minimizeWindow('calculator')">_</div>
+                    <div class="window-button" onclick="closeWindow('calculator')">✕</div>
+                </div>
+            </div>
+            <div class="window-content" style="padding: 10px;">
+                <div style="background: #E0E0E0; padding: 10px; border: 2px inset #888;">
+                    <input type="text" id="calcDisplay" readonly value="0" style="width: 100%; text-align: right; font-size: 24px; padding: 5px; border: 2px inset #888; background: #FFF;">
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-top: 10px;">
+                    <button onclick="calcInput('7')" style="padding: 15px; font-size: 16px;">7</button>
+                    <button onclick="calcInput('8')" style="padding: 15px; font-size: 16px;">8</button>
+                    <button onclick="calcInput('9')" style="padding: 15px; font-size: 16px;">9</button>
+                    <button onclick="calcInput('/')" style="padding: 15px; font-size: 16px;">/</button>
+                    <button onclick="calcInput('4')" style="padding: 15px; font-size: 16px;">4</button>
+                    <button onclick="calcInput('5')" style="padding: 15px; font-size: 16px;">5</button>
+                    <button onclick="calcInput('6')" style="padding: 15px; font-size: 16px;">6</button>
+                    <button onclick="calcInput('*')" style="padding: 15px; font-size: 16px;">*</button>
+                    <button onclick="calcInput('1')" style="padding: 15px; font-size: 16px;">1</button>
+                    <button onclick="calcInput('2')" style="padding: 15px; font-size: 16px;">2</button>
+                    <button onclick="calcInput('3')" style="padding: 15px; font-size: 16px;">3</button>
+                    <button onclick="calcInput('-')" style="padding: 15px; font-size: 16px;">-</button>
+                    <button onclick="calcInput('0')" style="padding: 15px; font-size: 16px;">0</button>
+                    <button onclick="calcClear()" style="padding: 15px; font-size: 16px;">C</button>
+                    <button onclick="calcEqual()" style="padding: 15px; font-size: 16px;">=</button>
+                    <button onclick="calcInput('+')" style="padding: 15px; font-size: 16px;">+</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="window" id="taskManager" style="width: 600px; height: 450px;">
+            <div class="window-title">
+                <span>📊 Správce úloh</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="minimizeWindow('taskManager')">_</div>
+                    <div class="window-button" onclick="closeWindow('taskManager')">✕</div>
+                </div>
+            </div>
+            <div class="window-content" style="padding: 0;">
+                <div style="border-bottom: 2px solid #D4D0C8; padding: 5px;">
+                    <button onclick="taskManagerRefresh()" style="padding: 5px 15px;">🔄 Aktualizovat</button>
+                    <button onclick="endTask()" style="padding: 5px 15px; margin-left: 5px;">❌ Ukončit úlohu</button>
+                </div>
+                <div style="padding: 10px;">
+                    <table id="taskTable" style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: #D4D0C8;">
+                                <th style="padding: 5px; text-align: left; border: 1px solid #888;">Název úlohy</th>
+                                <th style="padding: 5px; text-align: left; border: 1px solid #888;">Stav</th>
+                                <th style="padding: 5px; text-align: left; border: 1px solid #888;">CPU</th>
+                                <th style="padding: 5px; text-align: left; border: 1px solid #888;">Paměť</th>
+                            </tr>
+                        </thead>
+                        <tbody id="taskTableBody">
+                            <tr>
+                                <td style="padding: 5px; border: 1px solid #888;">System Idle Process</td>
+                                <td style="padding: 5px; border: 1px solid #888;">Spuštěno</td>
+                                <td style="padding: 5px; border: 1px solid #888;">99%</td>
+                                <td style="padding: 5px; border: 1px solid #888;">0 KB</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px; border: 1px solid #888;">explorer.exe</td>
+                                <td style="padding: 5px; border: 1px solid #888;">Spuštěno</td>
+                                <td style="padding: 5px; border: 1px solid #888;">1%</td>
+                                <td style="padding: 5px; border: 1px solid #888;">15,234 KB</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px; border: 1px solid #888;">chrome.exe</td>
+                                <td style="padding: 5px; border: 1px solid #888;">Spuštěno</td>
+                                <td style="padding: 5px; border: 1px solid #888;">45%</td>
+                                <td style="padding: 5px; border: 1px solid #888;">1,234,567 KB</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 5px; border: 1px solid #888;">určitě_ne_virus.exe</td>
+                                <td style="padding: 5px; border: 1px solid #888;">Spuštěno 🚩</td>
+                                <td style="padding: 5px; border: 1px solid #888;">89%</td>
+                                <td style="padding: 5px; border: 1px solid #888;">999,999 KB</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div style="margin-top: 20px; padding: 10px; background: #f0f0f0; border: 1px solid #888;">
+                        <p><strong>Výkon systému:</strong></p>
+                        <p>CPU: <span id="cpuUsage">45%</span> | RAM: 234 MB / 256 MB</p>
+                        <p>Procesy: 42 | Threads: 420 | Handles: 4200</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="window" id="runDialog" style="width: 400px; height: 200px;">
+            <div class="window-title">
+                <span>▶️ Spustit</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="closeWindow('runDialog')">✕</div>
+                </div>
+            </div>
+            <div class="window-content">
+                <p style="margin-bottom: 15px;">Zadejte název programu, složky, dokumentu nebo internetové adresy a systém Windows je otevře.</p>
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px;">Otevřít:</label>
+                    <input type="text" id="runInput" placeholder="notepad, calc, mspaint..." style="width: 100%; padding: 5px; border: 2px inset #888;">
+                </div>
+                <div style="text-align: right;">
+                    <button onclick="executeRun()" style="padding: 5px 20px; margin-right: 5px;">OK</button>
+                    <button onclick="closeWindow('runDialog')" style="padding: 5px 20px;">Storno</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="window" id="myDocuments" style="width: 600px; height: 400px;">
+            <div class="window-title">
+                <span>📁 Dokumenty</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="minimizeWindow('myDocuments')">_</div>
+                    <div class="window-button" onclick="maximizeWindow('myDocuments')">□</div>
+                    <div class="window-button" onclick="closeWindow('myDocuments')">✕</div>
+                </div>
+            </div>
+            <div class="window-content">
+                <div style="background: #D4D0C8; padding: 5px; margin-bottom: 10px; border: 1px solid #888;">
+                    <button onclick="playClickSound()">⬅️ Zpět</button>
+                    <button onclick="playClickSound()">➡️ Vpřed</button>
+                    <button onclick="playClickSound()">⬆️ Nahoru</button>
+                    <input type="text" value="C:\Documents and Settings\User\Dokumenty" style="flex: 1; margin: 0 10px; padding: 3px;">
+                </div>
+                <h3>📄 Moje dokumenty:</h3>
+                <p>📝 Bakalářka_final_final_FINAL.doc</p>
+                <p>📝 CV_2024.pdf</p>
+                <p>📊 Výdaje_2024.xls</p>
+                <p>📄 Tajné_plány.txt</p>
+                <p>📁 Staré_fotky_z_mobilu</p>
+                <p>📁 Záloha_zálohy</p>
+                <p>🎵 Playlist_2000s.m3u</p>
+                <p>📋 Hesla_NEZÁLOHOVAT.txt</p>
+            </div>
+        </div>
+
+        <div class="window" id="myMusic" style="width: 600px; height: 450px;">
+            <div class="window-title">
+                <span>🎵 Windows Media Player</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="minimizeWindow('myMusic')">_</div>
+                    <div class="window-button" onclick="maximizeWindow('myMusic')">□</div>
+                    <div class="window-button" onclick="closeWindow('myMusic')">✕</div>
+                </div>
+            </div>
+            <div class="window-content" style="background: #000; color: #0ff; padding: 0;">
+                <div style="background: linear-gradient(to bottom, #2B5278, #1A3450); padding: 10px;">
+                    <div style="text-align: center; margin: 20px 0;">
+                        <div style="font-size: 48px; margin-bottom: 10px;">♫</div>
+                        <div style="font-size: 18px; color: #fff;">Nyní přehrává:</div>
+                        <div style="font-size: 24px; color: #0ff; margin: 10px 0;">Darude - Sandstorm</div>
+                        <div style="color: #888;">Various Artists - 2000s Hits</div>
+                    </div>
+                    <div style="background: #000; padding: 10px; margin: 20px 0;">
+                        <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 10px;">
+                            <button onclick="playClickSound()" style="padding: 10px 20px; font-size: 20px;">⏮️</button>
+                            <button onclick="togglePlay()" id="playBtn" style="padding: 10px 30px; font-size: 20px;">▶️</button>
+                            <button onclick="playClickSound()" style="padding: 10px 20px; font-size: 20px;">⏭️</button>
+                        </div>
+                        <div style="background: #333; height: 10px; border-radius: 5px; overflow: hidden;">
+                            <div id="musicProgress" style="background: linear-gradient(to right, #0ff, #00f); height: 100%; width: 35%; transition: width 0.3s;"></div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; color: #888; font-size: 12px; margin-top: 5px;">
+                            <span>1:23</span>
+                            <span>3:45</span>
+                        </div>
+                    </div>
+                    <div style="padding: 10px;">
+                        <h4 style="color: #fff; margin-bottom: 10px;">📋 Playlist:</h4>
+                        <div style="background: #000; padding: 10px; max-height: 150px; overflow-y: auto;">
+                            <div style="padding: 5px; border-bottom: 1px solid #333;">🎵 Darude - Sandstorm</div>
+                            <div style="padding: 5px; border-bottom: 1px solid #333;">🎵 Eiffel 65 - Blue</div>
+                            <div style="padding: 5px; border-bottom: 1px solid #333;">🎵 Crazy Frog - Axel F</div>
+                            <div style="padding: 5px; border-bottom: 1px solid #333;">🎵 Vengaboys - Boom Boom</div>
+                            <div style="padding: 5px; border-bottom: 1px solid #333;">🎵 Scatman John - Scatman</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="window" id="myPictures" style="width: 650px; height: 450px;">
+            <div class="window-title">
+                <span>🖼️ Obrázky</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="minimizeWindow('myPictures')">_</div>
+                    <div class="window-button" onclick="maximizeWindow('myPictures')">□</div>
+                    <div class="window-button" onclick="closeWindow('myPictures')">✕</div>
+                </div>
+            </div>
+            <div class="window-content">
+                <div style="background: #D4D0C8; padding: 5px; margin-bottom: 10px; border: 1px solid #888;">
+                    <button onclick="playClickSound()">🔍 Zobrazit jako miniatury</button>
+                    <button onclick="playClickSound()">📊 Zobrazit jako seznam</button>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+                    <div style="text-align: center; padding: 10px; border: 1px solid #ccc; background: #f0f0f0;">
+                        <div style="font-size: 48px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; margin-bottom: 5px;">🏝️</div>
+                        <div style="font-size: 11px;">dovolena_2003.jpg</div>
+                    </div>
+                    <div style="text-align: center; padding: 10px; border: 1px solid #ccc; background: #f0f0f0;">
+                        <div style="font-size: 48px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 20px; margin-bottom: 5px;">🎂</div>
+                        <div style="font-size: 11px;">narozeniny.jpg</div>
+                    </div>
+                    <div style="text-align: center; padding: 10px; border: 1px solid #ccc; background: #f0f0f0;">
+                        <div style="font-size: 48px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); padding: 20px; margin-bottom: 5px;">🐕</div>
+                        <div style="font-size: 11px;">mazlicek.jpg</div>
+                    </div>
+                    <div style="text-align: center; padding: 10px; border: 1px solid #ccc; background: #f0f0f0;">
+                        <div style="font-size: 48px; background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); padding: 20px; margin-bottom: 5px;">🌅</div>
+                        <div style="font-size: 11px;">wallpaper.jpg</div>
+                    </div>
+                    <div style="text-align: center; padding: 10px; border: 1px solid #ccc; background: #f0f0f0;">
+                        <div style="font-size: 48px; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); padding: 20px; margin-bottom: 5px;">📸</div>
+                        <div style="font-size: 11px;">selfie_2004.jpg</div>
+                    </div>
+                    <div style="text-align: center; padding: 10px; border: 1px solid #ccc; background: #f0f0f0;">
+                        <div style="font-size: 48px; background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); padding: 20px; margin-bottom: 5px;">🏔️</div>
+                        <div style="font-size: 11px;">hory.jpg</div>
+                    </div>
+                    <div style="text-align: center; padding: 10px; border: 1px solid #ccc; background: #f0f0f0;">
+                        <div style="font-size: 48px; background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); padding: 20px; margin-bottom: 5px;">🌃</div>
+                        <div style="font-size: 11px;">mesto_noc.jpg</div>
+                    </div>
+                    <div style="text-align: center; padding: 10px; border: 1px solid #ccc; background: #f0f0f0;">
+                        <div style="font-size: 48px; background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); padding: 20px; margin-bottom: 5px;">❓</div>
+                        <div style="font-size: 11px;">neznamy.bmp</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="window" id="network" style="width: 550px; height: 400px;">
+            <div class="window-title">
+                <span>🌐 Síťové připojení</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="minimizeWindow('network')">_</div>
+                    <div class="window-button" onclick="maximizeWindow('network')">□</div>
+                    <div class="window-button" onclick="closeWindow('network')">✕</div>
+                </div>
+            </div>
+            <div class="window-content">
+                <h3>📡 Aktivní připojení:</h3>
+                <div style="border: 2px inset #888; padding: 15px; margin: 15px 0; background: #fff;">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                        <div style="font-size: 48px;">📶</div>
+                        <div>
+                            <h4>Místní připojení</h4>
+                            <p style="color: #0a0;">✓ Připojeno</p>
+                            <p style="font-size: 12px; color: #666;">100 Mb/s</p>
+                        </div>
+                    </div>
+                    <div style="background: #f0f0f0; padding: 10px; border: 1px solid #ccc;">
+                        <p><strong>IP adresa:</strong> 192.168.1.69</p>
+                        <p><strong>Maska podsítě:</strong> 255.255.255.0</p>
+                        <p><strong>Výchozí brána:</strong> 192.168.1.1</p>
+                        <p><strong>DNS server:</strong> 8.8.8.8</p>
+                    </div>
+                </div>
+                <div style="border: 2px inset #888; padding: 15px; background: #fff;">
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div style="font-size: 48px; opacity: 0.3;">📡</div>
+                        <div style="opacity: 0.5;">
+                            <h4>Bezdrátové připojení</h4>
+                            <p style="color: #a00;">✗ Odpojeno</p>
+                            <p style="font-size: 12px; color: #666;">Wifi adaptér nenalezen</p>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top: 20px;">
+                    <button onclick="playClickSound(); alert('Diagnostika sítě: Vše funguje! 👍')">🔧 Diagnostika</button>
+                    <button onclick="playClickSound(); alert('Připojení obnoveno! (možná)')">🔄 Obnovit</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="window" id="cmd" style="width: 600px; height: 400px; background: #000;">
+            <div class="window-title">
+                <span>⚫ Příkazový řádek</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="minimizeWindow('cmd')">_</div>
+                    <div class="window-button" onclick="maximizeWindow('cmd')">□</div>
+                    <div class="window-button" onclick="closeWindow('cmd')">✕</div>
+                </div>
+            </div>
+            <div class="window-content" style="background: #000; color: #0f0; font-family: 'Courier New'; padding: 10px;">
+                <div id="cmdOutput">Microsoft Windows XP [Verze 5.1.2600]<br>(C) Copyright 1985-2001 Microsoft Corp.<br><br>C:\Documents and Settings\User&gt;</div>
+                <div style="display: flex; margin-top: 5px;">
+                    <span>C:\Documents and Settings\User&gt;</span>
+                    <input type="text" id="cmdInput" style="flex: 1; background: #000; color: #0f0; border: none; outline: none; font-family: 'Courier New'; margin-left: 5px;" onkeypress="if(event.key==='Enter') executeCmd()">
+                    <span class="cursor-blink" style="animation: blink 1s infinite;">_</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="window" id="wordpad" style="width: 650px; height: 500px;">
+            <div class="window-title">
+                <span>📝 WordPad</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="minimizeWindow('wordpad')">_</div>
+                    <div class="window-button" onclick="maximizeWindow('wordpad')">□</div>
+                    <div class="window-button" onclick="closeWindow('wordpad')">✕</div>
+                </div>
+            </div>
+            <div class="window-content" style="padding: 0;">
+                <div style="background: #D4D0C8; padding: 5px; border-bottom: 1px solid #888;">
+                    <button onclick="playClickSound()" style="padding: 3px 8px;">📄 Nový</button>
+                    <button onclick="playClickSound()" style="padding: 3px 8px;">📂 Otevřít</button>
+                    <button onclick="playClickSound()" style="padding: 3px 8px;">💾 Uložit</button>
+                    |
+                    <button onclick="playClickSound()" style="padding: 3px 8px;"><strong>B</strong></button>
+                    <button onclick="playClickSound()" style="padding: 3px 8px;"><em>I</em></button>
+                    <button onclick="playClickSound()" style="padding: 3px 8px;"><u>U</u></button>
+                    |
+                    <select style="padding: 3px;">
+                        <option>Arial</option>
+                        <option>Times New Roman</option>
+                        <option>Comic Sans MS</option>
+                    </select>
+                    <select style="padding: 3px;">
+                        <option>12</option>
+                        <option>14</option>
+                        <option>16</option>
+                    </select>
+                </div>
+                <textarea style="width: 100%; height: calc(100% - 40px); border: none; padding: 20px; font-family: 'Times New Roman'; font-size: 14px; resize: none;" placeholder="Začněte psát..."></textarea>
+            </div>
+        </div>
+
+        <div class="window" id="systemRestore" style="width: 550px; height: 450px;">
+            <div class="window-title">
+                <span>🔄 Obnovení systému</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="closeWindow('systemRestore')">✕</div>
+                </div>
+            </div>
+            <div class="window-content">
+                <h2 style="color: #0066cc; margin-bottom: 20px;">Vítejte v Obnovení systému</h2>
+                <p style="margin-bottom: 20px;">Obnovení systému může vrátit systémové soubory a nastavení počítače do dřívějšího bodu v čase, aniž by ovlivnilo osobní soubory.</p>
+                
+                <div style="background: #fffacd; border: 2px solid #ffa500; padding: 15px; margin: 20px 0;">
+                    <strong>⚠️ Upozornění:</strong> Všechny změny provedené po vybraném bodě obnovení budou zrušeny.
+                </div>
+
+                <h3>Dostupné body obnovení:</h3>
+                <div style="border: 2px inset #888; padding: 10px; background: #fff; max-height: 180px; overflow-y: auto;">
+                    <div style="padding: 8px; border-bottom: 1px solid #ccc; cursor: pointer;" onclick="this.style.background='#e0e0ff'">
+                        <strong>29.1.2026 13:37</strong> - Automatický bod obnovení<br>
+                        <span style="font-size: 12px; color: #666;">Před instalací podezřelého softwaru</span>
+                    </div>
+                    <div style="padding: 8px; border-bottom: 1px solid #ccc; cursor: pointer;" onclick="this.style.background='#e0e0ff'">
+                        <strong>15.1.2026 10:00</strong> - Manuální bod obnovení<br>
+                        <span style="font-size: 12px; color: #666;">Když všechno ještě fungovalo</span>
+                    </div>
+                    <div style="padding: 8px; border-bottom: 1px solid #ccc; cursor: pointer;" onclick="this.style.background='#e0e0ff'">
+                        <strong>1.1.2026 00:00</strong> - Silvestrovský bod obnovení<br>
+                        <span style="font-size: 12px; color: #666;">Před oslavami nového roku</span>
+                    </div>
+                    <div style="padding: 8px; cursor: pointer;" onclick="this.style.background='#e0e0ff'">
+                        <strong>25.12.2025 18:00</strong> - Vánoční bod<br>
+                        <span style="font-size: 12px; color: #666;">Před rozbalováním dárků</span>
+                    </div>
+                </div>
+
+                <div style="text-align: right; margin-top: 20px;">
+                    <button onclick="restoreSystem()" style="padding: 8px 20px;">▶️ Spustit obnovení</button>
+                    <button onclick="closeWindow('systemRestore')" style="padding: 8px 20px; margin-left: 10px;">Zrušit</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="window" id="diskCleanup" style="width: 500px; height: 450px;">
+            <div class="window-title">
+                <span>🧹 Vyčištění disku</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="closeWindow('diskCleanup')">✕</div>
+                </div>
+            </div>
+            <div class="window-content">
+                <h3>Vyčištění disku (C:)</h3>
+                <p style="margin: 15px 0;">Můžete uvolnit až <strong style="color: #0066cc;">4.20 GB</strong> místa na disku C:</p>
+                
+                <div style="border: 2px inset #888; padding: 10px; background: #fff; margin: 15px 0;">
+                    <label style="display: block; padding: 5px;">
+                        <input type="checkbox" checked> Dočasné internetové soubory (1.2 GB)
+                    </label>
+                    <label style="display: block; padding: 5px;">
+                        <input type="checkbox" checked> Koš (850 MB)
+                    </label>
+                    <label style="display: block; padding: 5px;">
+                        <input type="checkbox" checked> Dočasné soubory (650 MB)
+                    </label>
+                    <label style="display: block; padding: 5px;">
+                        <input type="checkbox"> Miniatury obrázků (420 MB)
+                    </label>
+                    <label style="display: block; padding: 5px;">
+                        <input type="checkbox" checked> Staré soubory protokolu (890 MB)
+                    </label>
+                    <label style="display: block; padding: 5px;">
+                        <input type="checkbox"> Offline webové stránky (210 MB)
+                    </label>
+                </div>
+
+                <div style="background: #f0f0f0; padding: 15px; border: 1px solid #ccc; margin: 15px 0;">
+                    <p><strong>Popis:</strong> Dočasné internetové soubory jsou webové stránky uložené v počítači pro rychlý přístup. Osobní nastavení webových stránek zůstanou zachována.</p>
+                </div>
+
+                <div style="text-align: right;">
+                    <button onclick="startCleanup()" style="padding: 8px 20px;">🧹 Vyčistit</button>
+                    <button onclick="closeWindow('diskCleanup')" style="padding: 8px 20px; margin-left: 10px;">Zrušit</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="window" id="defrag" style="width: 600px; height: 400px;">
+            <div class="window-title">
+                <span>💿 Defragmentace disku</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="minimizeWindow('defrag')">_</div>
+                    <div class="window-button" onclick="closeWindow('defrag')">✕</div>
+                </div>
+            </div>
+            <div class="window-content">
+                <h3>Defragmentace disku</h3>
+                <p style="margin: 15px 0;">Vyberte disk, který chcete defragmentovat:</p>
+                
+                <div style="border: 2px inset #888; background: #fff; padding: 10px; margin: 15px 0;">
+                    <div style="padding: 10px; background: #e0e0ff; margin-bottom: 5px; cursor: pointer;">
+                        <strong>💿 Disk C:</strong> (Systémový)<br>
+                        <span style="font-size: 12px;">Fragmentace: 45% - Doporučena defragmentace!</span>
+                    </div>
+                    <div style="padding: 10px; background: #f0f0f0; cursor: pointer;">
+                        <strong>💿 Disk D:</strong> (Data)<br>
+                        <span style="font-size: 12px;">Není k dispozici</span>
+                    </div>
+                </div>
+
+                <div id="defragProgress" style="display: none; margin: 20px 0;">
+                    <p><strong>Probíhá defragmentace...</strong></p>
+                    <div style="background: #fff; border: 2px inset #888; height: 30px; margin: 10px 0; position: relative; overflow: hidden;">
+                        <div id="defragBar" style="background: linear-gradient(to right, #0066cc, #00aaff); height: 100%; width: 0%; transition: width 0.5s;"></div>
+                    </div>
+                    <p style="font-size: 12px; color: #666;">Odhadovaný čas: 2 hodiny 15 minut (neboj, to je fake)</p>
+                </div>
+
+                <div style="text-align: right; margin-top: 20px;">
+                    <button onclick="startDefrag()" style="padding: 8px 20px;">▶️ Defragmentovat</button>
+                    <button onclick="analyzeDefrag()" style="padding: 8px 20px; margin-left: 10px;">🔍 Analyzovat</button>
+                    <button onclick="closeWindow('defrag')" style="padding: 8px 20px; margin-left: 10px;">Zavřít</button>
+                </div>
             </div>
         </div>
     </div>
@@ -625,10 +1269,17 @@
         }
 
         function playStartupSound() {
-            playBeep(523, 0.15, 0.2);
-            setTimeout(() => playBeep(659, 0.15, 0.2), 150);
-            setTimeout(() => playBeep(784, 0.15, 0.2), 300);
-            setTimeout(() => playBeep(1047, 0.3, 0.25), 450);
+            // Try to play win.mp3
+            const audio = new Audio('win.mp3');
+            audio.volume = 0.5;
+            audio.play().catch(err => {
+                console.log('win.mp3 not found, using beep sounds');
+                // Fallback to beep sounds if win.mp3 doesn't exist
+                playBeep(523, 0.15, 0.2);
+                setTimeout(() => playBeep(659, 0.15, 0.2), 150);
+                setTimeout(() => playBeep(784, 0.15, 0.2), 300);
+                setTimeout(() => playBeep(1047, 0.3, 0.25), 450);
+            });
         }
 
         function playClickSound() {
@@ -647,98 +1298,296 @@
             setTimeout(() => playBeep(523, 0.3, 0.25), 450);
         }
 
-        // Generate Windows 2000 style loading bars
-        function generateWin2000Bars() {
-            const container = document.getElementById('win2000bars');
-            for (let i = 0; i < 10; i++) {
-                const bar = document.createElement('div');
-                bar.className = 'bar';
-                bar.style.top = (i * 10) + '%';
-                bar.style.width = '100%';
-                bar.style.height = '4px';
-                bar.style.animationDelay = (i * 0.3) + 's';
-                container.appendChild(bar);
-            }
-        }
-
-        // Generate floating clouds
-        function generateClouds() {
-            const container = document.getElementById('clouds');
-            for (let i = 0; i < 6; i++) {
-                const cloud = document.createElement('div');
-                cloud.className = 'cloud';
-                cloud.style.width = (100 + Math.random() * 150) + 'px';
-                cloud.style.height = (50 + Math.random() * 50) + 'px';
-                cloud.style.top = (10 + Math.random() * 60) + '%';
-                cloud.style.animationDuration = (30 + Math.random() * 40) + 's';
-                cloud.style.animationDelay = (Math.random() * -30) + 's';
-                container.appendChild(cloud);
-            }
-        }
-
-        generateWin2000Bars();
-        generateClouds();
-
-        // Funny loading messages
-        const funnyMessages = [
-            "Hledám smysl života...",
-            "Počítám ovečky... 🐑",
-            "Nahrávám pixely...",
-            "Instalujem Ask Toolbar...",
-            "Připojujem se k SeznamKamérám...",
-            "Hledám Clippy... 📎",
-            "Kopíruju floppy disky...",
-            "Bootuju z CD-ROMky...",
-            "Defragmentuju hard disk...",
-            "Připojujem modem... *píííp*",
-            "Mazání důležitých souborů... (jk)",
-            "Tahám updaty z Windows Update...",
-            "Instaluju IE toolbars...",
-            "Stahuju Limewire z Limewire... 🎵",
-            "Čekám na ukončení ICQ... 📟",
-            "Kontroluju Y2K bug...",
-            "Instaluju RealPlayer... (sorry)",
-            "Hledám WinRAR licenci... 💀",
-            "Načítám MSN Messenger...",
-            "Formátuju A:\\ disk... 💾",
-            "Spouštím Norton Antivirus (RIP PC)",
-            "Scanujem SpyBot... 🕷️",
-            "Čistím registry... (nic to nedělá)",
-            "Hledám Bonzi Buddy... 🐵"
-        ];
-
-        let messageIndex = 0;
-        let progress = 0;
-
-        function updateLoading() {
-            const funnyMessage = document.getElementById('funnyMessage');
-            const loadingBar = document.getElementById('loadingBar');
-            
-            funnyMessage.textContent = funnyMessages[messageIndex];
-            messageIndex = (messageIndex + 1) % funnyMessages.length;
-            
-            // Random beep sound
-            if (Math.random() > 0.6) {
-                playBeep(600 + Math.random() * 400, 0.05, 0.1);
-            }
-            
-            progress += Math.random() * 15;
-            loadingBar.style.width = Math.min(progress, 100) + '%';
-            
-            if (progress >= 100) {
+        // Loading simulation
+        let loadingProgress = 0;
+        function simulateLoading() {
+            loadingProgress += 2;
+            if (loadingProgress >= 100) {
                 setTimeout(() => {
                     document.getElementById('loading-screen').style.display = 'none';
                     document.getElementById('desktop').style.display = 'block';
                     playStartupSound();
                     updateClock();
+                    randomizeIconPositions();
                 }, 500);
             } else {
-                setTimeout(updateLoading, 800);
+                setTimeout(simulateLoading, 50);
             }
         }
 
-        // Start loading
-        setTimeout(updateLoading, 500);
+        // Start loading after a short delay
+        setTimeout(simulateLoading, 1000);
+
+        // Random icon positioning
+        function randomizeIconPositions() {
+            const icons = document.querySelectorAll('.icon');
+            const desktop = document.getElementById('desktop');
+            const desktopWidth = desktop.clientWidth - 100;
+            const desktopHeight = desktop.clientHeight - 150;
+            
+            icons.forEach((icon, index) => {
+                const x = 20 + (index % 3) * 100 + Math.random() * 50;
+                const y = 20 + Math.floor(index / 3) * 100 + Math.random() * 50;
+                icon.style.left = Math.min(x, desktopWidth) + 'px';
+                icon.style.top = Math.min(y, desktopHeight) + 'px';
+            });
+        }
+
+        // Icon dragging and opening
+        let draggedIcon = null;
+        let iconDragOffset = { x: 0, y: 0 };
+        let isDraggingIcon = false;
+        let dragStartPos = { x: 0, y: 0 };
+        let lastClickedIcon = null;
+        let lastClickTime = 0;
+
+        document.addEventListener('mousedown', (e) => {
+            const icon = e.target.closest('.icon');
+            if (icon && !e.target.closest('.window')) {
+                draggedIcon = icon;
+                const rect = icon.getBoundingClientRect();
+                iconDragOffset.x = e.clientX - rect.left;
+                iconDragOffset.y = e.clientY - rect.top;
+                dragStartPos = { x: e.clientX, y: e.clientY };
+                isDraggingIcon = false;
+                
+                // Select icon
+                document.querySelectorAll('.icon').forEach(i => i.classList.remove('selected'));
+                icon.classList.add('selected');
+                selectedIcon = icon;
+            }
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (draggedIcon) {
+                const distance = Math.sqrt(
+                    Math.pow(e.clientX - dragStartPos.x, 2) + 
+                    Math.pow(e.clientY - dragStartPos.y, 2)
+                );
+                
+                // Only start dragging if moved more than 5 pixels
+                if (distance > 5) {
+                    isDraggingIcon = true;
+                    draggedIcon.classList.add('dragging');
+                    
+                    const x = e.clientX - iconDragOffset.x;
+                    const y = e.clientY - iconDragOffset.y;
+                    
+                    const maxX = window.innerWidth - 80;
+                    const maxY = window.innerHeight - 120;
+                    
+                    draggedIcon.style.left = Math.max(0, Math.min(x, maxX)) + 'px';
+                    draggedIcon.style.top = Math.max(0, Math.min(y, maxY)) + 'px';
+                    
+                    e.preventDefault();
+                }
+            }
+        });
+
+        document.addEventListener('mouseup', (e) => {
+            if (draggedIcon) {
+                draggedIcon.classList.remove('dragging');
+                
+                // If we didn't drag, handle click/double-click
+                if (!isDraggingIcon) {
+                    const currentTime = Date.now();
+                    const timeSinceLastClick = currentTime - lastClickTime;
+                    
+                    // Double-click detection (within 500ms)
+                    if (lastClickedIcon === draggedIcon && timeSinceLastClick < 500) {
+                        // Double click - open icon
+                        openIconById(draggedIcon);
+                        lastClickedIcon = null;
+                        lastClickTime = 0;
+                    } else {
+                        // Single click - just select
+                        lastClickedIcon = draggedIcon;
+                        lastClickTime = currentTime;
+                    }
+                }
+                
+                draggedIcon = null;
+                isDraggingIcon = false;
+            }
+        });
+
+        // Helper function to open icon
+        function openIconById(icon) {
+            if (!icon) return;
+            
+            playClickSound();
+            const iconId = icon.getAttribute('data-icon-id');
+            
+            if (iconId === 'gopnik') {
+                window.open('gopnik/loading.html', '_blank');
+            } else if (iconId === 'pacman') {
+                window.open('login.html', '_blank');
+            } else if (iconId) {
+                openWindow(iconId);
+            }
+        }
+
+        // Context menu handling
+        let currentContextMenu = null;
+        let selectedIcon = null;
+
+        // Desktop context menu
+        document.getElementById('desktop').addEventListener('contextmenu', (e) => {
+            if (e.target.closest('.window') || e.target.closest('.taskbar')) return;
+            
+            e.preventDefault();
+            hideAllContextMenus();
+            
+            const icon = e.target.closest('.icon');
+            if (icon) {
+                selectedIcon = icon;
+                icon.classList.add('selected');
+                showContextMenu('iconContextMenu', e.clientX, e.clientY);
+            } else {
+                showContextMenu('desktopContextMenu', e.clientX, e.clientY);
+            }
+        });
+
+        function showContextMenu(menuId, x, y) {
+            const menu = document.getElementById(menuId);
+            menu.style.display = 'block';
+            menu.style.left = x + 'px';
+            menu.style.top = y + 'px';
+            currentContextMenu = menu;
+            playClickSound();
+        }
+
+        function hideAllContextMenus() {
+            document.querySelectorAll('.context-menu').forEach(menu => {
+                menu.style.display = 'none';
+            });
+            document.querySelectorAll('.icon').forEach(icon => {
+                icon.classList.remove('selected');
+            });
+            currentContextMenu = null;
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.context-menu')) {
+                hideAllContextMenus();
+            }
+        });
+
+        // Context menu functions
+        function openSelectedIcon() {
+            if (selectedIcon) {
+                openIconById(selectedIcon);
+            }
+            hideAllContextMenus();
+        }
+
+        function deleteToRecycleBin() {
+            if (selectedIcon) {
+                playErrorSound();
+                const iconName = selectedIcon.querySelector('.icon-label').textContent;
+                selectedIcon.style.transition = 'all 0.3s';
+                selectedIcon.style.opacity = '0';
+                selectedIcon.style.transform = 'scale(0.5)';
+                
+                setTimeout(() => {
+                    alert(`"${iconName}" byl přesunut do koše! 🗑️`);
+                    selectedIcon.style.display = 'none';
+                    selectedIcon.style.transition = '';
+                    selectedIcon.style.opacity = '';
+                    selectedIcon.style.transform = '';
+                }, 300);
+            }
+            hideAllContextMenus();
+        }
+
+        function arrangeIcons() {
+            playClickSound();
+            const icons = document.querySelectorAll('.icon');
+            const spacing = 100;
+            const startX = 20;
+            const startY = 20;
+            
+            icons.forEach((icon, index) => {
+                if (icon.style.display !== 'none') {
+                    const col = index % 8;
+                    const row = Math.floor(index / 8);
+                    icon.style.transition = 'all 0.5s';
+                    icon.style.left = (startX + col * spacing) + 'px';
+                    icon.style.top = (startY + row * spacing) + 'px';
+                    
+                    setTimeout(() => {
+                        icon.style.transition = '';
+                    }, 500);
+                }
+            });
+            hideAllContextMenus();
+        }
+
+        function desktopRefresh() {
+            playClickSound();
+            document.getElementById('desktop').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('desktop').style.opacity = '1';
+            }, 100);
+            hideAllContextMenus();
+        }
+
+        function createNewFile() {
+            playClickSound();
+            const newIcon = document.createElement('div');
+            newIcon.className = 'icon';
+            newIcon.setAttribute('data-icon-id', 'notepad');
+            newIcon.innerHTML = `
+                <div class="icon-img">📄</div>
+                <div class="icon-label">Nový dokument.txt</div>
+            `;
+            newIcon.style.left = '300px';
+            newIcon.style.top = '300px';
+            
+            document.getElementById('desktopIcons').appendChild(newIcon);
+            alert('Nový soubor vytvořen! 📄');
+            hideAllContextMenus();
+        }
+
+        // Selection box
+        let isSelecting = false;
+        let selectionStart = { x: 0, y: 0 };
+        const selectionBox = document.getElementById('selectionBox');
+
+        document.getElementById('desktop').addEventListener('mousedown', (e) => {
+            if (e.target.id === 'desktop' || e.target.closest('.desktop-icons')) {
+                if (!e.target.closest('.icon') && !e.target.closest('.window')) {
+                    isSelecting = true;
+                    selectionStart = { x: e.clientX, y: e.clientY };
+                    selectionBox.style.left = e.clientX + 'px';
+                    selectionBox.style.top = e.clientY + 'px';
+                    selectionBox.style.width = '0px';
+                    selectionBox.style.height = '0px';
+                    selectionBox.style.display = 'block';
+                }
+            }
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (isSelecting) {
+                const width = Math.abs(e.clientX - selectionStart.x);
+                const height = Math.abs(e.clientY - selectionStart.y);
+                const left = Math.min(e.clientX, selectionStart.x);
+                const top = Math.min(e.clientY, selectionStart.y);
+                
+                selectionBox.style.left = left + 'px';
+                selectionBox.style.top = top + 'px';
+                selectionBox.style.width = width + 'px';
+                selectionBox.style.height = height + 'px';
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (isSelecting) {
+                isSelecting = false;
+                selectionBox.style.display = 'none';
+            }
+        });
 
         // Clock
         function updateClock() {
@@ -747,6 +1596,67 @@
             const minutes = String(now.getMinutes()).padStart(2, '0');
             document.getElementById('clock').textContent = `${hours}:${minutes}`;
             setTimeout(updateClock, 1000);
+        }
+
+        // Window management
+        let activeWindows = [];
+        let windowPositions = {};
+        let zIndexCounter = 100;
+
+        function createTaskbarItem(id, title) {
+            const taskbarItems = document.getElementById('taskbarItems');
+            let item = document.getElementById('taskbar-' + id);
+            
+            if (!item) {
+                item = document.createElement('div');
+                item.className = 'taskbar-item';
+                item.id = 'taskbar-' + id;
+                item.innerHTML = title;
+                item.onclick = function() {
+                    const win = document.getElementById(id);
+                    if (win.style.display === 'none') {
+                        win.style.display = 'block';
+                        win.classList.add('maximizing');
+                        setTimeout(() => win.classList.remove('maximizing'), 300);
+                    }
+                    focusWindow(id);
+                };
+                taskbarItems.appendChild(item);
+            }
+            
+            return item;
+        }
+
+        function removeTaskbarItem(id) {
+            const item = document.getElementById('taskbar-' + id);
+            if (item) {
+                item.remove();
+            }
+        }
+
+        function focusWindow(id) {
+            // Remove active class from all windows
+            document.querySelectorAll('.window').forEach(w => {
+                w.classList.remove('active');
+                w.querySelector('.window-title').classList.add('inactive');
+            });
+            
+            // Remove active class from all taskbar items
+            document.querySelectorAll('.taskbar-item').forEach(t => {
+                t.classList.remove('active');
+            });
+            
+            // Add active class to selected window
+            const win = document.getElementById(id);
+            win.classList.add('active');
+            win.querySelector('.window-title').classList.remove('inactive');
+            win.style.zIndex = ++zIndexCounter;
+            
+            // Add active class to taskbar item
+            const taskbarItem = document.getElementById('taskbar-' + id);
+            if (taskbarItem) {
+                taskbarItem.classList.add('active');
+            }
         }
 
         // Start menu
@@ -765,27 +1675,670 @@
             }
         });
 
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl+C - Copy
+            if (e.ctrlKey && e.key === 'c') {
+                playClickSound();
+                if (selectedIcon) {
+                    alert('📋 Zkopírováno do schránky!');
+                }
+            }
+            // Ctrl+V - Paste
+            if (e.ctrlKey && e.key === 'v') {
+                playClickSound();
+                alert('📋 Vloženo ze schránky! (asi)');
+            }
+            // Delete - Delete to recycle bin
+            if (e.key === 'Delete') {
+                if (selectedIcon) {
+                    deleteToRecycleBin();
+                }
+            }
+            // F5 - Refresh
+            if (e.key === 'F5') {
+                e.preventDefault();
+                desktopRefresh();
+            }
+            // Alt+F4 - Close active window
+            if (e.altKey && e.key === 'F4') {
+                e.preventDefault();
+                const activeWindow = document.querySelector('.window.active');
+                if (activeWindow) {
+                    closeWindow(activeWindow.id);
+                }
+            }
+            // Ctrl+Shift+Esc - Task Manager
+            if (e.ctrlKey && e.shiftKey && e.key === 'Escape') {
+                e.preventDefault();
+                openWindow('taskManager');
+            }
+            // Ctrl+Alt+Delete - Security screen
+            if (e.ctrlKey && e.altKey && e.key === 'Delete') {
+                e.preventDefault();
+                showSecurityScreen();
+            }
+            // Windows+R - Run dialog
+            if ((e.metaKey || e.key === 'Meta') && e.key === 'r') {
+                e.preventDefault();
+                openWindow('runDialog');
+            }
+            // Windows key - Toggle start menu
+            if (e.key === 'Meta' || e.key === 'OS') {
+                e.preventDefault();
+                toggleStartMenu();
+            }
+        });
+
+        // Task Manager functions
+        function taskManagerRefresh() {
+            playClickSound();
+            const cpuUsage = document.getElementById('cpuUsage');
+            const newCpu = Math.floor(Math.random() * 100);
+            cpuUsage.textContent = newCpu + '%';
+            
+            // Simulate process updates
+            const tbody = document.getElementById('taskTableBody');
+            const rows = tbody.querySelectorAll('tr');
+            rows.forEach(row => {
+                const cpuCell = row.cells[2];
+                if (cpuCell) {
+                    const randomCpu = Math.floor(Math.random() * 100);
+                    cpuCell.textContent = randomCpu + '%';
+                }
+            });
+            
+            alert('Správce úloh aktualizován! 📊');
+        }
+
+        function endTask() {
+            playErrorSound();
+            alert('Ukončuji úlohu... (ale ve skutečnosti ne) 😄');
+        }
+
+        // Run dialog functions
+        function executeRun() {
+            const input = document.getElementById('runInput').value.toLowerCase();
+            playClickSound();
+            
+            const commands = {
+                'notepad': () => openWindow('notepad'),
+                'calc': () => openWindow('calculator'),
+                'calculator': () => openWindow('calculator'),
+                'mspaint': () => openWindow('paint'),
+                'paint': () => openWindow('paint'),
+                'taskmgr': () => openWindow('taskManager'),
+                'explorer': () => openWindow('myComputer'),
+                'iexplore': () => openWindow('ie'),
+                'wmplayer': () => openWindow('myMusic'),
+                'cmd': () => openWindow('cmd'),
+                'wordpad': () => openWindow('wordpad'),
+                'cleanmgr': () => openWindow('diskCleanup'),
+                'dfrg.msc': () => openWindow('defrag'),
+                'rstrui': () => openWindow('systemRestore'),
+                'regedit': () => alert('Registry Editor je zakázán! ⚠️'),
+                'shutdown': () => shutdown(),
+            };
+            
+            if (commands[input]) {
+                commands[input]();
+                closeWindow('runDialog');
+            } else {
+                playErrorSound();
+                alert(`Soubor "${input}" nebyl nalezen! ❌`);
+            }
+            
+            document.getElementById('runInput').value = '';
+        }
+
+        // Windows Media Player
+        let isPlaying = false;
+        function togglePlay() {
+            isPlaying = !isPlaying;
+            const btn = document.getElementById('playBtn');
+            btn.textContent = isPlaying ? '⏸️' : '▶️';
+            playClickSound();
+            
+            if (isPlaying) {
+                simulateMusicProgress();
+            }
+        }
+
+        function simulateMusicProgress() {
+            if (!isPlaying) return;
+            const bar = document.getElementById('musicProgress');
+            let width = parseInt(bar.style.width || '35');
+            if (width < 100) {
+                bar.style.width = (width + 1) + '%';
+                setTimeout(simulateMusicProgress, 1000);
+            } else {
+                isPlaying = false;
+                document.getElementById('playBtn').textContent = '▶️';
+                bar.style.width = '0%';
+            }
+        }
+
+        // Command Prompt
+        function executeCmd() {
+            const input = document.getElementById('cmdInput');
+            const output = document.getElementById('cmdOutput');
+            const command = input.value.toLowerCase().trim();
+            
+            output.innerHTML += `<br>${input.value}`;
+            
+            const responses = {
+                'dir': '<br>Svazek v jednotce C nemá název.<br>Sériové číslo svazku je 1234-5678<br><br>Adresář: C:\\Documents and Settings\\User<br><br>29.01.2026  13:37    &lt;DIR&gt;          .<br>29.01.2026  13:37    &lt;DIR&gt;          ..<br>15.01.2026  10:00    &lt;DIR&gt;          Dokumenty<br>01.01.2026  00:00         420,690 tahle_slozka.txt<br>               1 soubor(ů)        420,690 bajtů<br>               3 adresář(ů)  1,024,000,000 bajtů volných',
+                'help': '<br>Dostupné příkazy:<br>DIR - zobrazí obsah adresáře<br>CD - změní adresář<br>COPY - kopíruje soubory<br>DEL - smaže soubory<br>CLS - vyčistí obrazovku<br>EXIT - ukončí CMD<br>TREE - zobrazí strukturu adresářů<br>PING - testuje síťové připojení',
+                'cls': 'CLEAR',
+                'exit': 'EXIT',
+                'tree': '<br>C:\\<br>├── Documents and Settings<br>│   └── User<br>│       ├── Dokumenty<br>│       ├── Hudba<br>│       └── Obrázky<br>├── Program Files<br>└── Windows<br>    └── System32',
+                'ping google.com': '<br>Příkaz Ping pro google.com [142.250.185.78] s 32 bajty dat:<br>Odpověď z 142.250.185.78: bajtů=32 čas=15ms TTL=117<br>Odpověď z 142.250.185.78: bajtů=32 čas=16ms TTL=117<br>Odpověď z 142.250.185.78: bajtů=32 čas=14ms TTL=117<br>Statistika:<br>    Přenesených = 3, Přijatých = 3, Ztracených = 0 (0% ztráta)',
+                'ipconfig': '<br>Konfigurace protokolu IP systému Windows<br><br>Adaptér sítě Ethernet - Místní připojení:<br>   IP adresa: 192.168.1.69<br>   Maska podsítě: 255.255.255.0<br>   Výchozí brána: 192.168.1.1',
+                'systeminfo': '<br>Název hostitele: WINDOWS-XP<br>Název operačního systému: Microsoft Windows XP Professional<br>Verze operačního systému: 5.1.2600 Service Pack 3<br>Výrobce operačního systému: Microsoft Corporation<br>Procesor: Pentium 4 2.8 GHz<br>Celková fyzická paměť: 256 MB',
+                'color 0a': 'COLOR_GREEN',
+                'tasklist': '<br>Název bitové kopie              PID  Velikost paměti<br>System Idle Process              0           0 kB<br>explorer.exe                  1234      15,234 kB<br>chrome.exe                    5678   1,234,567 kB<br>určitě_ne_virus.exe           6666     999,999 kB'
+            };
+            
+            if (command === 'cls') {
+                output.innerHTML = 'Microsoft Windows XP [Verze 5.1.2600]<br>(C) Copyright 1985-2001 Microsoft Corp.<br><br>C:\\Documents and Settings\\User&gt;';
+            } else if (command === 'exit') {
+                closeWindow('cmd');
+            } else if (command === 'color 0a') {
+                document.querySelector('#cmd .window-content').style.color = '#0f0';
+            } else if (responses[command]) {
+                output.innerHTML += responses[command];
+            } else if (command) {
+                output.innerHTML += `<br>'${input.value}' není rozpoznán jako vnitřní nebo externí příkaz, spustitelný program nebo dávkový soubor.`;
+            }
+            
+            output.innerHTML += '<br>C:\\Documents and Settings\\User&gt;';
+            input.value = '';
+            output.scrollTop = output.scrollHeight;
+        }
+
+        // System Restore
+        function restoreSystem() {
+            playClickSound();
+            const overlay = document.createElement('div');
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                z-index: 100000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 24px;
+                flex-direction: column;
+            `;
+            overlay.innerHTML = `
+                <div style="text-align: center;">
+                    <div style="font-size: 48px; margin-bottom: 20px;">🔄</div>
+                    <div>Obnovování systému...</div>
+                    <div style="margin-top: 20px; font-size: 16px; color: #ccc;">Prosím čekejte...</div>
+                    <div style="width: 300px; height: 20px; background: #333; margin: 20px auto; border-radius: 10px; overflow: hidden;">
+                        <div id="restoreProgress" style="width: 0%; height: 100%; background: linear-gradient(to right, #0066cc, #00aaff); transition: width 0.5s;"></div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10;
+                document.getElementById('restoreProgress').style.width = progress + '%';
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        overlay.remove();
+                        alert('Systém byl úspěšně obnoven! 🎉\n(Ne doopravdy, ale vypadalo to cool, ne?)');
+                        closeWindow('systemRestore');
+                    }, 500);
+                }
+            }, 300);
+        }
+
+        // Disk Cleanup
+        function startCleanup() {
+            playClickSound();
+            const overlay = document.createElement('div');
+            overlay.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: #ECE9D8;
+                border: 2px solid #0054E3;
+                padding: 30px;
+                z-index: 100000;
+                box-shadow: 3px 3px 10px rgba(0,0,0,0.5);
+                min-width: 400px;
+                text-align: center;
+            `;
+            overlay.innerHTML = `
+                <div style="font-size: 48px; margin-bottom: 20px;">🧹</div>
+                <div style="margin-bottom: 20px;">Čištění disku...</div>
+                <div style="width: 100%; height: 20px; background: #fff; border: 2px inset #888; margin-bottom: 10px;">
+                    <div id="cleanupProgress" style="width: 0%; height: 100%; background: linear-gradient(to right, #0066cc, #00aaff);"></div>
+                </div>
+                <div id="cleanupText" style="font-size: 12px; color: #666;">Mazání dočasných souborů...</div>
+            `;
+            document.body.appendChild(overlay);
+            
+            const messages = [
+                'Mazání dočasných souborů...',
+                'Čištění koše...',
+                'Odstraňování miniatur...',
+                'Mazání protokolů...',
+                'Dokončování...'
+            ];
+            
+            let progress = 0;
+            let msgIndex = 0;
+            const interval = setInterval(() => {
+                progress += 20;
+                document.getElementById('cleanupProgress').style.width = progress + '%';
+                if (msgIndex < messages.length) {
+                    document.getElementById('cleanupText').textContent = messages[msgIndex++];
+                }
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        overlay.remove();
+                        alert('Vyčištění dokončeno! 🎉\nUvolněno: 4.20 GB');
+                        closeWindow('diskCleanup');
+                    }, 500);
+                }
+            }, 600);
+        }
+
+        // Defragmentation
+        function analyzeDefrag() {
+            playClickSound();
+            alert('📊 Analýza disku:\n\nFragmentace: 45%\n✓ Doporučena defragmentace!\n\nSoubory: 12,345\nFragmentované soubory: 5,678\nVelkost dat: 42 GB');
+        }
+
+        function startDefrag() {
+            playClickSound();
+            document.getElementById('defragProgress').style.display = 'block';
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 5;
+                document.getElementById('defragBar').style.width = progress + '%';
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        alert('✅ Defragmentace dokončena!\n\nDisk C: byl úspěšně defragmentován.\nFragmentace: 0%');
+                        document.getElementById('defragProgress').style.display = 'none';
+                        document.getElementById('defragBar').style.width = '0%';
+                    }, 500);
+                }
+            }, 500);
+        }
+
+        // Enter key in Run dialog
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const runDialog = document.getElementById('runDialog');
+                if (runDialog.style.display === 'block') {
+                    executeRun();
+                }
+            }
+        });
+
+        // Security screen (Ctrl+Alt+Del)
+        function showSecurityScreen() {
+            playClickSound();
+            const overlay = document.createElement('div');
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: #0A246A;
+                z-index: 99999;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 16px;
+            `;
+            overlay.innerHTML = `
+                <h1 style="margin-bottom: 50px; font-size: 36px;">Windows Zabezpečení</h1>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <button onclick="this.parentElement.parentElement.remove(); openWindow('taskManager');" style="padding: 15px 50px; font-size: 18px; cursor: pointer;">📊 Správce úloh</button>
+                    <button onclick="this.parentElement.parentElement.remove();" style="padding: 15px 50px; font-size: 18px; cursor: pointer;">🔒 Zamknout počítač</button>
+                    <button onclick="this.parentElement.parentElement.remove(); playClickSound(); alert('Odhlášení... (ne doopravdy)');" style="padding: 15px 50px; font-size: 18px; cursor: pointer;">👤 Odhlásit se</button>
+                    <button onclick="this.parentElement.parentElement.remove(); shutdown();" style="padding: 15px 50px; font-size: 18px; cursor: pointer;">🔴 Vypnout</button>
+                    <button onclick="this.parentElement.parentElement.remove();" style="padding: 15px 50px; font-size: 18px; cursor: pointer; margin-top: 20px;">❌ Zrušit</button>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        }
+
+        // Screen saver simulation (after 30 seconds of inactivity)
+        let screenSaverTimeout;
+        let screenSaverActive = false;
+
+        function resetScreenSaverTimer() {
+            clearTimeout(screenSaverTimeout);
+            if (screenSaverActive) {
+                exitScreenSaver();
+            }
+            screenSaverTimeout = setTimeout(startScreenSaver, 30000);
+        }
+
+        function startScreenSaver() {
+            screenSaverActive = true;
+            const desktop = document.getElementById('desktop');
+            const overlay = document.createElement('div');
+            overlay.id = 'screenSaver';
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: #000;
+                z-index: 99999;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #00ff00;
+                font-size: 48px;
+                font-family: 'Courier New';
+                cursor: pointer;
+            `;
+            overlay.innerHTML = 'Windows XP Screensaver<br><span style="font-size: 20px;">Klikni nebo pohni myší</span>';
+            overlay.onclick = exitScreenSaver;
+            document.body.appendChild(overlay);
+        }
+
+        function exitScreenSaver() {
+            const overlay = document.getElementById('screenSaver');
+            if (overlay) {
+                overlay.remove();
+                screenSaverActive = false;
+            }
+            resetScreenSaverTimer();
+        }
+
+        document.addEventListener('mousemove', resetScreenSaverTimer);
+        document.addEventListener('keydown', resetScreenSaverTimer);
+        resetScreenSaverTimer();
+
+        // System sounds on various actions
+        function playSystemSound(type) {
+            switch(type) {
+                case 'maximize':
+                    playBeep(800, 0.05, 0.15);
+                    break;
+                case 'minimize':
+                    playBeep(600, 0.05, 0.15);
+                    break;
+                case 'restore':
+                    playBeep(700, 0.05, 0.15);
+                    break;
+            }
+        }
+
         // Window functions
         function openWindow(id) {
             playClickSound();
-            document.getElementById(id).style.display = 'block';
+            const win = document.getElementById(id);
+            win.style.display = 'block';
+            
+            // Position window if not positioned yet
+            if (!windowPositions[id]) {
+                const offset = activeWindows.length * 30;
+                win.style.left = (50 + offset) + 'px';
+                win.style.top = (50 + offset) + 'px';
+                windowPositions[id] = true;
+            }
+            
+            if (!activeWindows.includes(id)) {
+                activeWindows.push(id);
+            }
+            
+            createTaskbarItem(id, win.querySelector('.window-title span').textContent);
+            focusWindow(id);
             document.getElementById('startMenu').style.display = 'none';
         }
 
         function closeWindow(id) {
             playClickSound();
-            document.getElementById(id).style.display = 'none';
+            const win = document.getElementById(id);
+            win.style.display = 'none';
+            activeWindows = activeWindows.filter(w => w !== id);
+            removeTaskbarItem(id);
         }
+
+        function minimizeWindow(id) {
+            playSystemSound('minimize');
+            const win = document.getElementById(id);
+            win.classList.add('minimizing');
+            setTimeout(() => {
+                win.style.display = 'none';
+                win.classList.remove('minimizing');
+            }, 300);
+        }
+
+        function maximizeWindow(id) {
+            const win = document.getElementById(id);
+            
+            if (win.dataset.maximized === 'true') {
+                // Restore
+                playSystemSound('restore');
+                win.style.width = '500px';
+                win.style.height = '350px';
+                win.style.left = win.dataset.oldLeft;
+                win.style.top = win.dataset.oldTop;
+                win.dataset.maximized = 'false';
+            } else {
+                // Maximize
+                playSystemSound('maximize');
+                win.dataset.oldLeft = win.style.left;
+                win.dataset.oldTop = win.style.top;
+                win.style.left = '0';
+                win.style.top = '0';
+                win.style.width = '100%';
+                win.style.height = 'calc(100% - 42px)';
+                win.dataset.maximized = 'true';
+            }
+        }
+
+        // Make windows draggable
+        document.querySelectorAll('.window').forEach(win => {
+            const titleBar = win.querySelector('.window-title');
+            let isDragging = false;
+            let currentX;
+            let currentY;
+            let initialX;
+            let initialY;
+            
+            titleBar.addEventListener('mousedown', (e) => {
+                if (e.target.closest('.window-button')) return;
+                
+                isDragging = true;
+                initialX = e.clientX - win.offsetLeft;
+                initialY = e.clientY - win.offsetTop;
+                focusWindow(win.id);
+                
+                // Prevent text selection while dragging
+                e.preventDefault();
+            });
+            
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    e.preventDefault();
+                    currentX = e.clientX - initialX;
+                    currentY = e.clientY - initialY;
+                    
+                    // Keep window within bounds
+                    const maxX = window.innerWidth - 100;
+                    const maxY = window.innerHeight - 100;
+                    
+                    currentX = Math.max(0, Math.min(currentX, maxX));
+                    currentY = Math.max(0, Math.min(currentY, maxY));
+                    
+                    win.style.left = currentX + 'px';
+                    win.style.top = currentY + 'px';
+                    win.style.transform = 'none'; // Remove centering transform
+                }
+            });
+            
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+            
+            // Focus window on click
+            win.addEventListener('mousedown', () => {
+                focusWindow(win.id);
+            });
+        });
 
         function shutdown() {
             playShutdownSound();
             document.getElementById('desktop').style.display = 'none';
             document.getElementById('loading-screen').style.display = 'flex';
-            document.querySelector('.xp-logo').textContent = 'Windows se vypíná...';
-            document.querySelector('.loading-text').innerHTML = 'Můžeš vypnout počítač<span class="loading-dots"></span>';
-            document.getElementById('funnyMessage').textContent = 'Díky za použití! (ale proč vlastně?)';
-            document.getElementById('loadingBar').style.width = '100%';
+            
+            const bootScreen = document.querySelector('.xp-boot-screen');
+            bootScreen.innerHTML = `
+                <div style="text-align: center; color: #fff;">
+                    <div style="font-size: 48px; margin-bottom: 30px;">Windows se vypíná</div>
+                    <div style="font-size: 18px;">Můžeš nyní vypnout počítač</div>
+                    <div style="margin-top: 50px; color: #888;">Díky za použití! 😊</div>
+                </div>
+            `;
         }
+
+        // Calculator functions
+        let calcExpression = '';
+        let calcDisplay = '0';
+
+        function calcInput(value) {
+            playClickSound();
+            if (calcDisplay === '0' && value !== '.') {
+                calcDisplay = value;
+            } else {
+                calcDisplay += value;
+            }
+            calcExpression += value;
+            document.getElementById('calcDisplay').value = calcDisplay;
+        }
+
+        function calcClear() {
+            playClickSound();
+            calcExpression = '';
+            calcDisplay = '0';
+            document.getElementById('calcDisplay').value = calcDisplay;
+        }
+
+        function calcEqual() {
+            playClickSound();
+            try {
+                const result = eval(calcExpression);
+                calcDisplay = result.toString();
+                calcExpression = result.toString();
+                document.getElementById('calcDisplay').value = calcDisplay;
+            } catch (e) {
+                playErrorSound();
+                calcDisplay = 'Chyba';
+                document.getElementById('calcDisplay').value = calcDisplay;
+                setTimeout(calcClear, 1000);
+            }
+        }
+
+        // Paint application
+        let paintCanvas = null;
+        let paintCtx = null;
+        let isPainting = false;
+        let currentTool = 'pen';
+        let lastX = 0;
+        let lastY = 0;
+
+        // Initialize paint canvas when window opens
+        function initPaintCanvas() {
+            paintCanvas = document.getElementById('paintCanvas');
+            if (!paintCanvas) return;
+            
+            paintCtx = paintCanvas.getContext('2d');
+            paintCtx.lineCap = 'round';
+            paintCtx.lineJoin = 'round';
+            
+            paintCanvas.addEventListener('mousedown', startPainting);
+            paintCanvas.addEventListener('mousemove', paint);
+            paintCanvas.addEventListener('mouseup', stopPainting);
+            paintCanvas.addEventListener('mouseout', stopPainting);
+        }
+
+        function startPainting(e) {
+            isPainting = true;
+            const rect = paintCanvas.getBoundingClientRect();
+            lastX = e.clientX - rect.left;
+            lastY = e.clientY - rect.top;
+        }
+
+        function paint(e) {
+            if (!isPainting) return;
+            
+            const rect = paintCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            paintCtx.beginPath();
+            paintCtx.moveTo(lastX, lastY);
+            paintCtx.lineTo(x, y);
+            
+            if (currentTool === 'pen') {
+                paintCtx.strokeStyle = document.getElementById('colorPicker').value;
+                paintCtx.lineWidth = document.getElementById('brushSize').value;
+            } else if (currentTool === 'eraser') {
+                paintCtx.strokeStyle = '#ffffff';
+                paintCtx.lineWidth = 20;
+            }
+            
+            paintCtx.stroke();
+            
+            lastX = x;
+            lastY = y;
+        }
+
+        function stopPainting() {
+            isPainting = false;
+        }
+
+        function selectTool(tool) {
+            playClickSound();
+            currentTool = tool;
+            
+            // Update button states
+            document.getElementById('toolPen').style.background = tool === 'pen' ? '#fff' : '#E0E0E0';
+            document.getElementById('toolEraser').style.background = tool === 'eraser' ? '#fff' : '#E0E0E0';
+        }
+
+        function clearCanvas() {
+            playClickSound();
+            if (paintCtx) {
+                paintCtx.fillStyle = '#ffffff';
+                paintCtx.fillRect(0, 0, paintCanvas.width, paintCanvas.height);
+            }
+        }
+
+        // Initialize paint when paint window is opened
+        const originalOpenWindow = openWindow;
+        openWindow = function(id) {
+            originalOpenWindow(id);
+            if (id === 'paint') {
+                setTimeout(initPaintCanvas, 100);
+            }
+        };
 
         // Blink animation for cursor
         const style = document.createElement('style');
