@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading - MAN EATER</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: radial-gradient(ellipse at top, #450a0a, #000000 50%, #1a0000);
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(220, 38, 38, 0.03) 2px,
+                rgba(220, 38, 38, 0.03) 4px
+            );
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .loading-container {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 600px;
+            padding: 40px;
+        }
+
+        .game-logo {
+            font-size: 5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #dc2626, #ef4444, #dc2626);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease infinite;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 0 20px rgba(220, 38, 38, 0.5));
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .subtitle {
+            font-size: 2rem;
+            background: linear-gradient(90deg, #f87171, #fca5a5, #f87171);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 2s ease infinite;
+            margin-bottom: 2rem;
+        }
+
+        .loading-text {
+            font-size: 1.5rem;
+            color: #f87171;
+            margin-bottom: 30px;
+        }
+
+        .pacman-loader {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 40px 0;
+            gap: 15px;
+        }
+
+        .pacman {
+            width: 0;
+            height: 0;
+            border-right: 25px solid transparent;
+            border-top: 25px solid #fbbf24;
+            border-left: 25px solid #fbbf24;
+            border-bottom: 25px solid #fbbf24;
+            border-top-left-radius: 25px;
+            border-bottom-left-radius: 25px;
+            animation: chomp 0.5s infinite;
+        }
+
+        @keyframes chomp {
+            0%, 100% {
+                border-top: 25px solid #fbbf24;
+                border-bottom: 25px solid #fbbf24;
+            }
+            50% {
+                border-top: 8px solid #fbbf24;
+                border-bottom: 8px solid #fbbf24;
+            }
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            background: #f87171;
+            border-radius: 50%;
+            animation: dotMove 1.2s linear infinite;
+            opacity: 0;
+        }
+
+        .dot:nth-child(2) { animation-delay: 0.2s; }
+        .dot:nth-child(3) { animation-delay: 0.4s; }
+        .dot:nth-child(4) { animation-delay: 0.6s; }
+        .dot:nth-child(5) { animation-delay: 0.8s; }
+
+        @keyframes dotMove {
+            0% { opacity: 1; transform: translateX(0); }
+            100% { opacity: 0; transform: translateX(-50px); }
+        }
+
+        .progress-container {
+            width: 100%;
+            max-width: 500px;
+            height: 35px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #991b1b;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            margin: 30px auto;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(135deg, #7f1d1d, #991b1b, #dc2626);
+            background-size: 200% 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+            animation: shimmer 2s linear infinite;
+            position: relative;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255, 255, 255, 0.2) 50%, 
+                transparent 100%
+            );
+            animation: progressGlow 1.5s ease infinite;
+        }
+
+        @keyframes progressGlow {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        .progress-percent {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #fbbf24;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8), 0 0 5px rgba(220, 38, 38, 0.5);
+            z-index: 10;
+        }
+
+        .loading-info {
+            font-size: 1rem;
+            color: #f87171;
+            margin-top: 15px;
+            min-height: 24px;
+        }
+
+        .tip {
+            margin-top: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(127, 29, 29, 0.4), rgba(139, 0, 0, 0.3));
+            border-radius: 10px;
+            border: 2px solid rgba(220, 38, 38, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .tip-title {
+            color: #fbbf24;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .tip-text {
+            color: #f87171;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .ghost {
+            position: fixed;
+            font-size: 40px;
+            opacity: 0.1;
+            animation: floatGhost 15s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes floatGhost {
+            0% {
+                transform: translateY(100vh) translateX(0) rotate(0deg);
+            }
+            100% {
+                transform: translateY(-10vh) translateX(30px) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="ghostsContainer"></div>
+
+    <div class="loading-container">
+        <div class="game-logo">💀 MAN EATER 💀</div>
+        <div class="subtitle">Načítání...</div>
+        
+        <div class="loading-text" id="loadingText">Připravuji hru...</div>
+        
+        <div class="pacman-loader">
+            <div class="pacman"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+            <div class="progress-percent" id="progressPercent">0%</div>
+        </div>
+
+        <div class="loading-info" id="loadingInfo">Inicializace...</div>
+
+        <div class="tip">
+            <div class="tip-title" id="tipTitle">💡 Tip</div>
+            <div class="tip-text" id="tipText">Použij šipky k ovládání. Power pellets ti dají sílu sežrat duchy!</div>
+        </div>
+    </div>
+
+    <script>
+        function createGhosts() {
+            const container = document.getElementById('ghostsContainer');
+            const ghosts = ['👻', '💀', '😈', '🎃'];
+            
+            for (let i = 0; i < 6; i++) {
+                const ghost = document.createElement('div');
+                ghost.className = 'ghost';
+                ghost.textContent = ghosts[Math.floor(Math.random() * ghosts.length)];
+                ghost.style.left = Math.random() * 100 + '%';
+                ghost.style.animationDelay = Math.random() * 10 + 's';
+                ghost.style.animationDuration = (15 + Math.random() * 10) + 's';
+                container.appendChild(ghost);
+            }
+        }
+
+        createGhosts();
+
+        const tips = [
+            { title: "💡 Ovládání", text: "Použij šipky k ovládání. Power pellets ti dají sílu sežrat duchy!" },
+            { title: "🎯 Strategie", text: "Sbírej všechny tečky pro maximální skóre a odemknutí dalších levelů!" },
+            { title: "👻 Duchové", text: "Vyvaruj se duchům, když nejsi v power módu. Každý má jiné chování!" },
+            { title: "⚡ Combo", text: "Rychlé sbírání teček zvyšuje tvoje combo a tím i skóre!" },
+            { title: "🪙 Mince", text: "Mince získané ve hře můžeš utratit v obchodě za speciální upgrady!" },
+            { title: "🔥 Bonus", text: "Rychlejší dokončení levelu = více bonusových mincí na konci!" },
+            { title: "🌟 Multiplayer", text: "V multiplayeru můžete spolupracovat nebo soutěžit o nejvyšší skóre!" },
+            { title: "❤️ Životy", text: "Začínáš se 3 životy. Sežrání duchem tě resetuje, ale neztrácíš skóre!" }
+        ];
+
+        const loadingSteps = [
+            { text: "Připojování k serveru...", duration: 600 },
+            { text: "Načítání herních dat...", duration: 900 },
+            { text: "Inicializace bludiště...", duration: 700 },
+            { text: "Nahrávání textur...", duration: 800 },
+            { text: "Připravování duchů...", duration: 600 },
+            { text: "Kontrola připojení...", duration: 500 },
+            { text: "Synchronizace skóre...", duration: 400 },
+            { text: "Načítání multiplayeru...", duration: 500 },
+            { text: "Finalizace...", duration: 400 }
+        ];
+
+        let currentProgress = 0;
+        let currentTipIndex = 0;
+
+        function rotateTips() {
+            currentTipIndex = (currentTipIndex + 1) % tips.length;
+            const tip = tips[currentTipIndex];
+            document.getElementById('tipTitle').textContent = tip.title;
+            document.getElementById('tipText').textContent = tip.text;
+        }
+
+        setInterval(rotateTips, 3500);
+
+        async function loadGame() {
+            const progressBar = document.getElementById('progressBar');
+            const progressPercent = document.getElementById('progressPercent');
+            const loadingInfo = document.getElementById('loadingInfo');
+            const loadingText = document.getElementById('loadingText');
+
+            const totalSteps = loadingSteps.length;
+            const progressPerStep = 100 / totalSteps;
+
+            for (let i = 0; i < loadingSteps.length; i++) {
+                const step = loadingSteps[i];
+                loadingInfo.textContent = step.text;
+
+                const targetProgress = (i + 1) * progressPerStep;
+                
+                await new Promise(resolve => {
+                    const interval = setInterval(() => {
+                        if (currentProgress < targetProgress) {
+                            currentProgress += 1;
+                            progressBar.style.width = currentProgress + '%';
+                            progressPercent.textContent = Math.round(currentProgress) + '%';
+                        } else {
+                            clearInterval(interval);
+                            resolve();
+                        }
+                    }, step.duration / progressPerStep);
+                });
+            }
+
+            loadingText.textContent = '✅ Hra připravena!';
+            loadingInfo.textContent = '✅ Vše načteno!';
+            progressBar.style.width = '100%';
+            progressPercent.textContent = '100%';
+
+            await new Promise(resolve => setTimeout(resolve, 800));
+
+            const user = localStorage.getItem('supabase_user');
+            if (user) {
+                window.location.href = 'index.html';
+            } else {
+                window.location.href = 'login.html';
+            }
+        }
+
+        window.addEventListener('load', () => {
+            setTimeout(loadGame, 600);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💀 MAN EATER - Hra</title>
+    <link rel="stylesheet" href="game-style.css">
+    <link rel="stylesheet" href="ui.css">
+    <script src="ui.js" defer></script>
+    <!-- Supabase JS client pro realtime -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="game-container">
+        <canvas id="gameCanvas" class="game-canvas"></canvas>
+        
+        <div class="sidebar">
+            <div class="role" id="roleDisplay">Načítání...</div>
+            <div class="score">Skóre: <span id="score">0</span></div>
+            <div class="info" id="level">Level: 1</div>
+            <div class="info" id="dotsRemaining">Dots: 0</div>
+            <div class="info" id="ghostCount">Duchové: 4</div>
+            
+            <button id="spawnGhostBtn" class="btn">
+                Spawn Ghost 👻
+            </button>
+            <div class="cooldown" id="cooldownText"></div>
+
+            <div class="controls">
+                <h4>Ovládání:</h4>
+                <p id="controlsText">Načítání...</p>
+            </div>
+
+            <button id="exitBtn" class="btn" style="margin-top: 20px;">
+                Opustit hru
+            </button>
+        </div>
+    </div>
+
+    <div id="gameOver" class="game-over" style="display: none;">
+        <h2 id="gameOverTitle"></h2>
+        <p id="gameOverScore"></p>
+        <button id="backToLobbyBtn" class="btn" style="max-width: 300px;">
+            Zpět do menu
+        </button>
+    </div>
+
+    <script src="pacman-game-fixed.js"></script>
+</body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<div class="coins-header">
+    <div class="coins-amount">🪙 <span id="coinsDisplay">0</span></div>
+    <button class="add-coins-small" onclick="window.location.href='shop.html'">➕</button>
+</div>
+
+<script>
+function updateCoinsDisplay() {
+    const data = JSON.parse(localStorage.getItem('gameData') || '{"coins":0}');
+    document.getElementById('coinsDisplay').textContent = data.coins || 0;
+}
+updateCoinsDisplay();
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💀 MAN EATER</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .levels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .level-card {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(20, 0, 0, 0.8));
+            border: 2px solid #991b1b;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .level-card:hover:not(.locked) {
+            border-color: #dc2626;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(220, 38, 38, 0.4);
+        }
+
+        .level-card.locked {
+            opacity: 0.4;
+            cursor: not-allowed;
+            border-color: #4b5563;
+        }
+
+        .level-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #ef4444;
+            margin-bottom: 0.5rem;
+        }
+
+        .level-card.locked .level-number {
+            color: #6b7280;
+        }
+
+        .level-reward {
+            color: #fbbf24;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .lock-icon {
+            font-size: 2rem;
+            margin-top: 0.5rem;
+        }
+
+        .energy-bar {
+            background: linear-gradient(135deg, rgba(127, 29, 29, 0.6), rgba(139, 0, 0, 0.4));
+            border: 2px solid #dc2626;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .energy-display {
+            font-size: 2rem;
+            color: #fbbf24;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .energy-info {
+            color: #f87171;
+            font-size: 1rem;
+        }
+    </style>
+    <link rel="stylesheet" href="ui.css">
+    <script src="ui.js" defer></script>
+</head>
+<body>
+    <div class="container" style="margin-top: 3rem;">
+        <button onclick="window.location.href='index.html'" class="btn btn-secondary back-btn">
+            ← Zpět do menu
+        </button>
+        
+        <h1 class="title text-center">🎮 VÝBĚR LEVELŮ</h1>
+        
+        <div class="energy-bar">
+            <div class="energy-display">⚡ <span id="energyDisplay">100</span> / 100</div>
+            <div class="energy-info">
+                Každý level stojí 25 energie
+                <br>
+                <span id="regenInfo">Plná energie!</span>
+            </div>
+        </div>
+
+        <div class="lobby-content">
+            <div class="levels-grid" id="levelsGrid"></div>
+        </div>
+    </div>
+
+    <script>
+        const TOTAL_LEVELS = 10;
+        const ENERGY_COST = 25;
+        const ENERGY_REGEN_HOURS = 4;
+
+        function getGameData() {
+            return JSON.parse(localStorage.getItem('gameData') || '{"energy":100,"coins":0,"unlockedLevels":1,"lastEnergyUpdate":0}');
+        }
+
+        function saveGameData(data) {
+            localStorage.setItem('gameData', JSON.stringify(data));
+        }
+
+        function getEnergy() {
+            const data = getGameData();
+            const now = Date.now();
+            const hoursPassed = (now - (data.lastEnergyUpdate || 0)) / (1000 * 60 * 60);
+            const regenAmount = Math.floor(hoursPassed / ENERGY_REGEN_HOURS) * 100;
+            
+            let currentEnergy = Math.min(100, data.energy + regenAmount);
+            
+            if (regenAmount > 0) {
+                data.energy = currentEnergy;
+                data.lastEnergyUpdate = now;
+                saveGameData(data);
+            }
+            
+            return currentEnergy;
+        }
+
+        function getEnergyRegenTime() {
+            const data = getGameData();
+            const now = Date.now();
+            const timeSinceUpdate = now - (data.lastEnergyUpdate || 0);
+            const timeUntilRegen = (ENERGY_REGEN_HOURS * 60 * 60 * 1000) - timeSinceUpdate;
+            
+            if (timeUntilRegen <= 0) return 'Nyní';
+            
+            const hours = Math.floor(timeUntilRegen / (1000 * 60 * 60));
+            const minutes = Math.floor((timeUntilRegen % (1000 * 60 * 60)) / (1000 * 60));
+            
+            return `${hours}h ${minutes}m`;
+        }
+
+        function renderLevels() {
+            const data = getGameData();
+            const energy = getEnergy();
+            const grid = document.getElementById('levelsGrid');
+            
+            // Aktualizace energie
+            document.getElementById('energyDisplay').textContent = energy;
+            
+            if (energy < 100) {
+                document.getElementById('regenInfo').textContent = 
+                    `Další obnova za ${getEnergyRegenTime()}`;
+            } else {
+                document.getElementById('regenInfo').textContent = 'Plná energie!';
+            }
+            
+            // Vytvoření karet levelů
+            grid.innerHTML = '';
+            
+            for (let i = 1; i <= TOTAL_LEVELS; i++) {
+                const isUnlocked = i <= (data.unlockedLevels || 1);
+                const canPlay = isUnlocked && energy >= ENERGY_COST;
+                
+                const card = document.createElement('div');
+                card.className = `level-card ${isUnlocked ? '' : 'locked'}`;
+                
+                const reward = 5 + Math.floor(i / 2);
+                
+                card.innerHTML = `
+                    <div class="level-number">${i}</div>
+                    ${isUnlocked ? `
+                        <div class="level-reward">🪙 +${reward}</div>
+                        <div style="color: #9ca3af; font-size: 0.9rem; margin-top: 0.5rem;">
+                            ${canPlay ? 'Připraven!' : '⚡ Nedostatek energie'}
+                        </div>
+                    ` : `
+                        <div class="lock-icon">🔒</div>
+                    `}
+                `;
+                
+                if (canPlay) {
+                    card.addEventListener('click', () => {
+                        window.location.href = `level${i}.html`;
+                    });
+                } else if (isUnlocked && energy < ENERGY_COST) {
+                    card.addEventListener('click', () => {
+                        alert(`❌ Nedostatek energie! Máš ${energy}/100. Další obnova za ${getEnergyRegenTime()}.`);
+                    });
+                }
+                
+                grid.appendChild(card);
+            }
+        }
+
+        renderLevels();
+        
+        // Aktualizace každých 30 sekund
+        setInterval(renderLevels, 30000);
+    </script>
+</body>
+</html>

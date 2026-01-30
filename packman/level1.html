@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💀 Level 1 - MAN EATER</title>
+    <link rel="stylesheet" href="game-style.css">
+    <link rel="stylesheet" href="ui.css">
+    <script src="ui.js" defer></script>
+</head>
+<body>
+    <div class="game-container">
+        <canvas id="gameCanvas" class="game-canvas"></canvas>
+        
+        <div class="sidebar">
+            <div class="role">🟡 Level 1</div>
+            <div class="score">Skóre: <span id="score">0</span></div>
+            <div class="info" id="coins">🪙 Mince: 0</div>
+            <div class="info" id="dotsRemaining">Dots: 0</div>
+            <div class="info" id="lives">❤️ Životy: 3</div>
+            
+            <div class="controls">
+                <h4>Ovládání:</h4>
+                <p>← → ↑ ↓</p>
+            </div>
+
+            <button id="exitBtn" class="btn" style="margin-top: 20px;">
+                Opustit level
+            </button>
+        </div>
+    </div>
+
+    <div id="gameOver" class="game-over" style="display: none;">
+        <h2 id="gameOverTitle"></h2>
+        <p id="gameOverScore"></p>
+        <p id="gameOverCoins" style="font-size: 2rem; color: #fbbf24;">🪙 Získáno: <span id="earnedCoins">0</span> mincí</p>
+        <button id="backToLevelsBtn" class="btn" style="max-width: 300px;">
+            Zpět na výběr levelů
+        </button>
+    </div>
+
+    <script>
+        const TILE_SIZE = 25;
+        const LEVEL = 1;
+        
+        // Jednoduchá mapa pro level 1
+        let maze = [
+            "################",
+            "#..............#",
+            "#.##.####.##.#.#",
+            "#o............o#",
+            "#.##.##.####.#.#",
+            "#....##......#.#",
+            "####.##.####.#.#",
+            "#......      ###",
+            "#.####.####.####",
+            "#..............#",
+            "#.##.####.####.#",
+            "#o..........##o#",
+            "################"
+        ];
+
+        // Normalizace mapy (stejná šířka řádků)
+        const MAZE_WIDTH = Math.max(...maze.map(r => r.length));
+        maze = maze.map(r => r.padEnd(MAZE_WIDTH, '#'));
+        const MAZE_HEIGHT = maze.length;
+
+        class Level1Game {
+            constructor() {
+                // Zkontroluj energii
+                const energy = this.getEnergy();
+                if (energy < 25) {
+                    alert(`❌ Nedostatek energie! Máš ${energy}/100. Energie se obnoví za ${this.getEnergyRegenTime()}.`);
+                    window.location.href = 'levels.html';
+                    return;
+                }
+                
+                // Odečti energii
+                this.useEnergy(25);
+                
+                this.canvas = document.getElementById('gameCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.canvas.width = MAZE_WIDTH * TILE_SIZE;
+                this.canvas.height = MAZE_HEIGHT * TILE_SIZE;
+
+                this.score = 0;
+                this.coins = 0;
+                this.lives = 3;
+                this.gameOver = false;
+                this.gameWon = false;
+                this.animationFrame = 0;
+
+                this.pacman = { 
+                    x: 1, 
+                    y: 1, 
+                    direction: { x: 0, y: 0 },
+                    nextDirection: { x: 0, y: 0 },
+                    mouthAngle: 0.2,
+                    mouthOpen: true
+                };
+                
+                // Pouze 2 duchové pro level 1
+                this.ghosts = [
+                    { x: 7, y: 6, color: '#FF0000', direction: { x: 0, y: 0 }, animOffset: 0 },
+                    { x: 8, y: 6, color: '#FFB8FF', direction: { x: 0, y: 0 }, animOffset: 20 }
+                ];
+                
+                this.dots = [];
+                this.powerPellets = [];
+                this.powerMode = false;
+                this.powerTimer = 0;
+
+                this.initMaze();
+                this.setupControls();
+                this.startGame();
+
+                document.getElementById('exitBtn').addEventListener('click', () => {
+                    window.location.href = 'levels.html';
+                });
+
+                document.getElementById('backToLevelsBtn').addEventListener('click', () => {
+                    window.location.href = 'levels.html';
+                });
+            }
+
+            getEnergy() {
+                const data = JSON.parse(localStorage.getItem('gameData') || '{"energy":100,"lastEnergyUpdate":0}');
+                const now = Date.now();
+                const hoursPassed = (now - data.lastEnergyUpdate) / (1000 * 60 * 60);
+                const regenAmount = Math.floor(hoursPassed / 4) * 100; // 100 za 4 hodiny
+                
+                let currentEnergy = Math.min(100, data.energy + regenAmount);
+                
+                if (regenAmount > 0) {
+                    data.energy = currentEnergy;
+                    data.lastEnergyUpdate = now;
+                    localStorage.setItem('gameData', JSON.stringify(data));
+                }
+                
+                return currentEnergy;
+            }
+
+            useEnergy(amount) {
+                const data = JSON.parse(localStorage.getItem('gameData') || '{"energy":100,"coins":0}');
+                data.energy = Math.max(0, data.energy - amount);
+                data.lastEnergyUpdate = Date.now();
+                localStorage.setItem('gameData', JSON.stringify(data));
+            }
+
+            getEnergyRegenTime() {
+                const data = JSON.parse(localStorage.getItem('gameData') || '{"lastEnergyUpdate":0}');
+                const now = Date.now();
+                const timeSinceUpdate = now - data.lastEnergyUpdate;
+                const timeUntilRegen = (4 * 60 * 60 * 1000) - timeSinceUpdate;
+                
+                if (timeUntilRegen <= 0) return 'Nyní';
+                
+                const hours = Math.floor(timeUntilRegen / (1000 * 60 * 60));
+                const minutes = Math.floor((timeUntilRegen % (1000 * 60 * 60)) / (1000 * 60));
+                
+                return `${hours}h ${minutes}m`;
+            }
+
+            initMaze() {
+                for (let y = 0; y < maze.length; y++) {
+                    for (let x = 0; x < maze[y].length; x++) {
+                        if (maze[y][x] === '.') {
+                            this.dots.push({ x, y });
+                        } else if (maze[y][x] === 'o') {
+                            this.powerPellets.push({ x, y });
+                        }
+                    }
+                }
+                this.updateDotsDisplay();
+            }
+
+            setupControls() {
+                document.addEventListener('keydown', (e) => {
+                    if (this.gameOver) return;
+
+                    if (e.key === 'ArrowLeft') this.pacman.nextDirection = { x: -1, y: 0 };
+                    if (e.key === 'ArrowRight') this.pacman.nextDirection = { x: 1, y: 0 };
+                    if (e.key === 'ArrowUp') this.pacman.nextDirection = { x: 0, y: -1 };
+                    if (e.key === 'ArrowDown') this.pacman.nextDirection = { x: 0, y: 1 };
+                });
+            }
+
+            startGame() {
+                setInterval(() => {
+                    if (!this.gameOver) {
+                        this.animationFrame++;
+                        this.update();
+                        this.draw();
+                    }
+                }, 120);
+            }
+
+            update() {
+                this.movePacman();
+                this.checkDotCollision();
+                
+                if (this.animationFrame % 3 === 0) {
+                    this.pacman.mouthOpen = !this.pacman.mouthOpen;
+                    this.pacman.mouthAngle = this.pacman.mouthOpen ? 0.2 : 0.05;
+                }
+                
+                // Pomalé AI pro level 1
+                if (this.animationFrame % 2 === 0) {
+                    for (const ghost of this.ghosts) {
+                        this.moveGhostAI(ghost);
+                    }
+                }
+                
+                if (this.powerMode) {
+                    this.powerTimer--;
+                    if (this.powerTimer <= 0) {
+                        this.powerMode = false;
+                    }
+                }
+                
+                this.checkGhostCollision();
+            }
+
+            movePacman() {
+                const nextX = this.pacman.x + this.pacman.nextDirection.x;
+                const nextY = this.pacman.y + this.pacman.nextDirection.y;
+                
+                if (this.isWalkable(nextX, nextY)) {
+                    this.pacman.direction = { ...this.pacman.nextDirection };
+                }
+
+                const newX = this.pacman.x + this.pacman.direction.x;
+                const newY = this.pacman.y + this.pacman.direction.y;
+
+                if (this.isWalkable(newX, newY)) {
+                    this.pacman.x = newX;
+                    this.pacman.y = newY;
+                }
+            }
+
+            moveGhostAI(ghost) {
+                const directions = [
+                    { x: -1, y: 0 },
+                    { x: 1, y: 0 },
+                    { x: 0, y: -1 },
+                    { x: 0, y: 1 }
+                ];
+
+                // Jednoduchá AI - občas náhodný pohyb
+                let target;
+                if (Math.random() < 0.3 || this.powerMode) {
+                    // Náhodný pohyb
+                    const validDirs = directions.filter(dir => {
+                        const newX = ghost.x + dir.x;
+                        const newY = ghost.y + dir.y;
+                        return this.isWalkable(newX, newY);
+                    });
+                    
+                    if (validDirs.length > 0) {
+                        const randomDir = validDirs[Math.floor(Math.random() * validDirs.length)];
+                        ghost.x += randomDir.x;
+                        ghost.y += randomDir.y;
+                        ghost.direction = randomDir;
+                    }
+                    return;
+                }
+                
+                // Pronásledování
+                target = { x: this.pacman.x, y: this.pacman.y };
+
+                let bestDir = ghost.direction;
+                let bestDist = Infinity;
+
+                for (const dir of directions) {
+                    if (dir.x === -ghost.direction.x && dir.y === -ghost.direction.y) continue;
+                    
+                    const newX = ghost.x + dir.x;
+                    const newY = ghost.y + dir.y;
+
+                    if (this.isWalkable(newX, newY)) {
+                        const dist = Math.abs(target.x - newX) + Math.abs(target.y - newY);
+                        if (dist < bestDist) {
+                            bestDist = dist;
+                            bestDir = dir;
+                        }
+                    }
+                }
+
+                ghost.x += bestDir.x;
+                ghost.y += bestDir.y;
+                ghost.direction = bestDir;
+            }
+
+            isWalkable(x, y) {
+                if (x < 0 || x >= MAZE_WIDTH || y < 0 || y >= MAZE_HEIGHT) return false;
+                const cell = maze[y][x];
+                return cell !== '#';
+            }
+
+            checkDotCollision() {
+                for (let i = this.dots.length - 1; i >= 0; i--) {
+                    const dot = this.dots[i];
+                    if (dot.x === this.pacman.x && dot.y === this.pacman.y) {
+                        this.dots.splice(i, 1);
+                        this.score += 10;
+                        this.updateScore();
+                        this.updateDotsDisplay();
+                    }
+                }
+
+                for (let i = this.powerPellets.length - 1; i >= 0; i--) {
+                    const pellet = this.powerPellets[i];
+                    if (pellet.x === this.pacman.x && pellet.y === this.pacman.y) {
+                        this.powerPellets.splice(i, 1);
+                        this.score += 50;
+                        this.powerMode = true;
+                        this.powerTimer = 50;
+                        this.updateScore();
+                        this.updateDotsDisplay();
+                    }
+                }
+
+                if (this.dots.length === 0 && this.powerPellets.length === 0) {
+                    this.winGame();
+                }
+            }
+
+            checkGhostCollision() {
+                for (let i = this.ghosts.length - 1; i >= 0; i--) {
+                    const ghost = this.ghosts[i];
+                    if (ghost.x === this.pacman.x && ghost.y === this.pacman.y) {
+                        if (this.powerMode) {
+                            // Sněz ducha
+                            this.ghosts.splice(i, 1);
+                            this.score += 200;
+                            this.updateScore();
+                        } else {
+                            // Ztráta života
+                            this.lives--;
+                            this.updateLives();
+                            
+                            if (this.lives <= 0) {
+                                this.endGame('💀 GAME OVER 💀');
+                            } else {
+                                // Reset pozic
+                                this.pacman.x = 1;
+                                this.pacman.y = 1;
+                                this.pacman.direction = { x: 0, y: 0 };
+                                
+                                for (let j = 0; j < this.ghosts.length; j++) {
+                                    this.ghosts[j].x = 7 + j;
+                                    this.ghosts[j].y = 6;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            winGame() {
+                this.gameWon = true;
+                
+                // Výpočet odměny
+                const baseCoins = 5;
+                const bonusCoins = Math.floor(this.score / 200);
+                this.coins = baseCoins + bonusCoins;
+                
+                // Uložení mincí a odemknutí level 2
+                const data = JSON.parse(localStorage.getItem('gameData') || '{"coins":0,"unlockedLevels":1}');
+                data.coins = (data.coins || 0) + this.coins;
+                data.unlockedLevels = Math.max(data.unlockedLevels || 1, 2);
+                localStorage.setItem('gameData', JSON.stringify(data));
+                
+                this.endGame('🎉 VÍTĚZSTVÍ! 🎉');
+            }
+
+            updateScore() {
+                document.getElementById('score').textContent = this.score;
+            }
+
+            updateDotsDisplay() {
+                document.getElementById('dotsRemaining').textContent = 
+                    `Dots: ${this.dots.length + this.powerPellets.length}`;
+            }
+
+            updateLives() {
+                document.getElementById('lives').textContent = 
+                    `❤️ Životy: ${this.lives}`;
+            }
+
+            endGame(message) {
+                this.gameOver = true;
+
+                document.getElementById('gameOver').style.display = 'flex';
+                document.getElementById('gameOverTitle').textContent = message;
+                document.getElementById('gameOverScore').textContent = `Skóre: ${this.score}`;
+                document.getElementById('earnedCoins').textContent = this.coins;
+                document.getElementById('coins').textContent = `🪙 Mince: ${this.coins}`;
+            }
+
+            draw() {
+                this.ctx.fillStyle = '#000';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+                // Bludiště
+                for (let y = 0; y < maze.length; y++) {
+                    for (let x = 0; x < maze[y].length; x++) {
+                        if (maze[y][x] === '#') {
+                            const gradient = this.ctx.createLinearGradient(
+                                x * TILE_SIZE, y * TILE_SIZE,
+                                x * TILE_SIZE + TILE_SIZE, y * TILE_SIZE + TILE_SIZE
+                            );
+                            gradient.addColorStop(0, '#0000aa');
+                            gradient.addColorStop(0.5, '#0000ff');
+                            gradient.addColorStop(1, '#0000aa');
+                            
+                            this.ctx.fillStyle = gradient;
+                            this.ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                            
+                            this.ctx.strokeStyle = '#000088';
+                            this.ctx.lineWidth = 1;
+                            this.ctx.strokeRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                        }
+                    }
+                }
+
+                // Dots
+                this.ctx.fillStyle = '#ffb897';
+                for (const dot of this.dots) {
+                    this.ctx.beginPath();
+                    this.ctx.arc(
+                        dot.x * TILE_SIZE + TILE_SIZE / 2,
+                        dot.y * TILE_SIZE + TILE_SIZE / 2,
+                        2,
+                        0,
+                        Math.PI * 2
+                    );
+                    this.ctx.fill();
+                }
+
+                // Power pellets
+                const pelletSize = 5 + Math.sin(this.animationFrame * 0.2) * 1.5;
+                this.ctx.fillStyle = this.powerMode ? '#00ff00' : '#fff';
+                for (const pellet of this.powerPellets) {
+                    this.ctx.beginPath();
+                    this.ctx.arc(
+                        pellet.x * TILE_SIZE + TILE_SIZE / 2,
+                        pellet.y * TILE_SIZE + TILE_SIZE / 2,
+                        pelletSize,
+                        0,
+                        Math.PI * 2
+                    );
+                    this.ctx.fill();
+                }
+
+                // Pac-Man
+                this.ctx.save();
+                const pmCenterX = this.pacman.x * TILE_SIZE + TILE_SIZE / 2;
+                const pmCenterY = this.pacman.y * TILE_SIZE + TILE_SIZE / 2;
+                
+                this.ctx.translate(pmCenterX, pmCenterY);
+                
+                let rotation = 0;
+                if (this.pacman.direction.x === 1) rotation = 0;
+                else if (this.pacman.direction.x === -1) rotation = Math.PI;
+                else if (this.pacman.direction.y === -1) rotation = -Math.PI / 2;
+                else if (this.pacman.direction.y === 1) rotation = Math.PI / 2;
+                
+                this.ctx.rotate(rotation);
+                
+                const pacGradient = this.ctx.createRadialGradient(0, 0, 0, 0, 0, TILE_SIZE / 2);
+                pacGradient.addColorStop(0, '#FFFF00');
+                pacGradient.addColorStop(0.7, '#FFDD00');
+                pacGradient.addColorStop(1, '#FFB000');
+                
+                this.ctx.fillStyle = pacGradient;
+                this.ctx.beginPath();
+                this.ctx.arc(0, 0, TILE_SIZE / 2 - 2, this.pacman.mouthAngle * Math.PI, (2 - this.pacman.mouthAngle) * Math.PI);
+                this.ctx.lineTo(0, 0);
+                this.ctx.fill();
+                
+                this.ctx.restore();
+
+                // Duchové
+                for (const ghost of this.ghosts) {
+                    const gCenterX = ghost.x * TILE_SIZE + TILE_SIZE / 2;
+                    const gCenterY = ghost.y * TILE_SIZE + TILE_SIZE / 2;
+                    
+                    const waveOffset = Math.sin((this.animationFrame + ghost.animOffset) * 0.3) * 2;
+                    
+                    this.ctx.fillStyle = this.powerMode ? '#0000ff' : ghost.color;
+                    
+                    this.ctx.beginPath();
+                    this.ctx.arc(gCenterX, gCenterY - 3 + waveOffset, TILE_SIZE / 2 - 2, Math.PI, 0);
+                    
+                    const bottomY = ghost.y * TILE_SIZE + TILE_SIZE - 2;
+                    this.ctx.lineTo(ghost.x * TILE_SIZE + TILE_SIZE - 2, bottomY + waveOffset);
+                    
+                    for (let i = 0; i < 3; i++) {
+                        const waveX = ghost.x * TILE_SIZE + TILE_SIZE - 2 - (i * (TILE_SIZE - 4) / 3);
+                        const waveY = bottomY + waveOffset - (i % 2 === 0 ? 3 : 0);
+                        this.ctx.lineTo(waveX, waveY);
+                    }
+                    
+                    this.ctx.lineTo(ghost.x * TILE_SIZE + 2, bottomY + waveOffset);
+                    this.ctx.closePath();
+                    this.ctx.fill();
+
+                    // Oči
+                    this.ctx.fillStyle = '#fff';
+                    this.ctx.fillRect(ghost.x * TILE_SIZE + 6, ghost.y * TILE_SIZE + 8, 4, 4);
+                    this.ctx.fillRect(ghost.x * TILE_SIZE + 15, ghost.y * TILE_SIZE + 8, 4, 4);
+                    
+                    this.ctx.fillStyle = '#000';
+                    this.ctx.fillRect(ghost.x * TILE_SIZE + 7, ghost.y * TILE_SIZE + 9, 2, 2);
+                    this.ctx.fillRect(ghost.x * TILE_SIZE + 16, ghost.y * TILE_SIZE + 9, 2, 2);
+                }
+            }
+        }
+
+        new Level1Game();
+    </script>
+</body>
+</html>

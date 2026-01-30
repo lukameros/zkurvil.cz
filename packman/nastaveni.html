@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚙️ Nastavení - MAN EATER</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="ui.css">
+    <script src="ui.js" defer></script>
+</head>
+<body>
+<div class="coins-header">
+    <div class="coins-amount">🪙 <span id="coinsDisplay">0</span></div>
+    <button class="add-coins-small" onclick="window.location.href='shop.html'">➕</button>
+</div>
+
+<script>
+function updateCoinsDisplay() {
+    const data = JSON.parse(localStorage.getItem('gameData') || '{"coins":0}');
+    document.getElementById('coinsDisplay').textContent = data.coins || 0;
+}
+updateCoinsDisplay();
+</script>
+    <div class="container" style="max-width: 800px; margin-top: 3rem;">
+        <button onclick="window.location.href='index.html'" class="btn btn-secondary back-btn">
+            ← Zpět do menu
+        </button>
+        
+        <h1 class="title text-center">⚙️ NASTAVENÍ</h1>
+        
+        <div class="lobby-content">
+            <div class="setting-group">
+                <h3>🔊 Zvuk</h3>
+                <div class="setting-item">
+                    <span class="setting-label">Hlasitost hudby</span>
+                    <input type="range" id="musicVolume" min="0" max="100" value="50" 
+                           style="width: 200px;">
+                    <span id="musicValue" style="color: #fbbf24; margin-left: 1rem;">50%</span>
+                </div>
+                <div class="setting-item">
+                    <span class="setting-label">Hlasitost efektů</span>
+                    <input type="range" id="sfxVolume" min="0" max="100" value="70"
+                           style="width: 200px;">
+                    <span id="sfxValue" style="color: #fbbf24; margin-left: 1rem;">70%</span>
+                </div>
+                <div class="setting-item">
+                    <span class="setting-label">Zapnout zvuky</span>
+                    <input type="checkbox" id="soundEnabled" checked
+                           style="width: 24px; height: 24px; cursor: pointer;">
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <h3>🎨 Grafika</h3>
+                <div class="setting-item">
+                    <span class="setting-label">Kvalita grafiky</span>
+                    <select id="graphicsQuality" style="width: auto; padding: 0.5rem;">
+                        <option value="low">Nízká</option>
+                        <option value="medium" selected>Střední</option>
+                        <option value="high">Vysoká</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <span class="setting-label">Zobrazit FPS</span>
+                    <input type="checkbox" id="showFPS"
+                           style="width: 24px; height: 24px; cursor: pointer;">
+                </div>
+                <div class="setting-item">
+                    <span class="setting-label">Animace pozadí</span>
+                    <input type="checkbox" id="backgroundAnim" checked
+                           style="width: 24px; height: 24px; cursor: pointer;">
+                </div>
+            </div>
+
+            <button id="saveBtn" class="btn btn-primary" style="width: 100%; margin-top: 2rem;">
+                💾 Uložit nastavení
+            </button>
+            <button id="resetBtn" class="btn btn-secondary" style="width: 100%; margin-top: 0.5rem;">
+                🔄 Resetovat na výchozí
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Načtení nastavení
+        function loadSettings() {
+            const settings = JSON.parse(localStorage.getItem('gameSettings') || '{}');
+            
+            document.getElementById('musicVolume').value = settings.musicVolume || 50;
+            document.getElementById('sfxVolume').value = settings.sfxVolume || 70;
+            document.getElementById('soundEnabled').checked = settings.soundEnabled !== false;
+            document.getElementById('graphicsQuality').value = settings.graphicsQuality || 'medium';
+            document.getElementById('showFPS').checked = settings.showFPS || false;
+            document.getElementById('backgroundAnim').checked = settings.backgroundAnim !== false;
+            
+            updateValues();
+        }
+
+        function updateValues() {
+            document.getElementById('musicValue').textContent = document.getElementById('musicVolume').value + '%';
+            document.getElementById('sfxValue').textContent = document.getElementById('sfxVolume').value + '%';
+        }
+
+        // Live update hodnot
+        document.getElementById('musicVolume').addEventListener('input', updateValues);
+        document.getElementById('sfxVolume').addEventListener('input', updateValues);
+
+        // Uložení nastavení
+        document.getElementById('saveBtn').addEventListener('click', () => {
+            const settings = {
+                musicVolume: parseInt(document.getElementById('musicVolume').value),
+                sfxVolume: parseInt(document.getElementById('sfxVolume').value),
+                soundEnabled: document.getElementById('soundEnabled').checked,
+                graphicsQuality: document.getElementById('graphicsQuality').value,
+                showFPS: document.getElementById('showFPS').checked,
+                backgroundAnim: document.getElementById('backgroundAnim').checked
+            };
+            
+            localStorage.setItem('gameSettings', JSON.stringify(settings));
+            alert('✅ Nastavení uloženo!');
+        });
+
+        // Reset nastavení
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            if (confirm('Opravdu chceš resetovat všechna nastavení?')) {
+                localStorage.removeItem('gameSettings');
+                loadSettings();
+                alert('✅ Nastavení resetováno!');
+            }
+        });
+
+        loadSettings();
+    </script>
+</body>
+</html>

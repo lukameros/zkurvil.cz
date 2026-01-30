@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - MAN EATER</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: radial-gradient(ellipse at top, #450a0a, #000000 50%, #1a0000);
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(220, 38, 38, 0.03) 2px,
+                rgba(220, 38, 38, 0.03) 4px
+            );
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .ghost {
+            position: fixed;
+            font-size: 50px;
+            opacity: 0.08;
+            animation: floatGhost 20s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes floatGhost {
+            0% { transform: translateY(100vh) translateX(0) rotate(0deg); }
+            100% { transform: translateY(-10vh) translateX(50px) rotate(360deg); }
+        }
+
+        .login-container {
+            position: relative;
+            z-index: 2;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(20, 0, 0, 0.9));
+            border: 2px solid #991b1b;
+            border-radius: 15px;
+            padding: 40px;
+            max-width: 480px;
+            width: 90%;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7), 0 0 50px rgba(220, 38, 38, 0.2);
+        }
+
+        .game-logo {
+            text-align: center;
+            font-size: 4rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #dc2626, #ef4444, #dc2626);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease infinite, pulse 2s infinite;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 20px rgba(220, 38, 38, 0.5));
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #f87171;
+            margin-bottom: 35px;
+            font-size: 1.1rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px;
+            background: rgba(127, 29, 29, 0.2);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: bold;
+            color: #f87171;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, rgba(127, 29, 29, 0.6), rgba(139, 0, 0, 0.4));
+            border-color: #dc2626;
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
+        }
+
+        .tab:hover {
+            background: rgba(127, 29, 29, 0.4);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #fbbf24;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #991b1b;
+            border-radius: 10px;
+            color: white;
+            font-size: 1rem;
+            font-family: 'Arial', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #dc2626;
+            box-shadow: 0 0 15px rgba(220, 38, 38, 0.3);
+        }
+
+        .form-group input::placeholder {
+            color: #666;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #7f1d1d, #991b1b);
+            color: white;
+            border: 2px solid #dc2626;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, #991b1b, #b91c1c);
+            box-shadow: 0 6px 25px rgba(220, 38, 38, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            background: linear-gradient(135deg, #374151, #4b5563);
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .guest-btn {
+            background: linear-gradient(135deg, #1f2937, #374151);
+            border-color: #6b7280;
+            margin-top: 15px;
+        }
+
+        .guest-btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, #374151, #4b5563);
+            box-shadow: 0 6px 25px rgba(107, 114, 128, 0.4);
+        }
+
+        .error-message {
+            background: rgba(220, 38, 38, 0.2);
+            border: 2px solid #dc2626;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            color: #fca5a5;
+            text-align: center;
+        }
+
+        .success-message {
+            background: rgba(22, 163, 74, 0.2);
+            border: 2px solid #16a34a;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            color: #86efac;
+            text-align: center;
+        }
+
+        .features {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(153, 27, 27, 0.5);
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+            font-size: 0.95rem;
+            color: #f87171;
+        }
+
+        .feature-icon {
+            font-size: 1.5rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+
+        .spinner {
+            border: 4px solid rgba(220, 38, 38, 0.2);
+            border-top: 4px solid #dc2626;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .forgot-password {
+            text-align: center;
+            margin-top: 15px;
+            color: #f87171;
+            font-size: 0.9rem;
+        }
+
+        .forgot-password a {
+            color: #fbbf24;
+            text-decoration: none;
+        }
+
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div id="ghostsContainer"></div>
+
+    <div class="login-container">
+        <div class="game-logo">💀 MAN EATER 💀</div>
+        <div class="subtitle">Multiplayer Pac-Man Adventure</div>
+
+        <div class="error-message" id="errorMessage"></div>
+        <div class="success-message" id="successMessage"></div>
+
+        <div class="loading" id="loadingSpinner">
+            <div class="spinner"></div>
+            <div style="color: #f87171;">Načítání...</div>
+        </div>
+
+        <div id="mainContent">
+            <div class="tabs">
+                <div class="tab active" id="loginTab" onclick="switchTab('login')">
+                    🔐 Přihlášení
+                </div>
+                <div class="tab" id="registerTab" onclick="switchTab('register')">
+                    📝 Registrace
+                </div>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" style="display: block;">
+                <div class="form-group">
+                    <label>📧 Email</label>
+                    <input type="email" id="loginEmail" placeholder="tvuj@email.cz" required>
+                </div>
+                <div class="form-group">
+                    <label>🔒 Heslo</label>
+                    <input type="password" id="loginPassword" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn">Přihlásit se</button>
+                <div class="forgot-password">
+                    <a href="#" onclick="resetPassword(); return false;">Zapomněl jsi heslo?</a>
+                </div>
+            </form>
+
+            <!-- Register Form -->
+            <form id="registerForm" style="display: none;">
+                <div class="form-group">
+                    <label>👤 Uživatelské jméno</label>
+                    <input type="text" id="registerUsername" placeholder="TvojJmeno" required minlength="3">
+                </div>
+                <div class="form-group">
+                    <label>📧 Email</label>
+                    <input type="email" id="registerEmail" placeholder="tvuj@email.cz" required>
+                </div>
+                <div class="form-group">
+                    <label>🔒 Heslo</label>
+                    <input type="password" id="registerPassword" placeholder="••••••••" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label>🔒 Potvrď heslo</label>
+                    <input type="password" id="registerPasswordConfirm" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn">Vytvořit účet</button>
+            </form>
+
+            <button class="btn guest-btn" onclick="playAsGuest()">
+                🚶 Hrát jako host (bez uložení)
+            </button>
+        </div>
+
+        <div class="features">
+            <div class="feature-item">
+                <span class="feature-icon">🌐</span>
+                <span>Real-time multiplayer</span>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">🏆</span>
+                <span>Globální žebříček</span>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">💾</span>
+                <span>Uložení postupu</span>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">🎨</span>
+                <span>Vlastní skiny a témata</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // SUPABASE KONFIGURACE
+        // ⚠️ DŮLEŽITÉ: Nahraď tyto údaje svými z Supabase projektu!
+        const SUPABASE_URL = 'https://jbfvoxlcociwtyobaotz.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpiZnZveGxjb2Npd3R5b2Jhb3R6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3OTQ3MTgsImV4cCI6MjA4MzM3MDcxOH0.ydY1I-rVv08Kg76wI6oPgAt9fhUMRZmsFxpc03BhmkA';
+
+        let supabaseClient;
+        
+        try {
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+            console.log('✅ Supabase připojen');
+        } catch (error) {
+            console.warn('⚠️ Supabase není nakonfigurován. Používám demo režim.');
+        }
+
+        // Vytvoření duchů na pozadí
+        function createGhosts() {
+            const container = document.getElementById('ghostsContainer');
+            const ghosts = ['👻', '💀', '😈', '🎃', '🧟', '🦇'];
+            
+            for (let i = 0; i < 8; i++) {
+                const ghost = document.createElement('div');
+                ghost.className = 'ghost';
+                ghost.textContent = ghosts[Math.floor(Math.random() * ghosts.length)];
+                ghost.style.left = Math.random() * 100 + '%';
+                ghost.style.animationDelay = Math.random() * 10 + 's';
+                ghost.style.animationDuration = (15 + Math.random() * 15) + 's';
+                container.appendChild(ghost);
+            }
+        }
+
+        createGhosts();
+
+        window.switchTab = function(tab) {
+            const loginTab = document.getElementById('loginTab');
+            const registerTab = document.getElementById('registerTab');
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const errorMsg = document.getElementById('errorMessage');
+            const successMsg = document.getElementById('successMessage');
+            
+            errorMsg.style.display = 'none';
+            successMsg.style.display = 'none';
+
+            if (tab === 'login') {
+                loginTab.classList.add('active');
+                registerTab.classList.remove('active');
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+            } else {
+                loginTab.classList.remove('active');
+                registerTab.classList.add('active');
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+            }
+        }
+
+        window.showError = function(message) {
+            const errorMsg = document.getElementById('errorMessage');
+            const successMsg = document.getElementById('successMessage');
+            successMsg.style.display = 'none';
+            errorMsg.textContent = '❌ ' + message;
+            errorMsg.style.display = 'block';
+            setTimeout(() => errorMsg.style.display = 'none', 5000);
+        }
+
+        window.showSuccess = function(message) {
+            const errorMsg = document.getElementById('errorMessage');
+            const successMsg = document.getElementById('successMessage');
+            errorMsg.style.display = 'none';
+            successMsg.textContent = '✅ ' + message;
+            successMsg.style.display = 'block';
+            setTimeout(() => successMsg.style.display = 'none', 5000);
+        }
+
+        function showLoading(show) {
+            document.getElementById('loadingSpinner').style.display = show ? 'block' : 'none';
+            document.getElementById('mainContent').style.display = show ? 'none' : 'block';
+        }
+
+        // PŘIHLÁŠENÍ
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            if (!email || !password) {
+                showError('Vyplň všechna pole!');
+                return;
+            }
+
+            showLoading(true);
+
+            try {
+                if (supabaseClient) {
+                    const { data, error } = await supabaseClient.auth.signInWithPassword({
+                        email: email,
+                        password: password,
+                    });
+
+                    if (error) throw error;
+
+                    const { data: profile } = await supabaseClient
+                        .from('profiles')
+                        .select('*')
+                        .eq('id', data.user.id)
+                        .single();
+
+                    localStorage.setItem('supabase_user', JSON.stringify({
+                        id: data.user.id,
+                        email: data.user.email,
+                        username: profile?.username || 'Player',
+                        ...profile
+                    }));
+
+                    showSuccess('Přihlášení úspěšné!');
+                    setTimeout(() => window.location.href = 'index.html', 1000);
+                } else {
+                    // Demo režim
+                    localStorage.setItem('supabase_user', JSON.stringify({
+                        id: 'demo-' + Date.now(),
+                        email: email,
+                        username: email.split('@')[0],
+                        isDemo: true
+                    }));
+                    showSuccess('Přihlášení úspěšné! (Demo režim)');
+                    setTimeout(() => window.location.href = 'index.html', 1000);
+                }
+            } catch (error) {
+                showError(error.message || 'Chyba při přihlašování');
+                showLoading(false);
+            }
+        });
+
+        // REGISTRACE
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const username = document.getElementById('registerUsername').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const passwordConfirm = document.getElementById('registerPasswordConfirm').value;
+
+            if (!username || !email || !password) {
+                showError('Vyplň všechna pole!');
+                return;
+            }
+
+            if (username.length < 3) {
+                showError('Uživatelské jméno musí mít alespoň 3 znaky!');
+                return;
+            }
+
+            if (password.length < 6) {
+                showError('Heslo musí mít alespoň 6 znaků!');
+                return;
+            }
+
+            if (password !== passwordConfirm) {
+                showError('Hesla se neshodují!');
+                return;
+            }
+
+            showLoading(true);
+
+            try {
+                if (supabaseClient) {
+                    const { data, error } = await supabaseClient.auth.signUp({
+                        email: email,
+                        password: password,
+                        options: {
+                            data: {
+                                username: username
+                            }
+                        }
+                    });
+
+                    if (error) throw error;
+
+                    await supabaseClient.from('profiles').insert({
+                        id: data.user.id,
+                        username: username,
+                        email: email,
+                        coins: 0,
+                        unlocked_levels: 1,
+                        created_at: new Date().toISOString()
+                    });
+
+                    showSuccess('Účet vytvořen! Zkontroluj email pro potvrzení.');
+                    setTimeout(() => switchTab('login'), 2000);
+                } else {
+                    localStorage.setItem('supabase_user', JSON.stringify({
+                        id: 'demo-' + Date.now(),
+                        email: email,
+                        username: username,
+                        isDemo: true
+                    }));
+                    showSuccess('Účet vytvořen! (Demo režim)');
+                    setTimeout(() => window.location.href = 'index.html', 1000);
+                }
+            } catch (error) {
+                showError(error.message || 'Chyba při registraci');
+                showLoading(false);
+            }
+        });
+
+        window.resetPassword = async function() {
+            const email = prompt('Zadej svůj email:');
+            if (!email) return;
+
+            try {
+                if (supabaseClient) {
+                    const { error } = await supabaseClient.auth.resetPasswordForEmail(email);
+                    if (error) throw error;
+                    showSuccess('Email pro reset hesla odeslán!');
+                } else {
+                    showSuccess('Demo režim - reset hesla není dostupný');
+                }
+            } catch (error) {
+                showError(error.message);
+            }
+        }
+
+        window.playAsGuest = function() {
+            localStorage.setItem('supabase_user', JSON.stringify({
+                id: 'guest-' + Date.now(),
+                username: 'Host',
+                isGuest: true,
+                isDemo: true
+            }));
+            window.location.href = 'index.html';
+        }
+
+        window.addEventListener('load', async () => {
+            if (supabaseClient) {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (session) {
+                    window.location.href = 'index.html';
+                }
+            }
+        });
+    </script>
+</body>
+</html>

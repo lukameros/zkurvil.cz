@@ -1,0 +1,180 @@
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background: radial-gradient(ellipse at center, #1a0000, #000000);
+    color: white;
+    overflow: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(139, 0, 0, 0.05) 2px,
+        rgba(139, 0, 0, 0.05) 4px
+    );
+    pointer-events: none;
+    z-index: 1;
+}
+
+.game-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+    gap: 30px;
+    position: relative;
+    z-index: 2;
+}
+
+.game-canvas {
+    border: 4px solid #dc2626;
+    border-radius: 15px;
+    box-shadow: 
+        0 0 30px rgba(220, 38, 38, 0.5),
+        0 0 60px rgba(220, 38, 38, 0.3),
+        inset 0 0 20px rgba(0, 0, 0, 0.5);
+    background: #000;
+}
+
+.sidebar {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(20, 0, 0, 0.9));
+    border: 2px solid #991b1b;
+    border-radius: 15px;
+    padding: 25px;
+    min-width: 280px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+}
+
+.score {
+    font-size: 2.5rem;
+    font-weight: bold;
+    background: linear-gradient(45deg, #fbbf24, #f59e0b, #fbbf24);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 2s ease infinite;
+    margin-bottom: 20px;
+    text-align: center;
+    filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.6));
+}
+
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+.info {
+    color: #f87171;
+    margin-bottom: 12px;
+    font-size: 1.1rem;
+    padding: 8px;
+    background: rgba(127, 29, 29, 0.2);
+    border-radius: 8px;
+    border-left: 3px solid #dc2626;
+}
+
+.role {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: linear-gradient(135deg, rgba(127, 29, 29, 0.6), rgba(139, 0, 0, 0.4));
+    border-radius: 10px;
+    text-align: center;
+    border: 2px solid rgba(220, 38, 38, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.btn {
+    width: 100%;
+    padding: 14px;
+    margin-top: 10px;
+    background: linear-gradient(135deg, #7f1d1d, #991b1b);
+    color: white;
+    border: 2px solid #dc2626;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #991b1b, #b91c1c);
+    box-shadow: 0 6px 25px rgba(220, 38, 38, 0.6);
+    transform: translateY(-2px);
+}
+
+.btn:disabled {
+    background: linear-gradient(135deg, #374151, #4b5563);
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.cooldown {
+    font-size: 0.9rem;
+    color: #9ca3af;
+    margin-top: 8px;
+    text-align: center;
+}
+
+.controls {
+    margin-top: 20px;
+    padding: 18px;
+    background: linear-gradient(135deg, rgba(127, 29, 29, 0.4), rgba(139, 0, 0, 0.3));
+    border-radius: 10px;
+    border: 1px solid rgba(220, 38, 38, 0.3);
+}
+
+.controls h4 {
+    color: #fbbf24;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+.controls p {
+    color: #f87171;
+    font-size: 1rem;
+    margin: 5px 0;
+}
+
+.game-over {
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.95));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(15px);
+}
+
+.game-over h2 {
+    font-size: 5rem;
+    background: linear-gradient(45deg, #dc2626, #ef4444, #fca5a5, #ef4444, #dc2626);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 40px rgba(220, 38, 38, 1));
+    animation: gradientShift 2s ease infinite;
+    margin-bottom: 20px;
+}
+
+.game-over p {
+    font-size: 2.5rem;
+    color: #f87171;
+    margin-bottom: 30px;
+    text-shadow: 0 0 20px rgba(248, 113, 113, 0.5);
+}

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛡️ Guild - MAN EATER</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .coins-header {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(20, 0, 0, 0.9));
+            border: 2px solid #fbbf24;
+            border-radius: 1rem;
+            padding: 0.8rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            z-index: 100;
+        }
+
+        .coins-amount {
+            font-size: 1.5rem;
+            color: #fbbf24;
+            font-weight: bold;
+        }
+
+        .add-coins-small {
+            background: linear-gradient(135deg, #14532d, #166534);
+            border: 2px solid #16a34a;
+            color: #86efac;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .add-coins-small:hover {
+            background: linear-gradient(135deg, #166534, #15803d);
+            transform: scale(1.1);
+        }
+    </style>
+    <link rel="stylesheet" href="ui.css">
+    <script src="ui.js" defer></script>
+</head>
+<body>
+    <div class="coins-header">
+        <div class="coins-amount">🪙 <span id="coinsDisplay">0</span></div>
+        <button class="add-coins-small" onclick="window.location.href='shop.html'" title="Získat více mincí">➕</button>
+    </div>
+
+    <div class="container" style="margin-top: 3rem;">
+        <button onclick="window.location.href='index.html'" class="btn btn-secondary back-btn">
+            ← Zpět do menu
+        </button>
+        
+        <h1 class="title text-center">🛡️ GUILD SYSTÉM</h1>
+        
+        <div class="lobby-content">
+            <div id="noGuildView">
+                <h3 style="color: #fbbf24; margin-bottom: 1.5rem; font-size: 1.5rem; text-align: center;">
+                    Nejsi členem žádné guildy
+                </h3>
+                
+                <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+                    <button id="createGuildBtn" class="btn btn-primary" style="flex: 1;">
+                        ➕ Vytvořit guildu
+                    </button>
+                    <button id="browseGuildsBtn" class="btn btn-primary" style="flex: 1;">
+                        🔍 Procházet guildy
+                    </button>
+                </div>
+
+                <div id="guildsList"></div>
+            </div>
+
+            <div id="guildView" style="display: none;">
+                <div class="guild-header">
+                    <div>
+                        <h2 id="guildName" class="guild-name"></h2>
+                        <div id="guildTag" style="color: #fca5a5; font-size: 1.2rem; margin-top: 0.5rem;"></div>
+                    </div>
+                    <button id="leaveGuildBtn" class="btn btn-secondary">
+                        🚪 Opustit guildu
+                    </button>
+                </div>
+
+                <div class="guild-info" id="guildLevel">Level: 1</div>
+                <div class="guild-info" id="guildMembers">Členů: 0/50</div>
+                <div class="guild-info" id="guildScore">Celkové skóre: 0</div>
+                
+                <h3 style="color: #fbbf24; margin-top: 2rem; margin-bottom: 1rem; font-size: 1.3rem;">
+                    👥 Členové
+                </h3>
+                <div id="membersList"></div>
+
+                <div id="guildAdminPanel" style="margin-top: 2rem; display: none;">
+                    <h3 style="color: #ef4444; margin-bottom: 1rem; font-size: 1.3rem;">
+                        ⚔️ Admin Panel
+                    </h3>
+                    <button id="inviteBtn" class="btn btn-primary" style="width: 100%; margin-bottom: 0.5rem;">
+                        📧 Pozvat hráče
+                    </button>
+                    <button id="editGuildBtn" class="btn btn-primary" style="width: 100%;">
+                        ✏️ Upravit guildu
+                    </button>
+                </div>
+            </div>
+
+                <div style="margin-top: 2rem;">
+                    <h3 style="color: #fbbf24; margin-bottom: 1rem; font-size: 1.3rem;">📜 Dostupné guildy</h3>
+                    <div id="guildsList2"></div>
+                </div>
+        </div>
+    </div>
+
+    <div id="createGuildModal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; align-items: center; justify-content: center;">
+        <div class="lobby-content" style="max-width: 500px; margin: 2rem;">
+            <h3 style="color: #fbbf24; margin-bottom: 1.5rem; font-size: 1.5rem;">Vytvořit novou guildu</h3>
+            
+            <div style="margin-bottom: 1rem;">
+                <label style="color: #f87171; display: block; margin-bottom: 0.5rem;">Název guildy</label>
+                <input type="text" id="newGuildName" placeholder="Zadej název..." maxlength="30" style="width: 100%;">
+            </div>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <label style="color: #f87171; display: block; margin-bottom: 0.5rem;">Tag guildy (3-5 znaků)</label>
+                <input type="text" id="newGuildTag" placeholder="[TAG]" maxlength="5" style="width: 100%;">
+            </div>
+            
+            <div style="display: flex; gap: 1rem;">
+                <button id="confirmCreateBtn" class="btn btn-primary" style="flex: 1;">
+                    Vytvořit
+                </button>
+                <button id="cancelCreateBtn" class="btn btn-secondary" style="flex: 1;">
+                    Zrušit
+                </button>
+            </div>
+
+                <div style="margin-top: 2rem;">
+                    <h3 style="color: #fbbf24; margin-bottom: 1rem; font-size: 1.3rem;">📜 Dostupné guildy</h3>
+                    <div id="guildsList2"></div>
+                </div>
+        </div>
+    </div>
+
+    <script>
+        const playerName = localStorage.getItem('playerName') || 'Guest';
+        let currentGuild = null;
+
+        // Aktualizace mincí v hlavičce
+        function updateCoinsDisplay() {
+            const data = JSON.parse(localStorage.getItem('gameData') || '{"coins":0}');
+            document.getElementById('coinsDisplay').textContent = data.coins || 0;
+        }
+
+        async function loadGuilds() {
+            try {
+                // Použijeme localStorage místo Supabase pro demo
+                const guilds = JSON.parse(localStorage.getItem('guilds') || '[]');
+                const guildsList = document.getElementById('guildsList');
+                const guildsList2 = document.getElementById('guildsList2');
+                
+                if (!guilds || guilds.length === 0) {
+                    guildsList.innerHTML = '<div style="text-align: center; color: #9ca3af; padding: 2rem;">Zatím neexistují žádné guildy</div>';
+                    if (guildsList2) guildsList2.innerHTML = guildsList.innerHTML;
+                    return;
+                }
+                
+                const listHtml = '<h3 style="color: #fbbf24; margin-bottom: 1rem;">Dostupné guildy</h3>' + guilds.map((guild, index) => `
+                    <div class="guild-card" style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="flex: 1;">
+                            <div style="font-size: 1.5rem; font-weight: bold; color: #ef4444; margin-bottom: 0.5rem;">
+                                ${guild.name} <span style="color: #fca5a5;">[${guild.tag}]</span>
+                            </div>
+                            <div class="guild-info">Level: ${guild.level} | Členů: ${guild.member_count}/50</div>
+                            <div class="guild-info">Skóre: ${guild.total_score.toLocaleString()}</div>
+                        </div>
+                        <button class="btn btn-primary join-guild-btn" data-guild-index="${index}">
+                            Vstoupit
+                        </button>
+                    </div>
+                `).join('');
+
+                guildsList.innerHTML = listHtml;
+                if (guildsList2) guildsList2.innerHTML = listHtml;
+
+                document.querySelectorAll('.join-guild-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const index = parseInt(btn.dataset.guildIndex);
+                        joinGuild(guilds[index]);
+                    });
+                });
+            } catch (e) {
+                console.error('Error loading guilds:', e);
+                document.getElementById('guildsList').innerHTML = '<div style="text-align: center; color: #9ca3af; padding: 2rem;">Zatím neexistují žádné guildy</div>';
+                const g2 = document.getElementById('guildsList2');
+                if (g2) g2.innerHTML = document.getElementById('guildsList').innerHTML;
+            }
+        }
+
+        async function createGuild() {
+            const name = document.getElementById('newGuildName').value.trim();
+            const tag = document.getElementById('newGuildTag').value.trim().toUpperCase();
+            
+            if (!name || !tag || tag.length < 3 || tag.length > 5) {
+                alert('Vyplň správně všechna pole!');
+                return;
+            }
+
+            try {
+                const guilds = JSON.parse(localStorage.getItem('guilds') || '[]');
+                
+                const newGuild = {
+                    id: Date.now(),
+                    name,
+                    tag,
+                    owner: playerName,
+                    level: 1,
+                    total_score: 0,
+                    member_count: 1,
+                    members: [playerName]
+                };
+
+                guilds.push(newGuild);
+                localStorage.setItem('guilds', JSON.stringify(guilds));
+                localStorage.setItem('myGuild', JSON.stringify(newGuild));
+
+                alert('✅ Guilda vytvořena!');
+                document.getElementById('createGuildModal').style.display = 'none';
+                loadMyGuild();
+            } catch (e) {
+                console.error('Error creating guild:', e);
+                alert('Chyba při vytváření guildy!');
+            }
+        }
+
+        async function joinGuild(guild) {
+            if (guild.member_count >= 50) {
+                alert('❌ Guilda je plná!');
+                return;
+            }
+
+            guild.members = guild.members || [];
+            if (!guild.members.includes(playerName)) {
+                guild.members.push(playerName);
+                guild.member_count++;
+            }
+
+            localStorage.setItem('myGuild', JSON.stringify(guild));
+            
+            const guilds = JSON.parse(localStorage.getItem('guilds') || '[]');
+            const index = guilds.findIndex(g => g.id === guild.id);
+            if (index !== -1) {
+                guilds[index] = guild;
+                localStorage.setItem('guilds', JSON.stringify(guilds));
+            }
+
+            alert('✅ Připojen do guildy!');
+            loadMyGuild();
+        }
+
+        async function loadMyGuild() {
+            try {
+                const guild = JSON.parse(localStorage.getItem('myGuild') || 'null');
+                
+                if (guild) {
+                    currentGuild = guild;
+                    showGuildView();
+                } else {
+                    showNoGuildView();
+                }
+            } catch (e) {
+                console.error('Error loading guild:', e);
+                showNoGuildView();
+            }
+        }
+
+        function showGuildView() {
+            document.getElementById('noGuildView').style.display = 'none';
+            document.getElementById('guildView').style.display = 'block';
+            
+            document.getElementById('guildName').textContent = currentGuild.name;
+            document.getElementById('guildTag').textContent = `[${currentGuild.tag}]`;
+            document.getElementById('guildLevel').textContent = `Level: ${currentGuild.level}`;
+            document.getElementById('guildMembers').textContent = `Členů: ${currentGuild.member_count}/50`;
+            document.getElementById('guildScore').textContent = `Celkové skóre: ${currentGuild.total_score.toLocaleString()}`;
+            
+            const membersList = document.getElementById('membersList');
+            membersList.innerHTML = (currentGuild.members || [currentGuild.owner]).map(member => `
+                <div class="player-item">
+                    <div class="player-name">
+                        <span>👤</span>
+                        <span>${member}</span>
+                        ${member === currentGuild.owner ? '<span>👑</span>' : ''}
+                    </div>
+                </div>
+            `).join('');
+
+                guildsList.innerHTML = listHtml;
+                if (guildsList2) guildsList2.innerHTML = listHtml;
+            
+            if (currentGuild.owner === playerName) {
+                document.getElementById('guildAdminPanel').style.display = 'block';
+            }
+        }
+
+        function showNoGuildView() {
+            document.getElementById('noGuildView').style.display = 'block';
+            document.getElementById('guildView').style.display = 'none';
+            loadGuilds();
+        }
+
+        // Event listeners
+        document.getElementById('createGuildBtn').addEventListener('click', () => {
+            document.getElementById('createGuildModal').style.display = 'flex';
+        });
+
+        document.getElementById('browseGuildsBtn').addEventListener('click', () => {
+            loadGuilds();
+        });
+
+        document.getElementById('cancelCreateBtn').addEventListener('click', () => {
+            document.getElementById('createGuildModal').style.display = 'none';
+        });
+
+        document.getElementById('confirmCreateBtn').addEventListener('click', createGuild);
+
+        document.getElementById('leaveGuildBtn')?.addEventListener('click', async () => {
+            if (confirm('Opravdu chceš opustit guildu?')) {
+                localStorage.removeItem('myGuild');
+                currentGuild = null;
+                showNoGuildView();
+            }
+        });
+
+        // Načtení dat
+        updateCoinsDisplay();
+        loadMyGuild();
+    </script>
+</body>
+</html>

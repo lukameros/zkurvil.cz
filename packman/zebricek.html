@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏆 Žebříček - MAN EATER</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="ui.css">
+    <script src="ui.js" defer></script>
+</head>
+<body>
+<div class="coins-header">
+    <div class="coins-amount">🪙 <span id="coinsDisplay">0</span></div>
+    <button class="add-coins-small" onclick="window.location.href='shop.html'">➕</button>
+</div>
+
+<script>
+function updateCoinsDisplay() {
+    const data = JSON.parse(localStorage.getItem('gameData') || '{"coins":0}');
+    document.getElementById('coinsDisplay').textContent = data.coins || 0;
+}
+updateCoinsDisplay();
+</script>
+    <div class="container" style="margin-top: 3rem;">
+        <button onclick="window.location.href='index.html'" class="btn btn-secondary back-btn">
+            ← Zpět do menu
+        </button>
+        
+        <h1 class="title text-center">🏆 ŽEBŘÍČEK</h1>
+        
+        <div class="lobby-content">
+            <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+                <button id="singleTab" class="btn btn-primary" style="flex: 1;">
+                    🎮 SINGLEPLAYER
+                </button>
+                <button id="multiTab" class="btn btn-secondary" style="flex: 1;">
+                    👥 MULTIPLAYER
+                </button>
+            </div>
+
+            <div id="singleplayerBoard">
+                <h3 style="color: #fbbf24; margin-bottom: 1.5rem; font-size: 1.5rem;">
+                    🏅 Top 10 Singleplayer
+                </h3>
+                <table id="singleTable">
+                    <thead>
+                        <tr>
+                            <th>Pořadí</th>
+                            <th>Hráč</th>
+                            <th>Level</th>
+                            <th>Skóre</th>
+                            <th>Datum</th>
+                        </tr>
+                    </thead>
+                    <tbody id="singleBody">
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 2rem; color: #9ca3af;">
+                                Načítání...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="multiplayerBoard" style="display: none;">
+                <h3 style="color: #fbbf24; margin-bottom: 1.5rem; font-size: 1.5rem;">
+                    🏅 Top 10 Multiplayer
+                </h3>
+                <table id="multiTable">
+                    <thead>
+                        <tr>
+                            <th>Pořadí</th>
+                            <th>Hráč</th>
+                            <th>Skóre</th>
+                            <th>Výhry</th>
+                            <th>Datum</th>
+                        </tr>
+                    </thead>
+                    <tbody id="multiBody">
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 2rem; color: #9ca3af;">
+                                Načítání...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://jbfvoxlcociwtyobaotz.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpiZnZveGxjb2Npd3R5b2Jhb3R6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc3OTQ3MTgsImV4cCI6MjA4MzM3MDcxOH0.ydY1I-rVv08Kg76wI6oPgAt9fhUMRZmsFxpc03BhmkA';
+
+        async function fetchLeaderboard(type) {
+            try {
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/${type}_scores?order=score.desc&limit=10`, {
+                    headers: {
+                        'apikey': SUPABASE_ANON_KEY,
+                        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                    }
+                });
+                return await response.json();
+            } catch (e) {
+                console.error('Error fetching leaderboard:', e);
+                return [];
+            }
+        }
+
+        async function loadSingleplayer() {
+            const data = await fetchLeaderboard('singleplayer');
+            const tbody = document.getElementById('singleBody');
+            
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2rem; color: #9ca3af;">Zatím žádné záznamy</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = data.map((row, index) => {
+                const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}.`;
+                return `
+                    <tr>
+                        <td style="font-size: 1.3rem;">${medal}</td>
+                        <td style="font-weight: bold; color: ${index < 3 ? '#fbbf24' : '#f87171'};">${row.player_name}</td>
+                        <td>Level ${row.level || 1}</td>
+                        <td style="color: #fbbf24; font-weight: bold;">${row.score.toLocaleString()}</td>
+                        <td>${new Date(row.created_at).toLocaleDateString('cs-CZ')}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        async function loadMultiplayer() {
+            const data = await fetchLeaderboard('multiplayer');
+            const tbody = document.getElementById('multiBody');
+            
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2rem; color: #9ca3af;">Zatím žádné záznamy</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = data.map((row, index) => {
+                const medal = index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `${index + 1}.`;
+                return `
+                    <tr>
+                        <td style="font-size: 1.3rem;">${medal}</td>
+                        <td style="font-weight: bold; color: ${index < 3 ? '#fbbf24' : '#f87171'};">${row.player_name}</td>
+                        <td style="color: #fbbf24; font-weight: bold;">${row.score.toLocaleString()}</td>
+                        <td>${row.wins || 0}</td>
+                        <td>${new Date(row.created_at).toLocaleDateString('cs-CZ')}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Přepínání tabů
+        document.getElementById('singleTab').addEventListener('click', () => {
+            document.getElementById('singleTab').className = 'btn btn-primary';
+            document.getElementById('multiTab').className = 'btn btn-secondary';
+            document.getElementById('singleplayerBoard').style.display = 'block';
+            document.getElementById('multiplayerBoard').style.display = 'none';
+        });
+
+        document.getElementById('multiTab').addEventListener('click', () => {
+            document.getElementById('singleTab').className = 'btn btn-secondary';
+            document.getElementById('multiTab').className = 'btn btn-primary';
+            document.getElementById('singleplayerBoard').style.display = 'none';
+            document.getElementById('multiplayerBoard').style.display = 'block';
+        });
+
+        // Načtení dat
+        loadSingleplayer();
+        loadMultiplayer();
+    </script>
+</body>
+</html>

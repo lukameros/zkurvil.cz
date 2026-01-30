@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<div class="coins-header">
+    <div class="coins-amount">🪙 <span id="coinsDisplay">0</span></div>
+    <button class="add-coins-small" onclick="window.location.href='shop.html'">➕</button>
+</div>
+
+<script>
+function updateCoinsDisplay() {
+    const data = JSON.parse(localStorage.getItem('gameData') || '{"coins":0}');
+    document.getElementById('coinsDisplay').textContent = data.coins || 0;
+}
+updateCoinsDisplay();
+</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🛒 Obchod - MAN EATER</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .shop-header {
+            background: linear-gradient(135deg, rgba(127, 29, 29, 0.6), rgba(139, 0, 0, 0.4));
+            border: 2px solid #dc2626;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .coins-display {
+            font-size: 2.5rem;
+            color: #fbbf24;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .add-coins-btn {
+            background: linear-gradient(135deg, #14532d, #166534);
+            border-color: #16a34a;
+            color: #86efac;
+            padding: 0.8rem 1.5rem;
+            font-size: 1.1rem;
+            border-radius: 0.75rem;
+            border: 2px solid #16a34a;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .add-coins-btn:hover {
+            background: linear-gradient(135deg, #166534, #15803d);
+            transform: translateY(-2px);
+        }
+
+        .shop-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .shop-tab {
+            flex: 1;
+            padding: 1rem;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(20, 0, 0, 0.8));
+            border: 2px solid #991b1b;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #f87171;
+            transition: all 0.3s ease;
+        }
+
+        .shop-tab.active {
+            background: linear-gradient(135deg, #7f1d1d, #991b1b);
+            border-color: #dc2626;
+            color: #fbbf24;
+        }
+
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .shop-item {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(20, 0, 0, 0.8));
+            border: 2px solid #991b1b;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .shop-item:hover {
+            border-color: #dc2626;
+            transform: translateY(-5px);
+        }
+
+        .item-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .item-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ef4444;
+            margin-bottom: 0.5rem;
+        }
+
+        .item-price {
+            font-size: 1.5rem;
+            color: #fbbf24;
+            margin-bottom: 1rem;
+        }
+
+        .buy-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: linear-gradient(135deg, #7f1d1d, #991b1b);
+            color: white;
+            border: 2px solid #dc2626;
+            border-radius: 0.75rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .buy-btn:hover:not(:disabled) {
+            background: linear-gradient(135deg, #991b1b, #b91c1c);
+            transform: translateY(-2px);
+        }
+
+        .buy-btn:disabled {
+            background: linear-gradient(135deg, #374151, #4b5563);
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .owned-badge {
+            background: linear-gradient(135deg, #14532d, #166534);
+            color: #86efac;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(20, 0, 0, 0.95));
+            border: 2px solid #dc2626;
+            border-radius: 1rem;
+            padding: 2rem;
+            max-width: 500px;
+            margin: 2rem;
+        }
+
+        .premium-card {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(245, 158, 11, 0.05));
+            border: 2px solid #fbbf24;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .premium-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fbbf24;
+            margin-bottom: 1rem;
+        }
+
+        .premium-price {
+            font-size: 2rem;
+            color: #10b981;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+
+        .premium-features {
+            color: #f87171;
+            margin: 1rem 0;
+        }
+
+        .premium-features li {
+            margin: 0.5rem 0;
+        }
+    </style>
+    <link rel="stylesheet" href="ui.css">
+    <script src="ui.js" defer></script>
+</head>
+<body>
+    <div class="container" style="margin-top: 3rem;">
+        <button onclick="window.location.href='index.html'" class="btn btn-secondary back-btn">
+            ← Zpět do menu
+        </button>
+        
+        <h1 class="title text-center">🛒 OBCHOD</h1>
+        
+        <div class="shop-header">
+            <div class="coins-display">
+                🪙 <span id="coinsDisplay">0</span>
+            </div>
+            <button class="add-coins-btn" onclick="showPremiumModal()">
+                ➕ Získat více mincí
+            </button>
+        </div>
+
+        <div class="lobby-content">
+            <div class="shop-tabs">
+                <div class="shop-tab active" onclick="switchTab('pacman')">
+                    🟡 Pac-Man Skiny
+                </div>
+                <div class="shop-tab" onclick="switchTab('menu')">
+                    🎨 Menu Témata
+                </div>
+            </div>
+
+            <div id="pacmanTab" class="items-grid"></div>
+            <div id="menuTab" class="items-grid" style="display: none;"></div>
+        </div>
+    </div>
+
+    <!-- Premium Modal -->
+    <div id="premiumModal" class="modal">
+        <div class="modal-content">
+            <h2 style="color: #fbbf24; margin-bottom: 1.5rem; text-align: center;">
+                ✨ Získej Více Energie a Mincí!
+            </h2>
+
+            <div class="premium-card">
+                <div class="premium-title">⚡ Základní Balíček</div>
+                <div class="premium-price">50 Kč / měsíc</div>
+                <ul class="premium-features">
+                    <li>✅ 10 energie každých 10 minut</li>
+                    <li>✅ Rychlejší obnova</li>
+                    <li>✅ 100 bonusových mincí</li>
+                </ul>
+                <button class="btn btn-primary" style="width: 100%;">
+                    Zakoupit
+                </button>
+            </div>
+
+            <div class="premium-card">
+                <div class="premium-title">🔥 Premium Balíček</div>
+                <div class="premium-price">100 Kč / měsíc</div>
+                <ul class="premium-features">
+                    <li>✅ 100 energie každých 10 minut</li>
+                    <li>✅ Téměř neomezené hraní</li>
+                    <li>✅ 500 bonusových mincí</li>
+                    <li>✅ Exkluzivní skiny zdarma</li>
+                </ul>
+                <button class="btn btn-primary" style="width: 100%;">
+                    Zakoupit
+                </button>
+            </div>
+
+            <button class="btn btn-secondary" style="width: 100%; margin-top: 1rem;" onclick="closePremiumModal()">
+                Zavřít
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const pacmanSkins = [
+            { id: 'classic', name: 'Klasický', icon: '🟡', price: 0, owned: true },
+            { id: 'red', name: 'Červený', icon: '🔴', price: 50 },
+            { id: 'blue', name: 'Modrý', icon: '🔵', price: 50 },
+            { id: 'green', name: 'Zelený', icon: '🟢', price: 75 },
+            { id: 'purple', name: 'Fialový', icon: '🟣', price: 75 },
+            { id: 'rainbow', name: 'Duhový', icon: '🌈', price: 150 },
+            { id: 'golden', name: 'Zlatý', icon: '⭐', price: 200 },
+            { id: 'diamond', name: 'Diamantový', icon: '💎', price: 500 }
+        ];
+
+        const menuThemes = [
+            { id: 'dark', name: 'Tmavé (výchozí)', icon: '🌑', price: 0, owned: true },
+            { id: 'blood', name: 'Krvavé', icon: '🩸', price: 100 },
+            { id: 'neon', name: 'Neon', icon: '🌟', price: 150 },
+            { id: 'matrix', name: 'Matrix', icon: '💚', price: 200 },
+            { id: 'retro', name: 'Retro', icon: '👾', price: 250 },
+            { id: 'galaxy', name: 'Galaxie', icon: '🌌', price: 300 }
+        ];
+
+        function getGameData() {
+            return JSON.parse(localStorage.getItem('gameData') || '{"coins":0,"ownedSkins":["classic"],"ownedThemes":["dark"]}');
+        }
+
+        function saveGameData(data) {
+            localStorage.setItem('gameData', JSON.stringify(data));
+        }
+
+        function updateCoinsDisplay() {
+            const data = getGameData();
+            document.getElementById('coinsDisplay').textContent = data.coins || 0;
+        }
+
+        function renderShop() {
+            const data = getGameData();
+            const pacmanGrid = document.getElementById('pacmanTab');
+            const menuGrid = document.getElementById('menuTab');
+
+            // Pac-Man Skiny
+            pacmanGrid.innerHTML = pacmanSkins.map(skin => {
+                const owned = (data.ownedSkins || ['classic']).includes(skin.id);
+                const canBuy = !owned && data.coins >= skin.price;
+
+                return `
+                    <div class="shop-item">
+                        <div class="item-icon">${skin.icon}</div>
+                        <div class="item-name">${skin.name}</div>
+                        <div class="item-price">🪙 ${skin.price}</div>
+                        ${owned ? `
+                            <div class="owned-badge">✅ Vlastníš</div>
+                        ` : `
+                            <button class="buy-btn" ${!canBuy ? 'disabled' : ''} onclick="buyItem('skin', '${skin.id}', ${skin.price})">
+                                ${canBuy ? 'Koupit' : 'Nedostatek mincí'}
+                            </button>
+                        `}
+                    </div>
+                `;
+            }).join('');
+
+            // Menu Témata
+            menuGrid.innerHTML = menuThemes.map(theme => {
+                const owned = (data.ownedThemes || ['dark']).includes(theme.id);
+                const canBuy = !owned && data.coins >= theme.price;
+
+                return `
+                    <div class="shop-item">
+                        <div class="item-icon">${theme.icon}</div>
+                        <div class="item-name">${theme.name}</div>
+                        <div class="item-price">🪙 ${theme.price}</div>
+                        ${owned ? `
+                            <div class="owned-badge">✅ Vlastníš</div>
+                        ` : `
+                            <button class="buy-btn" ${!canBuy ? 'disabled' : ''} onclick="buyItem('theme', '${theme.id}', ${theme.price})">
+                                ${canBuy ? 'Koupit' : 'Nedostatek mincí'}
+                            </button>
+                        `}
+                    </div>
+                `;
+            }).join('');
+
+            updateCoinsDisplay();
+        }
+
+        function buyItem(type, id, price) {
+            const data = getGameData();
+
+            if (data.coins < price) {
+                alert('❌ Nedostatek mincí!');
+                return;
+            }
+
+            data.coins -= price;
+
+            if (type === 'skin') {
+                if (!data.ownedSkins) data.ownedSkins = ['classic'];
+                data.ownedSkins.push(id);
+            } else if (type === 'theme') {
+                if (!data.ownedThemes) data.ownedThemes = ['dark'];
+                data.ownedThemes.push(id);
+            }
+
+            saveGameData(data);
+            alert('✅ Zakoupeno!');
+            renderShop();
+        }
+
+        function switchTab(tab) {
+            const tabs = document.querySelectorAll('.shop-tab');
+            tabs.forEach(t => t.classList.remove('active'));
+
+            if (tab === 'pacman') {
+                tabs[0].classList.add('active');
+                document.getElementById('pacmanTab').style.display = 'grid';
+                document.getElementById('menuTab').style.display = 'none';
+            } else {
+                tabs[1].classList.add('active');
+                document.getElementById('pacmanTab').style.display = 'none';
+                document.getElementById('menuTab').style.display = 'grid';
+            }
+        }
+
+        function showPremiumModal() {
+            document.getElementById('premiumModal').style.display = 'flex';
+        }
+
+        function closePremiumModal() {
+            document.getElementById('premiumModal').style.display = 'none';
+        }
+
+        renderShop();
+    </script>
+</body>
+</html>
