@@ -62,44 +62,6 @@
             margin-top: 5px;
         }
 
-        /* Classic loading bar */
-        .classic-loading-container {
-            width: 250px;
-            height: 12px;
-            background: #000;
-            border: 1px solid #3C3C3C;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .classic-loading-bar {
-            height: 100%;
-            width: 0%;
-            background: #3C3C3C;
-            position: relative;
-        }
-
-        .loading-blocks {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            display: flex;
-            gap: 2px;
-        }
-
-        .loading-block {
-            width: 20px;
-            height: 100%;
-            background: linear-gradient(to bottom, #5A9FD4, #2E5C8A);
-            animation: slideBlocks 1.5s linear infinite;
-        }
-
-        @keyframes slideBlocks {
-            0% { transform: translateX(-300px); }
-            100% { transform: translateX(300px); }
-        }
-
         .xp-footer {
             position: absolute;
             bottom: 30px;
@@ -117,8 +79,32 @@
             display: none;
             width: 100vw;
             height: 100vh;
-            background: linear-gradient(to bottom, #5A8BB4 0%, #3A6EA5 100%);
+            background: 
+                linear-gradient(rgba(58, 110, 165, 0.3), rgba(58, 110, 165, 0.3)),
+                linear-gradient(135deg, #5A8BB4 0%, #3A6EA5 50%, #5A8BB4 100%);
+            background-size: cover;
+            background-position: center;
             position: relative;
+        }
+
+        /* Windows XP Bliss wallpaper simulation */
+        #desktop::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 30% 40%, rgba(135, 206, 250, 0.4) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 60%, rgba(144, 238, 144, 0.3) 0%, transparent 50%),
+                linear-gradient(to bottom, 
+                    rgba(135, 206, 250, 0.2) 0%,
+                    rgba(135, 206, 250, 0.1) 30%,
+                    rgba(144, 238, 144, 0.1) 60%,
+                    rgba(144, 238, 144, 0.2) 100%
+                );
+            pointer-events: none;
         }
 
         .desktop-icons {
@@ -443,6 +429,18 @@
     </style>
 </head>
 <body>
+    <!-- BIOS/POST Screen -->
+    <div id="bios-screen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; color: #aaa; font-family: 'Courier New'; padding: 20px; z-index: 10000; overflow: auto;">
+        <div style="color: #fff; margin-bottom: 20px;">
+            <strong>American Megatrends BIOS v2.54</strong><br>
+            Copyright (C) 1998-2004, American Megatrends Inc.
+        </div>
+        
+        <div style="margin: 20px 0;">
+            <div id="biosText"></div>
+        </div>
+    </div>
+
     <!-- Loading Screen -->
     <div id="loading-screen">
         <div class="xp-boot-screen">
@@ -451,12 +449,9 @@
                 <div class="xp-logo-subtitle">Professional</div>
             </div>
             
-            <div class="classic-loading-container">
-                <div class="loading-blocks" id="loadingBlocks">
-                    <div class="loading-block"></div>
-                    <div class="loading-block" style="animation-delay: 0.2s;"></div>
-                    <div class="loading-block" style="animation-delay: 0.4s;"></div>
-                </div>
+            <!-- Progress bar for loading -->
+            <div style="width: 250px; height: 10px; background: #000; border: 1px solid #3C3C3C; margin: 50px auto; position: relative; overflow: hidden;">
+                <div id="loadingBar" style="height: 100%; width: 0%; background: linear-gradient(to bottom, #5A9FD4, #2E5C8A);"></div>
             </div>
 
             <div class="xp-footer">
@@ -524,6 +519,10 @@
             <div class="icon" data-icon-id="network">
                 <div class="icon-img">🌐</div>
                 <div class="icon-label">Síťové připojení</div>
+            </div>
+            <div class="icon" data-icon-id="controlPanel">
+                <div class="icon-img">⚙️</div>
+                <div class="icon-label">Ovládací panely</div>
             </div>
         </div>
 
@@ -1245,6 +1244,521 @@ PS: Stále nevím, kde je ten Clippy...</textarea>
                 </div>
             </div>
         </div>
+
+        <div class="window" id="controlPanel" style="width: 700px; height: 500px;">
+            <div class="window-title">
+                <span>⚙️ Ovládací panely</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="minimizeWindow('controlPanel')">_</div>
+                    <div class="window-button" onclick="maximizeWindow('controlPanel')">□</div>
+                    <div class="window-button" onclick="closeWindow('controlPanel')">✕</div>
+                </div>
+            </div>
+            <div class="window-content">
+                <div style="background: #D4D0C8; padding: 10px; margin-bottom: 15px; border: 1px solid #888;">
+                    <strong>Vyberte kategorii:</strong>
+                    <select style="margin-left: 10px; padding: 5px;">
+                        <option>Zobrazení kategorií</option>
+                        <option>Klasické zobrazení</option>
+                    </select>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px;">
+                    <div onclick="openWindow('displayProps')" style="text-align: center; padding: 15px; border: 1px solid #ccc; cursor: pointer; background: #f0f0f0;">
+                        <div style="font-size: 48px; margin-bottom: 10px;">🖥️</div>
+                        <div style="font-size: 12px;"><strong>Obrazovka</strong></div>
+                    </div>
+                    <div onclick="openWindow('soundsAudio')" style="text-align: center; padding: 15px; border: 1px solid #ccc; cursor: pointer; background: #f0f0f0;">
+                        <div style="font-size: 48px; margin-bottom: 10px;">🔊</div>
+                        <div style="font-size: 12px;"><strong>Zvuky a audio</strong></div>
+                    </div>
+                    <div onclick="openWindow('network')" style="text-align: center; padding: 15px; border: 1px solid #ccc; cursor: pointer; background: #f0f0f0;">
+                        <div style="font-size: 48px; margin-bottom: 10px;">🌐</div>
+                        <div style="font-size: 12px;"><strong>Síť a Internet</strong></div>
+                    </div>
+                    <div onclick="openWindow('deviceManager')" style="text-align: center; padding: 15px; border: 1px solid #ccc; cursor: pointer; background: #f0f0f0;">
+                        <div style="font-size: 48px; margin-bottom: 10px;">🔧</div>
+                        <div style="font-size: 12px;"><strong>Správce zařízení</strong></div>
+                    </div>
+                    <div onclick="openWindow('userAccounts')" style="text-align: center; padding: 15px; border: 1px solid #ccc; cursor: pointer; background: #f0f0f0;">
+                        <div style="font-size: 48px; margin-bottom: 10px;">👤</div>
+                        <div style="font-size: 12px;"><strong>Uživatelské účty</strong></div>
+                    </div>
+                    <div onclick="openWindow('addRemove')" style="text-align: center; padding: 15px; border: 1px solid #ccc; cursor: pointer; background: #f0f0f0;">
+                        <div style="font-size: 48px; margin-bottom: 10px;">📦</div>
+                        <div style="font-size: 12px;"><strong>Přidat/Odebrat programy</strong></div>
+                    </div>
+                    <div onclick="openWindow('datetime')" style="text-align: center; padding: 15px; border: 1px solid #ccc; cursor: pointer; background: #f0f0f0;">
+                        <div style="font-size: 48px; margin-bottom: 10px;">🕐</div>
+                        <div style="font-size: 12px;"><strong>Datum a čas</strong></div>
+                    </div>
+                    <div onclick="openWindow('mouse')" style="text-align: center; padding: 15px; border: 1px solid #ccc; cursor: pointer; background: #f0f0f0;">
+                        <div style="font-size: 48px; margin-bottom: 10px;">🖱️</div>
+                        <div style="font-size: 12px;"><strong>Myš</strong></div>
+                    </div>
+                    <div onclick="openWindow('keyboard')" style="text-align: center; padding: 15px; border: 1px solid #ccc; cursor: pointer; background: #f0f0f0;">
+                        <div style="font-size: 48px; margin-bottom: 10px;">⌨️</div>
+                        <div style="font-size: 12px;"><strong>Klávesnice</strong></div>
+                    </div>
+                    <div onclick="openWindow('fonts')" style="text-align: center; padding: 15px; border: 1px solid #ccc; cursor: pointer; background: #f0f0f0;">
+                        <div style="font-size: 48px; margin-bottom: 10px;">🔤</div>
+                        <div style="font-size: 12px;"><strong>Písma</strong></div>
+                    </div>
+                    <div onclick="openWindow('accessibility')" style="text-align: center; padding: 15px; border: 1px solid #ccc; cursor: pointer; background: #f0f0f0;">
+                        <div style="font-size: 48px; margin-bottom: 10px;">♿</div>
+                        <div style="font-size: 12px;"><strong>Usnadnění</strong></div>
+                    </div>
+                    <div onclick="openWindow('power')" style="text-align: center; padding: 15px; border: 1px solid #ccc; cursor: pointer; background: #f0f0f0;">
+                        <div style="font-size: 48px; margin-bottom: 10px;">🔋</div>
+                        <div style="font-size: 12px;"><strong>Možnosti napájení</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="window" id="displayProps" style="width: 500px; height: 550px;">
+            <div class="window-title">
+                <span>🖥️ Vlastnosti: Obrazovka</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="closeWindow('displayProps')">✕</div>
+                </div>
+            </div>
+            <div class="window-content" style="padding: 0;">
+                <div style="background: #D4D0C8; padding: 5px; display: flex; border-bottom: 1px solid #888;">
+                    <button onclick="switchDisplayTab('themes')" id="tabThemes" style="padding: 8px 15px; border: 2px outset #fff; background: #ECE9D8; cursor: pointer;">Motivy</button>
+                    <button onclick="switchDisplayTab('desktop')" id="tabDesktop" style="padding: 8px 15px; border: 2px outset #fff; background: #D4D0C8; cursor: pointer;">Plocha</button>
+                    <button onclick="switchDisplayTab('screensaver')" id="tabScreensaver" style="padding: 8px 15px; border: 2px outset #fff; background: #D4D0C8; cursor: pointer;">Šetřič</button>
+                    <button onclick="switchDisplayTab('appearance')" id="tabAppearance" style="padding: 8px 15px; border: 2px outset #fff; background: #D4D0C8; cursor: pointer;">Vzhled</button>
+                    <button onclick="switchDisplayTab('settings')" id="tabSettings" style="padding: 8px 15px; border: 2px outset #fff; background: #D4D0C8; cursor: pointer;">Nastavení</button>
+                </div>
+                
+                <div id="displayTabContent" style="padding: 20px;">
+                    <!-- Themes tab -->
+                    <div id="themesContent">
+                        <h3>Motivy</h3>
+                        <div style="background: #fff; border: 2px inset #888; padding: 100px 20px; text-align: center; margin: 20px 0;">
+                            <div style="font-size: 48px;">🪟</div>
+                            <div style="margin-top: 10px; color: #666;">Náhled motivu Windows XP</div>
+                        </div>
+                        <label>Motiv:</label>
+                        <select style="width: 100%; padding: 5px; margin-top: 5px;">
+                            <option>Windows XP</option>
+                            <option>Windows Classic</option>
+                            <option>Modrá</option>
+                            <option>Olivová zelená</option>
+                            <option>Stříbrná</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div style="background: #D4D0C8; padding: 10px; border-top: 1px solid #888; text-align: right;">
+                    <button onclick="playClickSound(); alert('Nastavení uloženo! 💾')" style="padding: 5px 20px; margin-right: 5px;">OK</button>
+                    <button onclick="playClickSound(); alert('Použito! ✓')" style="padding: 5px 20px; margin-right: 5px;">Použít</button>
+                    <button onclick="closeWindow('displayProps')" style="padding: 5px 20px;">Storno</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="window" id="soundsAudio" style="width: 500px; height: 450px;">
+            <div class="window-title">
+                <span>🔊 Vlastnosti: Zvuky a zvuková zařízení</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="closeWindow('soundsAudio')">✕</div>
+                </div>
+            </div>
+            <div class="window-content">
+                <h3>Zvuková schémata</h3>
+                <label style="display: block; margin: 15px 0;">Schéma:</label>
+                <select style="width: 100%; padding: 5px;">
+                    <option>Windows výchozí</option>
+                    <option>Bez zvuků</option>
+                    <option>Windows XP</option>
+                </select>
+                
+                <div style="margin: 20px 0;">
+                    <label style="display: block; margin-bottom: 10px;">Programové události:</label>
+                    <div style="border: 2px inset #888; background: #fff; padding: 10px; max-height: 200px; overflow-y: auto;">
+                        <div style="padding: 5px; cursor: pointer;" onclick="this.style.background='#e0e0ff'">🔔 Výchozí pípnutí</div>
+                        <div style="padding: 5px; cursor: pointer;" onclick="this.style.background='#e0e0ff'">📧 Nová pošta</div>
+                        <div style="padding: 5px; cursor: pointer;" onclick="this.style.background='#e0e0ff'">🚨 Kritická chyba</div>
+                        <div style="padding: 5px; cursor: pointer;" onclick="this.style.background='#e0e0ff'">⚠️ Výkřičník</div>
+                        <div style="padding: 5px; cursor: pointer;" onclick="this.style.background='#e0e0ff'">❓ Otázka</div>
+                        <div style="padding: 5px; cursor: pointer;" onclick="this.style.background='#e0e0ff'">🪟 Spuštění Windows</div>
+                        <div style="padding: 5px; cursor: pointer;" onclick="this.style.background='#e0e0ff'">🔴 Ukončení Windows</div>
+                        <div style="padding: 5px; cursor: pointer;" onclick="this.style.background='#e0e0ff'">📂 Otevřít aplikaci</div>
+                        <div style="padding: 5px; cursor: pointer;" onclick="this.style.background='#e0e0ff'">❌ Zavřít aplikaci</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <label>Zvuky:</label>
+                    <select style="width: 100%; padding: 5px; margin-top: 5px;">
+                        <option>C:\Windows\Media\chimes.wav</option>
+                        <option>C:\Windows\Media\chord.wav</option>
+                        <option>C:\Windows\Media\ding.wav</option>
+                    </select>
+                    <button onclick="playStartupSound()" style="margin-top: 10px; padding: 5px 15px;">▶️ Přehrát</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="window" id="deviceManager" style="width: 550px; height: 500px;">
+            <div class="window-title">
+                <span>🔧 Správce zařízení</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="minimizeWindow('deviceManager')">_</div>
+                    <div class="window-button" onclick="closeWindow('deviceManager')">✕</div>
+                </div>
+            </div>
+            <div class="window-content" style="padding: 10px;">
+                <div style="border: 2px inset #888; background: #fff; padding: 10px; height: 400px; overflow-y: auto; font-family: 'Courier New'; font-size: 12px;">
+                    <div style="margin: 5px 0;">📦 Počítač</div>
+                    <div style="margin-left: 20px;">
+                        <div style="margin: 5px 0; cursor: pointer;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'">▶️ 💿 Diskové jednotky</div>
+                        <div style="margin-left: 20px; display: none;">
+                            <div style="margin: 3px 0;">WDC WD800BB-75JHC0</div>
+                        </div>
+                        
+                        <div style="margin: 5px 0; cursor: pointer;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'">▶️ 🖥️ Monitory</div>
+                        <div style="margin-left: 20px; display: none;">
+                            <div style="margin: 3px 0;">Plug and Play Monitor</div>
+                        </div>
+                        
+                        <div style="margin: 5px 0; cursor: pointer;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'">▶️ 🖱️ Myši a jiná polohovací zařízení</div>
+                        <div style="margin-left: 20px; display: none;">
+                            <div style="margin: 3px 0;">HID-compliant mouse</div>
+                        </div>
+                        
+                        <div style="margin: 5px 0; cursor: pointer;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'">▶️ ⌨️ Klávesnice</div>
+                        <div style="margin-left: 20px; display: none;">
+                            <div style="margin: 3px 0;">Standardní PS/2 klávesnice</div>
+                        </div>
+                        
+                        <div style="margin: 5px 0; cursor: pointer;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'">▶️ 🔊 Zvuková, video a herní zařízení</div>
+                        <div style="margin-left: 20px; display: none;">
+                            <div style="margin: 3px 0;">Realtek AC'97 Audio</div>
+                            <div style="margin: 3px 0;">Microsoft Kernel System Audio Device</div>
+                        </div>
+                        
+                        <div style="margin: 5px 0; cursor: pointer;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'">▶️ 🌐 Síťové adaptéry</div>
+                        <div style="margin-left: 20px; display: none;">
+                            <div style="margin: 3px 0;">Realtek RTL8139 Family PCI Fast Ethernet NIC</div>
+                        </div>
+                        
+                        <div style="margin: 5px 0; cursor: pointer;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'">▶️ 🎮 Procesory</div>
+                        <div style="margin-left: 20px; display: none;">
+                            <div style="margin: 3px 0;">Intel Pentium 4 CPU 2.80GHz</div>
+                        </div>
+                        
+                        <div style="margin: 5px 0; cursor: pointer;" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='none'?'block':'none'">▶️ 📡 Porty (COM a LPT)</div>
+                        <div style="margin-left: 20px; display: none;">
+                            <div style="margin: 3px 0;">Port tiskárny (LPT1)</div>
+                            <div style="margin: 3px 0;">Communications Port (COM1)</div>
+                        </div>
+                        
+                        <div style="margin: 5px 0; color: #c00; cursor: pointer;" onclick="alert('⚠️ Zařízení má problém!\\nKód chyby: 43\\n\\nOvladač může být zastaralý nebo poškozený.')">❌ ⚠️ Neznámé zařízení</div>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 10px;">
+                    <button onclick="playClickSound(); alert('Zařízení aktualizována! 🔄')" style="padding: 5px 15px;">🔄 Aktualizovat</button>
+                    <button onclick="playClickSound(); alert('Hledání nových zařízení... 🔍')" style="padding: 5px 15px; margin-left: 5px;">🔍 Vyhledat změny</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="window" id="userAccounts" style="width: 500px; height: 400px;">
+            <div class="window-title">
+                <span>👤 Uživatelské účty</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="closeWindow('userAccounts')">✕</div>
+                </div>
+            </div>
+            <div class="window-content">
+                <h3>Vyberte úkol...</h3>
+                <div style="margin: 20px 0;">
+                    <div style="padding: 15px; background: #f0f0f0; border: 1px solid #ccc; margin: 10px 0; cursor: pointer;" onclick="playClickSound(); alert('Změna účtu... 👤')">
+                        <strong>👤 Změnit účet</strong>
+                        <div style="font-size: 12px; color: #666; margin-top: 5px;">Změňte jméno, obrázek, typ nebo heslo účtu</div>
+                    </div>
+                    <div style="padding: 15px; background: #f0f0f0; border: 1px solid #ccc; margin: 10px 0; cursor: pointer;" onclick="playClickSound(); alert('Vytváření nového účtu... ➕')">
+                        <strong>➕ Vytvořit nový účet</strong>
+                        <div style="font-size: 12px; color: #666; margin-top: 5px;">Vytvořte nový uživatelský účet</div>
+                    </div>
+                    <div style="padding: 15px; background: #f0f0f0; border: 1px solid #ccc; margin: 10px 0; cursor: pointer;" onclick="playClickSound(); alert('Změna způsobu přihlášení... 🔐')">
+                        <strong>🔐 Změnit způsob přihlášení a odhlášení uživatelů</strong>
+                        <div style="font-size: 12px; color: #666; margin-top: 5px;">Vyberte přihlašovací možnosti</div>
+                    </div>
+                </div>
+                
+                <div style="background: #fffacd; border: 1px solid #ffa500; padding: 15px; margin-top: 20px;">
+                    <strong>💡 Tip:</strong> Pro změnu účtu potřebujete práva správce.
+                </div>
+            </div>
+        </div>
+
+        <div class="window" id="addRemove" style="width: 600px; height: 500px;">
+            <div class="window-title">
+                <span>📦 Přidat nebo odebrat programy</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="minimizeWindow('addRemove')">_</div>
+                    <div class="window-button" onclick="closeWindow('addRemove')">✕</div>
+                </div>
+            </div>
+            <div class="window-content" style="padding: 10px;">
+                <p style="margin-bottom: 15px;">Chcete-li změnit program nebo ho odebrat z počítače, klikněte na tlačítko Změnit nebo Odebrat.</p>
+                
+                <div style="border: 2px inset #888; background: #fff; padding: 10px; height: 350px; overflow-y: auto;">
+                    <div style="padding: 10px; border-bottom: 1px solid #ccc; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>📦 Adobe Reader 7.0</strong><br>
+                            <span style="font-size: 11px; color: #666;">Velikost: 45.2 MB | Použito: Často</span>
+                        </div>
+                        <button onclick="playClickSound(); alert('Odebírání Adobe Reader... 🗑️')" style="padding: 5px 15px;">Odebrat</button>
+                    </div>
+                    <div style="padding: 10px; border-bottom: 1px solid #ccc; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>🎮 DirectX 9.0c</strong><br>
+                            <span style="font-size: 11px; color: #666;">Velikost: 95.5 MB | Použito: Denně</span>
+                        </div>
+                        <button onclick="playClickSound(); alert('DirectX nelze odebrat! ⚠️')" style="padding: 5px 15px;">Odebrat</button>
+                    </div>
+                    <div style="padding: 10px; border-bottom: 1px solid #ccc; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>🌐 Internet Explorer 6</strong><br>
+                            <span style="font-size: 11px; color: #666;">Velikost: 78.1 MB | Použito: Občas</span>
+                        </div>
+                        <button onclick="playClickSound(); alert('IE je součást Windows! 🚫')" style="padding: 5px 15px;" disabled>Odebrat</button>
+                    </div>
+                    <div style="padding: 10px; border-bottom: 1px solid #ccc; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>📟 Windows Messenger</strong><br>
+                            <span style="font-size: 11px; color: #666;">Velikost: 12.4 MB | Použito: Nikdy</span>
+                        </div>
+                        <button onclick="playClickSound(); alert('Odebírání Windows Messenger... 🗑️')" style="padding: 5px 15px;">Odebrat</button>
+                    </div>
+                    <div style="padding: 10px; border-bottom: 1px solid #ccc; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>🎵 Winamp 5.12</strong><br>
+                            <span style="font-size: 11px; color: #666;">Velikost: 8.9 MB | Použito: Denně</span>
+                        </div>
+                        <button onclick="playClickSound(); alert('Odebírání Winamp... 🗑️')" style="padding: 5px 15px;">Odebrat</button>
+                    </div>
+                    <div style="padding: 10px; border-bottom: 1px solid #ccc; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>🦠 určitě_ne_virus.exe</strong><br>
+                            <span style="font-size: 11px; color: #666;">Velikost: 666 MB | Použito: Pořád 😈</span>
+                        </div>
+                        <button onclick="playClickSound(); alert('Přístup odepřen! Tento program je chráněn! 🔒')" style="padding: 5px 15px;">Odebrat</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="window" id="datetime" style="width: 400px; height: 350px;">
+            <div class="window-title">
+                <span>🕐 Vlastnosti: Datum a čas</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="closeWindow('datetime')">✕</div>
+                </div>
+            </div>
+            <div class="window-content">
+                <h3>Nastavení data a času</h3>
+                <div style="display: flex; gap: 20px; margin: 20px 0;">
+                    <div>
+                        <label>Datum:</label>
+                        <input type="date" value="2026-01-30" style="width: 100%; padding: 5px; margin-top: 5px;">
+                    </div>
+                    <div>
+                        <label>Čas:</label>
+                        <input type="time" value="13:37" style="width: 100%; padding: 5px; margin-top: 5px;">
+                    </div>
+                </div>
+                <div style="margin: 20px 0;">
+                    <label>Časové pásmo:</label>
+                    <select style="width: 100%; padding: 5px; margin-top: 5px;">
+                        <option>(GMT+01:00) Praha, Bratislava</option>
+                        <option>(GMT+00:00) Londýn</option>
+                        <option>(GMT-05:00) New York</option>
+                    </select>
+                </div>
+                <div style="text-align: right; margin-top: 30px;">
+                    <button onclick="playClickSound(); alert('Čas nastaven! 🕐')" style="padding: 5px 20px;">OK</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="window" id="mouse" style="width: 450px; height: 400px;">
+            <div class="window-title">
+                <span>🖱️ Vlastnosti: Myš</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="closeWindow('mouse')">✕</div>
+                </div>
+            </div>
+            <div class="window-content">
+                <h3>Nastavení myši</h3>
+                <div style="margin: 20px 0;">
+                    <label><input type="checkbox" checked> Prohodit primární a sekundární tlačítka</label>
+                </div>
+                <div style="margin: 20px 0;">
+                    <label>Rychlost dvojkliku:</label>
+                    <input type="range" min="200" max="900" value="500" style="width: 100%; margin: 10px 0;">
+                    <div style="display: flex; justify-content: space-between; font-size: 12px;">
+                        <span>Pomalé</span>
+                        <span>Rychlé</span>
+                    </div>
+                </div>
+                <div style="margin: 20px 0;">
+                    <label>Rychlost ukazatele:</label>
+                    <input type="range" min="1" max="20" value="10" style="width: 100%; margin: 10px 0;">
+                </div>
+                <div style="margin: 20px 0;">
+                    <label><input type="checkbox" checked> Zvýšit přesnost ukazatele</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="window" id="keyboard" style="width: 450px; height: 350px;">
+            <div class="window-title">
+                <span>⌨️ Vlastnosti: Klávesnice</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="closeWindow('keyboard')">✕</div>
+                </div>
+            </div>
+            <div class="window-content">
+                <h3>Nastavení klávesnice</h3>
+                <div style="margin: 20px 0;">
+                    <label>Prodleva před opakováním:</label>
+                    <input type="range" min="250" max="1000" value="500" style="width: 100%; margin: 10px 0;">
+                    <div style="display: flex; justify-content: space-between; font-size: 12px;">
+                        <span>Krátká</span>
+                        <span>Dlouhá</span>
+                    </div>
+                </div>
+                <div style="margin: 20px 0;">
+                    <label>Rychlost opakování:</label>
+                    <input type="range" min="1" max="31" value="15" style="width: 100%; margin: 10px 0;">
+                    <div style="display: flex; justify-content: space-between; font-size: 12px;">
+                        <span>Pomalé</span>
+                        <span>Rychlé</span>
+                    </div>
+                </div>
+                <div style="margin: 20px 0;">
+                    <label>Rychlost blikání kurzoru:</label>
+                    <input type="range" min="200" max="1200" value="530" style="width: 100%; margin: 10px 0;">
+                </div>
+            </div>
+        </div>
+
+        <div class="window" id="fonts" style="width: 600px; height: 450px;">
+            <div class="window-title">
+                <span>🔤 Písma</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="minimizeWindow('fonts')">_</div>
+                    <div class="window-button" onclick="closeWindow('fonts')">✕</div>
+                </div>
+            </div>
+            <div class="window-content">
+                <h3>Instalovaná písma</h3>
+                <div style="border: 2px inset #888; background: #fff; padding: 10px; height: 350px; overflow-y: auto; margin-top: 15px;">
+                    <div style="padding: 10px; border-bottom: 1px solid #ccc;">🔤 Arial</div>
+                    <div style="padding: 10px; border-bottom: 1px solid #ccc;">🔤 Comic Sans MS</div>
+                    <div style="padding: 10px; border-bottom: 1px solid #ccc;">🔤 Courier New</div>
+                    <div style="padding: 10px; border-bottom: 1px solid #ccc;">🔤 Georgia</div>
+                    <div style="padding: 10px; border-bottom: 1px solid #ccc;">🔤 Impact</div>
+                    <div style="padding: 10px; border-bottom: 1px solid #ccc;">🔤 Lucida Console</div>
+                    <div style="padding: 10px; border-bottom: 1px solid #ccc;">🔤 Tahoma</div>
+                    <div style="padding: 10px; border-bottom: 1px solid #ccc;">🔤 Times New Roman</div>
+                    <div style="padding: 10px; border-bottom: 1px solid #ccc;">🔤 Trebuchet MS</div>
+                    <div style="padding: 10px;">🔤 Verdana</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="window" id="accessibility" style="width: 500px; height: 450px;">
+            <div class="window-title">
+                <span>♿ Usnadnění</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="closeWindow('accessibility')">✕</div>
+                </div>
+            </div>
+            <div class="window-content">
+                <h3>Možnosti usnadnění</h3>
+                <div style="margin: 20px 0;">
+                    <h4>🔊 Zvuk</h4>
+                    <label><input type="checkbox"> Použít vizuální upozornění místo zvuku</label>
+                </div>
+                <div style="margin: 20px 0;">
+                    <h4>🖥️ Zobrazení</h4>
+                    <label><input type="checkbox"> Použít vysoký kontrast</label><br>
+                    <label><input type="checkbox"> Zvětšit text a ikony</label>
+                </div>
+                <div style="margin: 20px 0;">
+                    <h4>⌨️ Klávesnice</h4>
+                    <label><input type="checkbox"> Použít zalep klávesy</label><br>
+                    <label><input type="checkbox"> Použít filtrování kláves</label>
+                </div>
+                <div style="margin: 20px 0;">
+                    <h4>🖱️ Myš</h4>
+                    <label><input type="checkbox"> Ovládat myš klávesnicí</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="window" id="power" style="width: 500px; height: 450px;">
+            <div class="window-title">
+                <span>🔋 Vlastnosti: Možnosti napájení</span>
+                <div class="window-buttons">
+                    <div class="window-button" onclick="closeWindow('power')">✕</div>
+                </div>
+            </div>
+            <div class="window-content">
+                <h3>Schémata napájení</h3>
+                <div style="margin: 20px 0;">
+                    <label>Schéma napájení:</label>
+                    <select style="width: 100%; padding: 5px; margin-top: 5px;">
+                        <option>Domácí nebo kancelářská stanice</option>
+                        <option>Přenosný počítač</option>
+                        <option>Prezentace</option>
+                        <option>Minimální úspora energie</option>
+                        <option>Maximální úspora energie</option>
+                    </select>
+                </div>
+                
+                <div style="background: #f0f0f0; padding: 15px; border: 1px solid #ccc; margin: 20px 0;">
+                    <h4>Nastavení pro připojení k síti:</h4>
+                    <div style="margin: 10px 0;">
+                        <label>Vypnout monitor:</label>
+                        <select style="padding: 3px; margin-left: 10px;">
+                            <option>Po 15 minutách</option>
+                            <option>Po 30 minutách</option>
+                            <option>Po 1 hodině</option>
+                            <option>Nikdy</option>
+                        </select>
+                    </div>
+                    <div style="margin: 10px 0;">
+                        <label>Vypnout pevné disky:</label>
+                        <select style="padding: 3px; margin-left: 10px;">
+                            <option>Po 20 minutách</option>
+                            <option>Po 1 hodině</option>
+                            <option>Nikdy</option>
+                        </select>
+                    </div>
+                    <div style="margin: 10px 0;">
+                        <label>Režim spánku:</label>
+                        <select style="padding: 3px; margin-left: 10px;">
+                            <option>Po 30 minutách</option>
+                            <option>Po 1 hodině</option>
+                            <option>Nikdy</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <label><input type="checkbox" checked> Zobrazit ikonu v oznamovací oblasti</label>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -1287,9 +1801,260 @@ PS: Stále nevím, kde je ten Clippy...</textarea>
         }
 
         function playErrorSound() {
-            playBeep(300, 0.1, 0.3);
-            setTimeout(() => playBeep(250, 0.2, 0.3), 100);
+            // Try to play error.mp3
+            const audio = new Audio('error.mp3');
+            audio.volume = 0.5;
+            audio.play().catch(err => {
+                console.log('error.mp3 not found, using beep sounds');
+                // Fallback to beep sounds if error.mp3 doesn't exist
+                playBeep(300, 0.1, 0.3);
+                setTimeout(() => playBeep(250, 0.2, 0.3), 100);
+            });
         }
+
+        // Random error messages
+        const randomErrors = [
+            {
+                title: "Kritická chyba",
+                message: "Aplikace přestala odpovídat.\n\nChcete ji ukončit?",
+                icon: "❌",
+                buttons: ["Ukončit", "Čekat", "Zrušit"]
+            },
+            {
+                title: "Chyba paměti",
+                message: "Nedostatek paměti pro dokončení operace.\n\nUzavřete některé aplikace a zkuste to znovu.",
+                icon: "⚠️",
+                buttons: ["OK"]
+            },
+            {
+                title: "Disk je plný",
+                message: "Na disku C:\\ není dostatek místa.\n\nAktuální volné místo: 0 bajtů",
+                icon: "💾",
+                buttons: ["OK", "Vyčistit disk"]
+            },
+            {
+                title: "Ztráta připojení",
+                message: "Síťové připojení bylo přerušeno.\n\nZkontrolujte síťový kabel.",
+                icon: "🌐",
+                buttons: ["Znovu připojit", "Zrušit"]
+            },
+            {
+                title: "Neznámé zařízení",
+                message: "Systém Windows zjistil nové hardwarové zařízení a nenašel pro něj ovladač.\n\nZařízení nemusí fungovat správně.",
+                icon: "🔧",
+                buttons: ["Hledat ovladač", "Zrušit"]
+            },
+            {
+                title: "Nelegální operace",
+                message: "Tento program provedl neplatnou operaci a bude ukončen.\n\nChyba v modulu: KERNEL32.DLL",
+                icon: "🚫",
+                buttons: ["Zavřít", "Podrobnosti"]
+            },
+            {
+                title: "Nedostatek systémových prostředků",
+                message: "Systému Windows docházejí paměťové prostředky.\n\nUložte si práci a restartujte počítač.",
+                icon: "⚠️",
+                buttons: ["OK"]
+            },
+            {
+                title: "Chyba při čtení disku",
+                message: "Nelze přečíst z jednotky A:\\\n\nVložte disk do jednotky a zkuste to znovu.",
+                icon: "💾",
+                buttons: ["Opakovat", "Storno"]
+            },
+            {
+                title: "Aplikace nenalezena",
+                message: "Systém Windows nemůže najít soubor 'vcr.exe'.\n\nUjistěte se, že jste zadali správný název.",
+                icon: "❓",
+                buttons: ["OK"]
+            },
+            {
+                title: "Přístup odepřen",
+                message: "Nemáte oprávnění k provedení této operace.\n\nObraťte se na správce systému.",
+                icon: "🔒",
+                buttons: ["OK"]
+            },
+            {
+                title: "Virus detekován!",
+                message: "Norton Antivirus zjistil podezřelou aktivitu!\n\nSoubor: určitě_ne_virus.exe\nHrozba: Vysoká\n\n(Jen žertuju, je to fake 😄)",
+                icon: "🦠",
+                buttons: ["Karanténa", "Ignorovat"]
+            },
+            {
+                title: "Windows Update",
+                message: "K dispozici jsou důležité aktualizace.\n\nChcete je nainstalovat teď? (Bude to trvat 3 hodiny)",
+                icon: "🔄",
+                buttons: ["Ano", "Ne", "Později"]
+            },
+            {
+                title: "Registrace Windows",
+                message: "Tato kopie systému Windows musí být aktivována do 30 dnů.\n\nChcete aktivovat Windows nyní?",
+                icon: "🔑",
+                buttons: ["Aktivovat", "Připomenout později"]
+            },
+            {
+                title: "Systémová chyba",
+                message: "Došlo k neočekávané chybě.\n\nKód chyby: 0x80070005\n\nDoporučujeme restartovat počítač.",
+                icon: "🔴",
+                buttons: ["Restartovat", "Ignorovat"]
+            },
+            {
+                title: "Připojení tiskárny selhalo",
+                message: "Tiskárna na portu LPT1 neodpovídá.\n\nZkontrolujte, zda je tiskárna zapnutá a připojená.",
+                icon: "🖨️",
+                buttons: ["OK"]
+            }
+        ];
+
+        // Function to show random error dialog
+        function showRandomError() {
+            const error = randomErrors[Math.floor(Math.random() * randomErrors.length)];
+            playErrorSound();
+            
+            const overlay = document.createElement('div');
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.3);
+                z-index: 100000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            `;
+            
+            const dialog = document.createElement('div');
+            dialog.style.cssText = `
+                background: #ECE9D8;
+                border: 2px solid #0054E3;
+                border-radius: 8px 8px 0 0;
+                box-shadow: 3px 3px 10px rgba(0,0,0,0.5);
+                min-width: 400px;
+                max-width: 500px;
+            `;
+            
+            const titleBar = document.createElement('div');
+            titleBar.style.cssText = `
+                background: linear-gradient(to bottom, #0997FF 0%, #0053EE 100%);
+                color: white;
+                padding: 5px 10px;
+                font-size: 13px;
+                font-weight: bold;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            `;
+            titleBar.innerHTML = `
+                <span>${error.title}</span>
+                <div style="cursor: pointer; width: 21px; height: 21px; background: linear-gradient(to bottom, #E8E5DC 0%, #C8C5BC 100%); border: 1px outset #fff; display: flex; align-items: center; justify-content: center; font-size: 10px;" onclick="this.closest('.error-overlay').remove();">✕</div>
+            `;
+            
+            const content = document.createElement('div');
+            content.style.cssText = `
+                padding: 20px;
+                display: flex;
+                gap: 15px;
+                align-items: flex-start;
+            `;
+            content.innerHTML = `
+                <div style="font-size: 48px; flex-shrink: 0;">${error.icon}</div>
+                <div style="flex: 1;">
+                    <div style="white-space: pre-line; margin-bottom: 20px;">${error.message}</div>
+                    <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                        ${error.buttons.map(btn => `
+                            <button onclick="playClickSound(); this.closest('.error-overlay').remove();" style="padding: 5px 20px; min-width: 80px;">${btn}</button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            dialog.appendChild(titleBar);
+            dialog.appendChild(content);
+            overlay.appendChild(dialog);
+            overlay.className = 'error-overlay';
+            document.body.appendChild(overlay);
+        }
+
+        // Randomly show errors - GUARANTEED every 120 seconds
+        function scheduleRandomError() {
+            // Show error every 120 seconds (2 minutes) guaranteed
+            setTimeout(() => {
+                showRandomError();
+                // Schedule next error
+                scheduleRandomError();
+            }, 120000); // Exactly 120 seconds
+        }
+
+        // Start scheduling random errors after desktop loads
+        setTimeout(() => {
+            scheduleRandomError();
+        }, 60000); // Wait 1 minute after boot before first error
+
+        // BSOD - Blue Screen of Death (very rare, 0.5% chance)
+        function showBSOD() {
+            playErrorSound();
+            const bsod = document.createElement('div');
+            bsod.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: #0000AA;
+                color: #FFFFFF;
+                font-family: 'Courier New', monospace;
+                padding: 40px;
+                z-index: 999999;
+                overflow: auto;
+            `;
+            bsod.innerHTML = `
+                <div style="white-space: pre; font-size: 14px;">
+A problem has been detected and Windows has been shut down to prevent damage
+to your computer.
+
+IRQL_NOT_LESS_OR_EQUAL
+
+If this is the first time you've seen this Stop error screen,
+restart your computer. If this screen appears again, follow
+these steps:
+
+Check to make sure any new hardware or software is properly installed.
+If this is a new installation, ask your hardware or software manufacturer
+for any Windows updates you might need.
+
+If problems continue, disable or remove any newly installed hardware
+or software. Disable BIOS memory options such as caching or shadowing.
+If you need to use Safe Mode to remove or disable components, restart
+your computer, press F8 to select Advanced Startup Options, and then
+select Safe Mode.
+
+Technical information:
+
+*** STOP: 0x0000000A (0x00000000, 0x00000002, 0x00000000, 0x804E4E23)
+
+
+***  určitě_ne_virus.exe - Address 804E4E23 base at 80400000, DateStamp 3ee6c002
+
+                </div>
+                <div style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); text-align: center;">
+                    <button onclick="location.reload()" style="background: #fff; color: #000; padding: 10px 30px; font-size: 14px; cursor: pointer; border: 2px solid #000;">Restart Computer</button>
+                </div>
+            `;
+            document.body.appendChild(bsod);
+        }
+
+        // Extremely rare BSOD trigger
+        function maybeShowBSOD() {
+            // Only 0.5% chance
+            if (Math.random() < 0.005) {
+                setTimeout(showBSOD, Math.random() * 300000 + 300000); // Between 5-10 minutes
+            }
+        }
+
+        // Schedule potential BSOD
+        setTimeout(maybeShowBSOD, 300000); // Check after 5 minutes
 
         function playShutdownSound() {
             playBeep(1047, 0.15, 0.2);
@@ -1298,10 +2063,68 @@ PS: Stále nevím, kde je ten Clippy...</textarea>
             setTimeout(() => playBeep(523, 0.3, 0.25), 450);
         }
 
-        // Loading simulation
+        // BIOS/POST sequence
+        const biosMessages = [
+            { text: 'Detecting RAM...', delay: 200 },
+            { text: 'RAM: 256 MB OK', delay: 300 },
+            { text: '', delay: 100 },
+            { text: 'Primary Master  : WDC WD800BB-75JHC0', delay: 200 },
+            { text: 'Primary Slave   : None', delay: 150 },
+            { text: 'Secondary Master: ASUS DVD-ROM DVD-E616', delay: 200 },
+            { text: 'Secondary Slave : None', delay: 150 },
+            { text: '', delay: 100 },
+            { text: 'Detecting IDE Drives...', delay: 300 },
+            { text: 'Primary Master  : WDC WD800BB-75JHC0 ............... OK', delay: 400 },
+            { text: 'Secondary Master: ASUS DVD-ROM DVD-E616 ............ OK', delay: 400 },
+            { text: '', delay: 100 },
+            { text: 'Detecting Floppy Drive A...', delay: 200 },
+            { text: 'Drive A: 1.44MB 3.5" ................................. OK', delay: 300 },
+            { text: '', delay: 100 },
+            { text: 'USB Device(s): 0 Mouse, 0 Keyboard, 0 Hub, 0 Storage', delay: 250 },
+            { text: '', delay: 100 },
+            { text: 'Verifying DMI Pool Data...', delay: 400 },
+            { text: 'DMI Data Updated Successfully', delay: 300 },
+            { text: '', delay: 200 },
+            { text: 'Initializing Boot Agent...', delay: 300 },
+            { text: 'Boot Agent Version 4.1.18', delay: 200 },
+            { text: '', delay: 100 },
+            { text: 'Starting Windows...', delay: 500 },
+        ];
+
+        let biosIndex = 0;
+        const biosTextElement = document.getElementById('biosText');
+
+        function displayBiosMessage() {
+            if (biosIndex < biosMessages.length) {
+                const msg = biosMessages[biosIndex];
+                biosTextElement.innerHTML += msg.text + '<br>';
+                biosTextElement.scrollTop = biosTextElement.scrollHeight;
+                
+                // Beep sound for some messages
+                if (msg.text.includes('OK') || msg.text.includes('Starting')) {
+                    playBeep(800, 0.05, 0.1);
+                }
+                
+                biosIndex++;
+                setTimeout(displayBiosMessage, msg.delay);
+            } else {
+                // BIOS complete, show Windows loading
+                setTimeout(() => {
+                    document.getElementById('bios-screen').style.display = 'none';
+                    setTimeout(simulateLoading, 100);
+                }, 500);
+            }
+        }
+
+        // Start BIOS sequence
+        setTimeout(displayBiosMessage, 500);
+
+        // Loading simulation - extended to 15 seconds
         let loadingProgress = 0;
         function simulateLoading() {
-            loadingProgress += 2;
+            loadingProgress += 1;
+            document.getElementById('loadingBar').style.width = loadingProgress + '%';
+            
             if (loadingProgress >= 100) {
                 setTimeout(() => {
                     document.getElementById('loading-screen').style.display = 'none';
@@ -1311,12 +2134,10 @@ PS: Stále nevím, kde je ten Clippy...</textarea>
                     randomizeIconPositions();
                 }, 500);
             } else {
-                setTimeout(simulateLoading, 50);
+                // Slower loading - total ~10 seconds after BIOS
+                setTimeout(simulateLoading, 100);
             }
         }
-
-        // Start loading after a short delay
-        setTimeout(simulateLoading, 1000);
 
         // Random icon positioning
         function randomizeIconPositions() {
@@ -1483,6 +2304,13 @@ PS: Stále nevím, kde je ten Clippy...</textarea>
 
         function deleteToRecycleBin() {
             if (selectedIcon) {
+                // Random error chance (10%)
+                if (Math.random() < 0.1) {
+                    showRandomError();
+                    hideAllContextMenus();
+                    return;
+                }
+                
                 playErrorSound();
                 const iconName = selectedIcon.querySelector('.icon-label').textContent;
                 selectedIcon.style.transition = 'all 0.3s';
@@ -1905,6 +2733,13 @@ PS: Stále nevím, kde je ten Clippy...</textarea>
         // Disk Cleanup
         function startCleanup() {
             playClickSound();
+            
+            // Random error during cleanup (15% chance)
+            if (Math.random() < 0.15) {
+                setTimeout(() => showRandomError(), 1500);
+                return;
+            }
+            
             const overlay = document.createElement('div');
             overlay.style.cssText = `
                 position: fixed;
@@ -1959,11 +2794,25 @@ PS: Stále nevím, kde je ten Clippy...</textarea>
         // Defragmentation
         function analyzeDefrag() {
             playClickSound();
+            
+            // Random error during analysis (10% chance)
+            if (Math.random() < 0.1) {
+                showRandomError();
+                return;
+            }
+            
             alert('📊 Analýza disku:\n\nFragmentace: 45%\n✓ Doporučena defragmentace!\n\nSoubory: 12,345\nFragmentované soubory: 5,678\nVelkost dat: 42 GB');
         }
 
         function startDefrag() {
             playClickSound();
+            
+            // Random error during defrag (15% chance)
+            if (Math.random() < 0.15) {
+                setTimeout(() => showRandomError(), 2000);
+                return;
+            }
+            
             document.getElementById('defragProgress').style.display = 'block';
             let progress = 0;
             const interval = setInterval(() => {
@@ -1978,6 +2827,33 @@ PS: Stále nevím, kde je ten Clippy...</textarea>
                     }, 500);
                 }
             }, 500);
+        }
+
+        // Display Properties tab switching
+        function switchDisplayTab(tab) {
+            playClickSound();
+            const tabs = ['themes', 'desktop', 'screensaver', 'appearance', 'settings'];
+            
+            tabs.forEach(t => {
+                const btn = document.getElementById('tab' + t.charAt(0).toUpperCase() + t.slice(1));
+                if (btn) {
+                    btn.style.background = t === tab ? '#ECE9D8' : '#D4D0C8';
+                    btn.style.borderStyle = t === tab ? 'inset' : 'outset';
+                }
+            });
+            
+            const content = document.getElementById('displayTabContent');
+            const contents = {
+                'themes': '<div id="themesContent"><h3>Motivy</h3><div style="background: #fff; border: 2px inset #888; padding: 100px 20px; text-align: center; margin: 20px 0;"><div style="font-size: 48px;">🪟</div><div style="margin-top: 10px; color: #666;">Náhled motivu Windows XP</div></div><label>Motiv:</label><select style="width: 100%; padding: 5px; margin-top: 5px;"><option>Windows XP</option><option>Windows Classic</option><option>Modrá</option><option>Olivová zelená</option><option>Stříbrná</option></select></div>',
+                'desktop': '<div><h3>Pozadí plochy</h3><p style="margin: 15px 0;">Vyberte obrázek na pozadí:</p><div style="border: 2px inset #888; background: #fff; padding: 10px; max-height: 300px; overflow-y: auto;"><div style="padding: 8px; cursor: pointer; border-bottom: 1px solid #ccc;" onclick="this.style.background=\'#e0e0ff\'">🏞️ Bliss (Výchozí)</div><div style="padding: 8px; cursor: pointer; border-bottom: 1px solid #ccc;" onclick="this.style.background=\'#e0e0ff\'">🌊 Azul</div><div style="padding: 8px; cursor: pointer; border-bottom: 1px solid #ccc;" onclick="this.style.background=\'#e0e0ff\'">🌸 Sakura</div><div style="padding: 8px; cursor: pointer; border-bottom: 1px solid #ccc;" onclick="this.style.background=\'#e0e0ff\'">🏔️ Mountains</div><div style="padding: 8px; cursor: pointer;" onclick="this.style.background=\'#e0e0ff\'">⚫ Žádné</div></div></div>',
+                'screensaver': '<div><h3>Šetřič obrazovky</h3><div style="background: #000; border: 2px inset #888; padding: 80px 20px; text-align: center; margin: 20px 0; color: #0f0; font-family: Courier New;">⭐ Náhled šetřiče ⭐</div><label>Šetřič obrazovky:</label><select style="width: 100%; padding: 5px; margin: 10px 0;"><option>(Žádný)</option><option>3D Text</option><option>Bublinky</option><option>Létající Windows</option><option>Mystify</option><option>Starfield</option></select><label>Čekat: <input type="number" value="10" style="width: 50px; padding: 3px;"> minut</label></div>',
+                'appearance': '<div><h3>Vzhled Windows</h3><p style="margin: 15px 0;">Barvy a styly pro okna a tlačítka:</p><label>Barva a styl:</label><select style="width: 100%; padding: 5px; margin: 10px 0;"><option>Windows XP Modrá</option><option>Windows XP Olivová</option><option>Windows XP Stříbrná</option><option>Windows Classic</option></select><label>Velikost písma:</label><select style="width: 100%; padding: 5px; margin: 10px 0;"><option>Normální</option><option>Velké</option><option>Velmi velké</option></select></div>',
+                'settings': '<div><h3>Nastavení zobrazení</h3><p style="margin: 15px 0;">Monitor: Plug and Play Monitor na Mobile Intel 915GM</p><label>Barevná kvalita:</label><select style="width: 100%; padding: 5px; margin: 10px 0;"><option>Střední (16 bit)</option><option>Nejvyšší (32 bit)</option></select><label>Rozlišení obrazovky:</label><div style="margin: 10px 0;"><input type="range" min="800" max="1920" value="1024" style="width: 100%;"><div style="display: flex; justify-content: space-between; font-size: 12px;"><span>800 × 600</span><span>1024 × 768</span><span>1920 × 1080</span></div></div></div>'
+            };
+            
+            if (contents[tab]) {
+                content.innerHTML = contents[tab];
+            }
         }
 
         // Enter key in Run dialog
@@ -2091,7 +2967,16 @@ PS: Stále nevím, kde je ten Clippy...</textarea>
         // Window functions
         function openWindow(id) {
             playClickSound();
+            
+            // Random chance of error when opening certain apps (5% chance)
+            if (Math.random() < 0.05 && ['paint', 'wordpad', 'ie', 'cmd'].includes(id)) {
+                showRandomError();
+                return;
+            }
+            
             const win = document.getElementById(id);
+            if (!win) return;
+            
             win.style.display = 'block';
             
             // Position window if not positioned yet
