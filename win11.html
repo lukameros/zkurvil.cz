@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows 9000 // CYBERPUNK OS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --neon-cyan: #00ffff;
+            --neon-magenta: #ff00ff;
+            --neon-yellow: #ffff00;
+            --cyber-blue: #0a0e27;
+            --cyber-purple: #6b0bd9;
+            --grid-color: rgba(0, 255, 255, 0.15);
+            --glow: 0 0 20px var(--neon-cyan), 0 0 40px var(--neon-cyan);
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a0a3e 50%, #0a0e27 100%);
+            color: var(--neon-cyan);
+            overflow: hidden;
+            height: 100vh;
+            position: relative;
+        }
+
+        /* Animated background grid */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes gridMove {
+            0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
+            100% { transform: perspective(500px) rotateX(60deg) translateY(50px); }
+        }
+
+        /* Scanlines effect */
+        body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15),
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: 1000;
+            animation: scanline 8s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(10px); }
+        }
+
+        .desktop {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: calc(100vh - 60px);
+            padding: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, 120px);
+            grid-gap: 30px;
+            align-content: start;
+        }
+
+        /* Desktop Icons */
+        .desktop-icon {
+            width: 120px;
+            height: 140px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-decoration: none;
+        }
+
+        .desktop-icon:hover {
+            transform: translateY(-5px) scale(1.05);
+        }
+
+        .desktop-icon:hover .icon-glow {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+
+        .icon-glow {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--neon-cyan) 0%, transparent 70%);
+            opacity: 0;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            filter: blur(15px);
+        }
+
+        .icon-container {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));
+            border: 2px solid var(--neon-cyan);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 255, 0.3),
+                inset 0 0 20px rgba(0, 255, 255, 0.1);
+        }
+
+        .icon-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(255, 255, 255, 0.1),
+                transparent
+            );
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: rotate(0deg) translate(-100%, -100%); }
+            100% { transform: rotate(0deg) translate(100%, 100%); }
+        }
+
+        .icon-text {
+            font-family: 'Orbitron', monospace;
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan);
+            letter-spacing: 2px;
+        }
+
+        .icon-label {
+            margin-top: 10px;
+            font-family: 'Orbitron', monospace;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 5px var(--neon-cyan);
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        /* Taskbar */
+        .taskbar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(180deg, rgba(10, 14, 39, 0.95), rgba(26, 10, 62, 0.98));
+            border-top: 2px solid var(--neon-cyan);
+            box-shadow: 
+                0 -5px 30px rgba(0, 255, 255, 0.3),
+                inset 0 1px 0 rgba(0, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 100;
+            backdrop-filter: blur(20px);
+        }
+
+        .start-button {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-magenta));
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-family: 'Orbitron', monospace;
+            font-size: 24px;
+            font-weight: 900;
+            color: #000;
+            box-shadow: var(--glow);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .start-button::before {
+            content: 'WIN';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .start-button:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 
+                0 0 30px var(--neon-cyan), 
+                0 0 60px var(--neon-cyan);
+        }
+
+        .taskbar-center {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 0 20px;
+        }
+
+        .taskbar-app {
+            width: 45px;
+            height: 45px;
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid var(--neon-cyan);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Orbitron', monospace;
+            font-size: 18px;
+            color: var(--neon-cyan);
+        }
+
+        .taskbar-app:hover {
+            background: rgba(0, 255, 255, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 0.4);
+        }
+
+        .system-tray {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .tray-item {
+            font-family: 'Orbitron', monospace;
+            font-size: 14px;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 5px var(--neon-cyan);
+            letter-spacing: 1px;
+        }
+
+        .time-display {
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        /* Glitch effect for title */
+        @keyframes glitch {
+            0% {
+                text-shadow: 
+                    0 0 10px var(--neon-cyan),
+                    2px 2px 0 var(--neon-magenta),
+                    -2px -2px 0 var(--neon-yellow);
+            }
+            25% {
+                text-shadow: 
+                    0 0 20px var(--neon-cyan),
+                    -2px -2px 0 var(--neon-magenta),
+                    2px 2px 0 var(--neon-yellow);
+            }
+            50% {
+                text-shadow: 
+                    0 0 10px var(--neon-cyan),
+                    2px -2px 0 var(--neon-magenta),
+                    -2px 2px 0 var(--neon-yellow);
+            }
+            75% {
+                text-shadow: 
+                    0 0 20px var(--neon-cyan),
+                    -2px 2px 0 var(--neon-magenta),
+                    2px -2px 0 var(--neon-yellow);
+            }
+            100% {
+                text-shadow: 
+                    0 0 10px var(--neon-cyan),
+                    2px 2px 0 var(--neon-magenta),
+                    -2px -2px 0 var(--neon-yellow);
+            }
+        }
+
+        .os-badge {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-family: 'Orbitron', monospace;
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px var(--neon-cyan);
+            letter-spacing: 3px;
+            z-index: 50;
+            animation: glitch 3s infinite;
+        }
+
+        /* Floating particles */
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translate(100px, -100vh); opacity: 0; }
+        }
+
+        .particle {
+            position: fixed;
+            width: 2px;
+            height: 2px;
+            background: var(--neon-cyan);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+            box-shadow: 0 0 5px var(--neon-cyan);
+        }
+
+        .cl-g-icon .icon-text {
+            background: linear-gradient(135deg, var(--neon-cyan), var(--neon-magenta), var(--neon-yellow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.1); filter: brightness(1.5); }
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a0a3e 50%, #0a0e27 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            animation: fadeOut 0.5s ease 5.5s forwards;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                pointer-events: none;
+            }
+        }
+
+        .loading-content {
+            text-align: center;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .loading-logo {
+            font-family: 'Orbitron', monospace;
+            font-size: 72px;
+            font-weight: 900;
+            color: var(--neon-cyan);
+            text-shadow: 
+                0 0 20px var(--neon-cyan),
+                0 0 40px var(--neon-cyan),
+                0 0 60px var(--neon-cyan);
+            letter-spacing: 8px;
+            margin-bottom: 40px;
+            animation: logoGlow 2s infinite alternate;
+        }
+
+        @keyframes logoGlow {
+            0% {
+                text-shadow: 
+                    0 0 20px var(--neon-cyan),
+                    0 0 40px var(--neon-cyan),
+                    0 0 60px var(--neon-cyan);
+            }
+            100% {
+                text-shadow: 
+                    0 0 30px var(--neon-cyan),
+                    0 0 60px var(--neon-cyan),
+                    0 0 90px var(--neon-cyan),
+                    0 0 120px var(--neon-magenta);
+            }
+        }
+
+        .loading-text {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px var(--neon-cyan);
+            letter-spacing: 4px;
+            margin-bottom: 30px;
+            animation: textBlink 1.5s infinite;
+        }
+
+        @keyframes textBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .loading-bar-container {
+            width: 400px;
+            height: 6px;
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid var(--neon-cyan);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 
+                0 0 10px rgba(0, 255, 255, 0.3),
+                inset 0 0 10px rgba(0, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .loading-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta), var(--neon-yellow));
+            border-radius: 10px;
+            box-shadow: 0 0 20px var(--neon-cyan);
+            animation: loadingProgress 6s ease-in-out forwards;
+        }
+
+        @keyframes loadingProgress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        .loading-percentage {
+            font-family: 'Orbitron', monospace;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 10px var(--neon-cyan);
+            letter-spacing: 2px;
+        }
+
+        /* Start Menu */
+        .start-menu {
+            position: fixed;
+            bottom: 70px;
+            left: 20px;
+            width: 450px;
+            height: 600px;
+            background: linear-gradient(135deg, rgba(10, 14, 39, 0.98), rgba(26, 10, 62, 0.98));
+            border: 2px solid var(--neon-cyan);
+            border-radius: 15px;
+            box-shadow: 
+                0 0 40px rgba(0, 255, 255, 0.5),
+                inset 0 0 30px rgba(0, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            display: none;
+            z-index: 200;
+            overflow: hidden;
+        }
+
+        .start-menu.active {
+            display: block;
+            animation: slideUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .start-menu-header {
+            padding: 25px;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));
+            border-bottom: 2px solid var(--neon-cyan);
+        }
+
+        .start-menu-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 15px var(--neon-cyan);
+            letter-spacing: 3px;
+        }
+
+        .start-menu-content {
+            padding: 20px;
+            height: calc(100% - 90px);
+            overflow-y: auto;
+        }
+
+        .menu-section {
+            margin-bottom: 25px;
+        }
+
+        .menu-section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 5px var(--neon-cyan);
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            opacity: 0.7;
+        }
+
+        .menu-items {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .menu-item {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.05), rgba(255, 0, 255, 0.05));
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(255, 255, 255, 0.05),
+                transparent
+            );
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+        }
+
+        .menu-item:hover {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.15), rgba(255, 0, 255, 0.15));
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .menu-item:hover::before {
+            left: 100%;
+        }
+
+        .menu-item-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+            filter: drop-shadow(0 0 5px var(--neon-cyan));
+        }
+
+        .menu-item-text {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 5px var(--neon-cyan);
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        .menu-footer {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .menu-footer-btn {
+            padding: 12px;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));
+            border: 1px solid var(--neon-cyan);
+            border-radius: 8px;
+            font-family: 'Orbitron', monospace;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--neon-cyan);
+            text-shadow: 0 0 5px var(--neon-cyan);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+        }
+
+        .menu-footer-btn:hover {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(255, 0, 255, 0.2));
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+        }
+
+        /* Custom scrollbar */
+        .start-menu-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .start-menu-content::-webkit-scrollbar-track {
+            background: rgba(0, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .start-menu-content::-webkit-scrollbar-thumb {
+            background: var(--neon-cyan);
+            border-radius: 10px;
+            box-shadow: 0 0 10px var(--neon-cyan);
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="loading-logo">WINDOWS 9000</div>
+            <div class="loading-text">INITIALIZING QUANTUM CORE...</div>
+            <div class="loading-bar-container">
+                <div class="loading-bar"></div>
+            </div>
+            <div class="loading-percentage" id="loadingPercentage">0%</div>
+        </div>
+    </div>
+
+    <div class="os-badge">WINDOWS 9000</div>
+
+    <div class="desktop" id="desktop" style="display: none;">
+        <!-- CL-G Application -->
+        <a href="g.html" class="desktop-icon cl-g-icon">
+            <div class="icon-glow"></div>
+            <div class="icon-container">
+                <div class="icon-text">G</div>
+            </div>
+            <div class="icon-label">CL-G</div>
+        </a>
+    </div>
+
+    <div class="taskbar" id="taskbar" style="display: none;">
+        <button class="start-button" id="startButton"></button>
+        
+        <div class="taskbar-center">
+            <!-- Empty - no apps in taskbar -->
+        </div>
+
+        <div class="system-tray">
+            <div class="tray-item">◢ NET</div>
+            <div class="tray-item">♪ AUD</div>
+            <div class="tray-item">⚙ SYS</div>
+            <div class="tray-item time-display" id="time">00:00</div>
+        </div>
+    </div>
+
+    <!-- Start Menu -->
+    <div class="start-menu" id="startMenu">
+        <div class="start-menu-header">
+            <div class="start-menu-title">SYSTEM</div>
+        </div>
+        <div class="start-menu-content">
+            <div class="menu-section">
+                <div class="menu-section-title">APLIKACE</div>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="menu-item-icon">📁</div>
+                        <div class="menu-item-text">EXPLORER</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-icon">⚙️</div>
+                        <div class="menu-item-text">NASTAVENÍ</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-icon">🖥️</div>
+                        <div class="menu-item-text">SYSTÉM</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-icon">🔧</div>
+                        <div class="menu-item-text">NÁSTROJE</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-icon">🎨</div>
+                        <div class="menu-item-text">PERSONALIZACE</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-icon">🔒</div>
+                        <div class="menu-item-text">ZABEZPEČENÍ</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-section">
+                <div class="menu-section-title">NÁSTROJE</div>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="menu-item-icon">💻</div>
+                        <div class="menu-item-text">TERMINAL</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-icon">🌐</div>
+                        <div class="menu-item-text">BROWSER</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-icon">📊</div>
+                        <div class="menu-item-text">SPRÁVCE ÚLOH</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-icon">🗂️</div>
+                        <div class="menu-item-text">SPRÁVCE SOUBORŮ</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-icon">📝</div>
+                        <div class="menu-item-text">POZNÁMKY</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-icon">🎵</div>
+                        <div class="menu-item-text">MEDIA</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-section">
+                <div class="menu-section-title">QUANTUM</div>
+                <div class="menu-items">
+                    <div class="menu-item">
+                        <div class="menu-item-icon">⚡</div>
+                        <div class="menu-item-text">KVANTOVÝ PROCESOR</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-icon">🧠</div>
+                        <div class="menu-item-text">AI ASISTENT</div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-icon">🔮</div>
+                        <div class="menu-item-text">HOLOGRAFICKÉ ROZHRANÍ</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-section">
+                <div class="menu-footer">
+                    <div class="menu-footer-btn">⚡ REŽIM VÝKONU</div>
+                    <div class="menu-footer-btn">🔋 VYPNOUT</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Loading screen
+        let percentage = 0;
+        const percentageElement = document.getElementById('loadingPercentage');
+        const loadingScreen = document.getElementById('loadingScreen');
+        const desktop = document.getElementById('desktop');
+        const taskbar = document.getElementById('taskbar');
+
+        const loadingInterval = setInterval(() => {
+            percentage += Math.random() * 3;
+            if (percentage > 100) percentage = 100;
+            percentageElement.textContent = Math.floor(percentage) + '%';
+        }, 100);
+
+        setTimeout(() => {
+            clearInterval(loadingInterval);
+            percentageElement.textContent = '100%';
+            
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+                desktop.style.display = 'grid';
+                taskbar.style.display = 'flex';
+            }, 500);
+        }, 6000);
+
+        // Update time
+        function updateTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('time').textContent = `${hours}:${minutes}`;
+        }
+        updateTime();
+        setInterval(updateTime, 1000);
+
+        // Start Menu toggle
+        const startButton = document.getElementById('startButton');
+        const startMenu = document.getElementById('startMenu');
+
+        startButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            startMenu.classList.toggle('active');
+        });
+
+        // Close start menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!startMenu.contains(e.target) && e.target !== startButton) {
+                startMenu.classList.remove('active');
+            }
+        });
+
+        // Create floating particles
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * window.innerWidth + 'px';
+            particle.style.bottom = '0px';
+            particle.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            particle.style.animation = 'float ' + particle.style.animationDuration + ' linear';
+            document.body.appendChild(particle);
+
+            setTimeout(() => {
+                particle.remove();
+            }, parseFloat(particle.style.animationDuration) * 1000);
+        }
+
+        setInterval(createParticle, 200);
+
+        // Add glitch effect on random intervals
+        setInterval(() => {
+            if (Math.random() > 0.7) {
+                document.body.style.filter = 'hue-rotate(' + (Math.random() * 30 - 15) + 'deg)';
+                setTimeout(() => {
+                    document.body.style.filter = 'none';
+                }, 50);
+            }
+        }, 3000);
+    </script>
+</body>
+</html>

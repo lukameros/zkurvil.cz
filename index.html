@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Windows XP </title>
+    <title>Windows XP</title>
     <style>
         * {
             margin: 0;
@@ -79,8 +79,9 @@
             display: none;
             width: 100vw;
             height: 100vh;
-            background: 
-                linear-gradient(rgba(58, 110, 165, 0.3), rgba(58, 110, 165, 0.3)),
+            background:
+                url('https://upload.wikimedia.org/wikipedia/en/2/27/Bliss_%28Windows_XP%29.png') center/cover no-repeat,
+                linear-gradient(rgba(58, 110, 165, 0.2), rgba(58, 110, 165, 0.2)),
                 linear-gradient(135deg, #5A8BB4 0%, #3A6EA5 50%, #5A8BB4 100%);
             background-size: cover;
             background-position: center;
@@ -426,6 +427,392 @@
         .maximizing {
             animation: maximize 0.3s forwards;
         }
+    
+        /* --- App chrome helpers --- */
+        .menu-bar {
+            background: #D4D0C8;
+            border-bottom: 1px solid #888;
+            padding: 4px 6px;
+            font-size: 12px;
+            display: flex;
+            gap: 14px;
+            user-select: none;
+        }
+        .menu-bar span { cursor: default; }
+        .toolbar {
+            background: #D4D0C8;
+            border-bottom: 1px solid #888;
+            padding: 6px;
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .status-bar {
+            position: sticky;
+            bottom: 0;
+            background: #D4D0C8;
+            border-top: 1px solid #888;
+            padding: 3px 6px;
+            font-size: 11px;
+            color: #222;
+        }
+        .xp-btn {
+            padding: 4px 10px;
+            border: 2px outset #fff;
+            background: #ECE9D8;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .xp-btn:active { border-style: inset; }
+        .xp-input {
+            padding: 4px 6px;
+            border: 2px inset #888;
+            font-size: 12px;
+        }
+        .progress-outer {
+            height: 14px;
+            border: 2px inset #888;
+            background: #fff;
+            overflow: hidden;
+        }
+        .progress-inner {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to bottom, #5A9FD4, #2E5C8A);
+            transition: width 0.2s;
+        }
+
+    
+        /* --- More XP UI --- */
+        .xp-list {
+            border: 2px inset #888;
+            background: #fff;
+            font-size: 12px;
+            overflow: auto;
+        }
+        .xp-list .row {
+            display:flex;
+            gap:10px;
+            padding:6px 8px;
+            border-bottom: 1px solid #eee;
+            cursor: default;
+            align-items:center;
+        }
+        .xp-list .row:hover { background:#B6D6FB; }
+        .xp-list .row .mini { width:22px; text-align:center; }
+        .calc-grid {
+            display:grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap:6px;
+            padding:10px;
+        }
+        .calc-display {
+            margin:10px;
+            padding:8px;
+            border:2px inset #888;
+            background:#fff;
+            font-family: 'Courier New', monospace;
+            text-align:right;
+            font-size:18px;
+        }
+        .explorer-split {
+            display:grid;
+            grid-template-columns: 200px 1fr;
+            height: calc(100% - 62px);
+        }
+        .tree {
+            border-right:1px solid #888;
+            background:#fff;
+            overflow:auto;
+            font-size:12px;
+            padding:8px;
+        }
+        .tree .node { padding:3px 4px; }
+        .tree .node:hover { background:#B6D6FB; }
+        .explorer-main {
+            background:#fff;
+            overflow:auto;
+            padding:10px;
+        }
+        .explorer-grid {
+            display:grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap:10px;
+        }
+        .drive {
+            border:2px outset #fff;
+            background:#ECE9D8;
+            padding:8px;
+            font-size:12px;
+        }
+        .drive .bar {
+            height:10px;
+            border:2px inset #888;
+            background:#fff;
+            margin-top:6px;
+            overflow:hidden;
+        }
+        .drive .bar > div {
+            height:100%;
+            width:55%;
+            background: linear-gradient(to bottom, #5A9FD4, #2E5C8A);
+        }
+        .toast {
+            position: fixed;
+            right: 18px;
+            bottom: 52px;
+            width: 280px;
+            background: #FFFFE1;
+            border: 1px solid #888;
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+            padding: 10px 12px;
+            font-size: 12px;
+            z-index: 25000;
+            display:none;
+        }
+
+    
+        /* --- XP Shop --- */
+        .price-tag {
+            font-size: 22px;
+            font-weight: bold;
+            color: #1b6e1b;
+        }
+        .product-card {
+            border: 2px outset #fff;
+            background: #ECE9D8;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+        .product-card h3 {
+            margin: 0 0 6px 0;
+        }
+        .badge {
+            display:inline-block;
+            padding:2px 6px;
+            border:1px solid #888;
+            background:#fff;
+            font-size:11px;
+            margin-left:6px;
+        }
+
+    
+        /* --- Windows 11 mode --- */
+        body.win11 {
+            font-family: "Segoe UI", Tahoma, sans-serif;
+        }
+        #desktop11 {
+            position: fixed;
+            inset: 0;
+            display: none;
+            background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.18), rgba(255,255,255,0.02) 45%),
+                        linear-gradient(135deg, #0b2a58 0%, #0c3a7a 55%, #0b2a58 100%);
+            overflow: hidden;
+        }
+        .w11-icons {
+            position: absolute;
+            inset: 0 0 48px 0;
+            padding: 22px;
+        }
+        .w11-icon {
+            width: 92px;
+            text-align: center;
+            color: #fff;
+            user-select: none;
+            cursor: default;
+            display: inline-block;
+            margin: 10px;
+        }
+        .w11-icon .img {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 6px auto;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.14);
+            border: 1px solid rgba(255,255,255,0.22);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size: 26px;
+            backdrop-filter: blur(8px);
+        }
+        .w11-icon .lbl {
+            font-size: 12px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.55);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .w11-taskbar {
+            position: absolute;
+            left: 50%;
+            bottom: 10px;
+            transform: translateX(-50%);
+            height: 44px;
+            min-width: 420px;
+            max-width: 860px;
+            padding: 0 14px;
+            border-radius: 14px;
+            background: rgba(20, 28, 42, 0.55);
+            border: 1px solid rgba(255,255,255,0.16);
+            backdrop-filter: blur(14px);
+            display:flex;
+            align-items:center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .w11-taskbar .tb-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.14);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            cursor:pointer;
+            color:#fff;
+            user-select:none;
+        }
+        .w11-panel {
+            position: absolute;
+            left: 50%;
+            bottom: 62px;
+            transform: translateX(-50%);
+            width: 520px;
+            border-radius: 16px;
+            background: rgba(18, 22, 32, 0.72);
+            border: 1px solid rgba(255,255,255,0.18);
+            backdrop-filter: blur(16px);
+            padding: 14px;
+            color: #fff;
+            display:none;
+            z-index: 26000;
+        }
+        .w11-panel h3 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .w11-panel .grid {
+            display:grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        .w11-panel .app {
+            border-radius: 12px;
+            padding: 10px;
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.14);
+            cursor:pointer;
+            text-align:center;
+            font-size:12px;
+        }
+        .w11-window {
+            position:absolute;
+            left: 120px;
+            top: 90px;
+            width: 760px;
+            height: 520px;
+            border-radius: 14px;
+            background: rgba(26, 30, 42, 0.78);
+            border: 1px solid rgba(255,255,255,0.18);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 10px 32px rgba(0,0,0,0.45);
+            display:none;
+            z-index: 27000;
+            color:#fff;
+        }
+        .w11-window .title {
+            height: 44px;
+            display:flex;
+            align-items:center;
+            justify-content: space-between;
+            padding: 0 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.10);
+            user-select:none;
+        }
+        .w11-window .title .left { font-weight:600; font-size:13px; }
+        .w11-window .title .btns { display:flex; gap:8px; }
+        .w11-window .title .b {
+            width: 34px; height: 28px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.14);
+            display:flex; align-items:center; justify-content:center;
+            cursor:pointer;
+        }
+        .w11-window .content {
+            padding: 14px;
+            height: calc(100% - 44px);
+            overflow:auto;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+    
+        /* --- Windows 11 mode override --- */
+        body.win11 { font-family: "Segoe UI Variable","Segoe UI",Tahoma,sans-serif; }
+        #desktop11{
+            position:fixed; inset:0; display:none; overflow:hidden;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(255,255,255,0.35), rgba(255,255,255,0.0) 45%),
+                radial-gradient(circle at 80% 70%, rgba(120,170,255,0.35), rgba(255,255,255,0.0) 50%),
+                linear-gradient(135deg,#0b4aa2 0%,#0a2a66 55%,#061c44 100%);
+        }
+        .w11-taskbar{
+            position:absolute; left:0; right:0; bottom:0;
+            height:52px; display:flex; align-items:center; justify-content:center; gap:10px;
+            background: rgba(18, 22, 32, 0.55);
+            border-top: 1px solid rgba(255,255,255,0.14);
+            backdrop-filter: blur(18px);
+        }
+        .w11-taskbar .tb-btn{
+            width:40px; height:40px; border-radius:12px;
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.14);
+            display:flex; align-items:center; justify-content:center;
+            cursor:pointer; color:#fff; user-select:none;
+            transition: transform .12s;
+        }
+        .w11-taskbar .tb-btn:hover { transform: translateY(-1px); }
+        .w11-tray{
+            position:absolute; right:14px; bottom:8px;
+            height:36px; display:flex; align-items:center; gap:10px;
+            color:#fff; font-size:12px; opacity:0.95;
+        }
+        .w11-panel{
+            position:absolute; left:50%; bottom:64px; transform:translateX(-50%);
+            width:640px; border-radius:16px; padding:16px; color:#fff; display:none;
+            background: rgba(18, 22, 32, 0.72);
+            border: 1px solid rgba(255,255,255,0.18);
+            backdrop-filter: blur(18px);
+            z-index:26000;
+        }
+        .w11-panel .search{
+            border-radius:12px; padding:10px 12px; margin-bottom:14px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.16);
+            font-size:12px; opacity:0.95;
+        }
+        .w11-panel h3{ margin:0 0 10px 0; font-size:13px; font-weight:600; }
+        .w11-panel .grid{ display:grid; grid-template-columns: repeat(6,1fr); gap:10px; }
+        .w11-panel .app{
+            border-radius:12px; padding:10px 8px; text-align:center; font-size:12px; cursor:pointer;
+            background: rgba(255,255,255,0.10);
+            border: 1px solid rgba(255,255,255,0.14);
+        }
+        .w11-panel .app .aico{
+            width:36px; height:36px; margin:0 auto 6px auto; border-radius:12px;
+            background: rgba(255,255,255,0.16);
+            display:flex; align-items:center; justify-content:center;
+        }
+        .w11-window{
+            width:820px; height:560px;
+        }
+        /* --- end Windows 11 mode override --- */
+
     </style>
 </head>
 <body>
@@ -445,7 +832,7 @@
     <div id="loading-screen">
         <div class="xp-boot-screen">
             <div class="xp-logo-container">
-                <div class="xp-logo-text">Microsoft Windows XP</div>
+                <div class="xp-logo-text">Windows 9000</div>
                 <div class="xp-logo-subtitle">Professional</div>
             </div>
             
@@ -461,10 +848,48 @@
         </div>
     </div>
 
+    <!-- Update Screen -->
+    <div id="update-screen" style="
+        position: fixed;
+        inset: 0;
+        background: #000;
+        color: #0f0;
+        font-family: 'Courier New', monospace;
+        display: none;
+        z-index: 9999;
+        text-align: center;
+        padding-top: 120px;
+    ">
+        <div style="font-size: 18px; line-height: 1.6">
+            Applying Windows Update 0.1<br>
+            - Kernel fixes<br>
+            - Memory mapping fix<br>
+            - RAM check ........ OK<br>
+            - Disk integrity .... OK<br>
+            - Registry .......... OK
+        </div>
+
+        <div style="font-size: 120px; margin: 40px 0;">☠</div>
+
+        <div style="font-size: 22px; letter-spacing: 2px;">
+            Starting Windows
+        </div>
+    </div>
+
+
     <!-- Desktop -->
     <div id="desktop">
         <div class="desktop-icons" id="desktopIcons">
-            <div class="icon" data-icon-id="myComputer">
+            <div class="icon" data-icon-id="shop">
+                <div class="icon-img">🛒</div>
+                <div class="icon" id="win11Icon" data-icon-id="windows11" title="Windows 11" style="left: 240px; top: 100px; display:none;">
+<script>document.getElementById("win11Icon")?.addEventListener("dblclick", openWindows11File);</script>
+                <div class="icon-img">🪟</div>
+                <div class="icon-label">Windows 11</div>
+            </div>
+<div class="icon-label">Obchod</div>
+            </div>
+<div class="icon" data-icon-id="myComputer">
                 <div class="icon-img">💻</div>
                 <div class="icon-label">Můj počítač</div>
             </div>
@@ -486,9 +911,17 @@
             </div>
             <div class="icon" data-icon-id="virus">
                 <div class="icon-img">🦠</div>
-                <div class="icon-label">určitě_ne_virus.exe</div>
+                <div class="icon-label">Antivirus XP</div>
+            
+            
+            </div>
+            <div class="icon" data-icon-id="virusExe">
+                <div class="icon-img">🧪</div>
+                <div class="icon-label">virus.exe</div>
+            </div>
             </div>
             <div class="icon" data-icon-id="notepad">
+    
                 <div class="icon-img">📝</div>
                 <div class="icon-label">Poznámkový blok</div>
             </div>
@@ -540,7 +973,7 @@
                 <span class="icon-left">📋</span>
                 Uspořádat ikony
             </div>
-            <div class="context-menu-item" onclick="playClickSound(); alert('Tato funkce je jen pro parádu 😄')">
+            <div class="context-menu-item" onclick="playClickSound(); systemMessage('Tato funkce je jen pro parádu ')">
                 <span class="icon-left">🖼️</span>
                 Vložit
             </div>
@@ -550,9 +983,9 @@
                 Nový ▶
             </div>
             <div class="context-menu-separator"></div>
-            <div class="context-menu-item" onclick="openWindow('myComputer')">
+            <div class="context-menu-item" onclick="openWindow('displayProps')">
                 <span class="icon-left">⚙️</span>
-                Vlastnosti
+                Vlastnosti zobrazení
             </div>
         </div>
 
@@ -562,7 +995,7 @@
                 Otevřít
             </div>
             <div class="context-menu-separator"></div>
-            <div class="context-menu-item" onclick="playClickSound(); alert('Zkopírováno! (ne doopravdy)')">
+            <div class="context-menu-item" onclick="playClickSound(); systemMessage('Zkopírováno! (ne doopravdy)')">
                 <span class="icon-left">📋</span>
                 Kopírovat
             </div>
@@ -570,12 +1003,12 @@
                 <span class="icon-left">🗑️</span>
                 Odstranit
             </div>
-            <div class="context-menu-item" onclick="playClickSound(); alert('Přejmenováno na: Nový název 😎')">
+            <div class="context-menu-item" onclick="playClickSound(); systemMessage('Přejmenováno na: Nový název ')">
                 <span class="icon-left">✏️</span>
                 Přejmenovat
             </div>
             <div class="context-menu-separator"></div>
-            <div class="context-menu-item" onclick="playClickSound(); alert('Vlastnosti: Velikost neznámá 🤷')">
+            <div class="context-menu-item" onclick="playClickSound(); systemMessage('Vlastnosti: Velikost neznámá ')">
                 <span class="icon-left">📊</span>
                 Vlastnosti
             </div>
@@ -593,7 +1026,7 @@
 
         <!-- Start Menu -->
         <div class="start-menu" id="startMenu">
-            <div class="start-menu-header">Windows XP</div>
+            <div class="start-menu-header">Windows 9000</div>
             <div class="start-menu-items">
                 <div class="start-menu-item" onclick="openWindow('myDocuments'); toggleStartMenu();">📁 Dokumenty</div>
                 <div class="start-menu-item" onclick="openWindow('myPictures'); toggleStartMenu();">🖼️ Obrázky</div>
@@ -615,8 +1048,8 @@
                 <div class="start-menu-item" onclick="openWindow('defrag'); toggleStartMenu();">💿 Defragmentace</div>
                 <div class="start-menu-item" onclick="openWindow('systemRestore'); toggleStartMenu();">🔄 Obnovení systému</div>
                 <div class="start-menu-separator"></div>
-                <div class="start-menu-item" onclick="playClickSound(); alert('Nápověda: Vypni to a jdi ven! ☀️')">❓ Nápověda</div>
-                <div class="start-menu-item" onclick="playClickSound(); alert('Hledáš smysl života? Já taky! 🔍')">🔍 Hledat</div>
+                <div class="start-menu-item" onclick="playClickSound(); systemMessage('Nápověda: Vypni to a jdi ven! ')">❓ Nápověda</div>
+                <div class="start-menu-item" onclick="playClickSound(); systemMessage('Hledáš smysl života? Já taky! 🔍')">🔍 Hledat</div>
                 <div class="start-menu-separator"></div>
                 <div class="start-menu-item" onclick="shutdown()">🔴 Vypnout počítač</div>
             </div>
@@ -668,7 +1101,7 @@
                 <p>🎮 cas_na_konicek.avi</p>
                 <p>👴 mladost.zip</p>
                 <br>
-                <button onclick="playErrorSound(); alert('Smazáno! (stejně už to nikdy nebudeš potřebovat)')">Vysypat koš</button>
+                <button onclick="playErrorSound(); systemMessage('Smazáno! (stejně už to nikdy nebudeš potřebovat)')">Vysypat koš</button>
             </div>
         </div>
 
@@ -682,15 +1115,30 @@
                 </div>
             </div>
             <div class="window-content">
-                <h3>Připojování k internetu...</h3>
-                <p>📡 Modem: *píííííííp* *krrrrrr* *bzzzzz*</p>
-                <p>⏱️ Odhadovaný čas: 15 minut</p>
-                <p>💸 Cena za připojení: Tvoje duše</p>
-                <br>
-                <p><strong>Oblíbené stránky:</strong></p>
-                <p>🎵 <a href="#" onclick="playErrorSound(); alert('404: Nostalgie not found')">Seznam.cz</a></p>
-                <p>🎮 <a href="#" onclick="playErrorSound(); alert('Prohlížeč spadl! (překvapení)')">Flashgames</a></p>
-                <p>💾 <a href="#" onclick="playErrorSound(); alert('Virus detected! (ale vlastně ne)')">Stahuj.cz</a></p>
+                
+                <div class="menu-bar">
+                    <span>Soubor</span><span>Úpravy</span><span>Zobrazení</span><span>Oblíbené</span><span>Nápověda</span>
+                </div>
+                <div class="toolbar">
+                    <button class="xp-btn" onclick="ieNav('back')">◀</button>
+                    <button class="xp-btn" onclick="ieNav('forward')">▶</button>
+                    <button class="xp-btn" onclick="ieNav('refresh')">⟳</button>
+                    <input class="xp-input" id="ieAddress" style="flex:1; min-width: 180px;" value="http://example.local/" />
+                    <button class="xp-btn" onclick="ieGo()">Přejít</button>
+                </div>
+                <div id="iePage" style="padding:12px;">
+                    <h3>Internet Explorer</h3>
+                    <p>Adresní řádek funguje jako simulace (bez reálného prohlížení).</p>
+                    <div style="border:2px inset #888; padding:10px; background:#fff; min-height:160px;" id="ieRender">
+                        <strong>Domovská stránka</strong><br>
+                        <div style="margin-top:8px; font-size:12px; color:#444;">
+                            - Oblíbené: Seznam, Flashgames, Stahuj<br>
+                            - Historie: prázdná
+                        </div>
+                    </div>
+                    <div class="status-bar" id="ieStatus">Připraven</div>
+                </div>
+
             </div>
         </div>
 
@@ -704,14 +1152,20 @@
                 </div>
             </div>
             <div class="window-content">
-                <h2 style="text-align: center; margin-top: 50px;">💥 BOOM! 💥</h2>
-                <p style="text-align: center; margin-top: 20px;">Prohráls! (jako vždycky)</p>
-                <p style="text-align: center;">⏱️ Čas: 0:03</p>
-                <p style="text-align: center;">🏆 Nejlepší čas: ∞</p>
-                <div style="text-align: center; margin-top: 30px;">
-                    <button onclick="playErrorSound(); alert('Klikl jsi na další minu! 💣')">Nová hra</button>
-                </div>
+            <div class="menu-bar">
+                <span>Hra</span><span>Nastavení</span><span>Nápověda</span>
             </div>
+            <div class="toolbar">
+                <button class="xp-btn" onclick="minesNew()">Nová hra</button>
+                <span style="font-size:12px;">Miny: <strong id="minesCount">10</strong></span>
+                <span style="font-size:12px;">Čas: <strong id="minesTime">0</strong>s</span>
+            </div>
+            <div style="padding:12px;">
+                <div style="display:grid; grid-template-columns: repeat(9, 26px); gap:2px; justify-content:center; margin-top:10px;" id="minesGrid"></div>
+                <div style="text-align:center; margin-top:12px; font-size:12px; color:#444;" id="minesMsg">Klikni na políčko.</div>
+            </div>
+            <div class="status-bar">Levé tlačítko: odhalit</div>
+</div>
         </div>
 
         <div class="window" id="paint" style="width: 600px; height: 450px;">
@@ -739,7 +1193,7 @@
 
         <div class="window" id="virus">
             <div class="window-title">
-                <span>🦠 Určitě ne virus</span>
+                <span>🦠 Antivirus Windows XP</span>
                 <div class="window-buttons">
                     <div class="window-button" onclick="minimizeWindow('virus')">_</div>
                     <div class="window-button" onclick="maximizeWindow('virus')">□</div>
@@ -747,21 +1201,31 @@
                 </div>
             </div>
             <div class="window-content">
-                <h2 style="color: red; text-align: center;">⚠️ VAROVÁNÍ ⚠️</h2>
-                <p style="text-align: center; margin: 20px 0;">
-                    Tvůj počítač byl infikován virem!<br>
-                    (Ne doopravdy, to je jen sranda)
-                </p>
-                <div style="background: #000; color: #0f0; padding: 15px; font-family: 'Courier New'; margin: 20px 0;">
-                    > Instaluji_mining_software.exe<br>
-                    > Kraduji_tvoje_hesla.bat<br>
-                    > Prodavam_data_na_darkweb.sh<br>
-                    > <span style="animation: blink 1s infinite;">█</span>
+                <div class="menu-bar">
+                    <span>Soubor</span><span>Skenování</span><span>Nastavení</span><span>Nápověda</span>
                 </div>
-                <p style="text-align: center; color: #888; font-size: 12px;">
-                    Naser, že nostalgie těžko hledá 😄
+                <div class="toolbar">
+                    <button class="xp-btn" onclick="avStart()">Spustit sken</button>
+                    <button class="xp-btn" onclick="avStop()">Zastavit</button>
+                    <button class="xp-btn" onclick="avQuarantine()">Karanténa</button>
+                    <span style="margin-left:auto;font-size:12px;color:#444">Definice: 0.1</span>
+                </div>
+
+                <h2 style="color: #b00000; text-align: center; margin-top: 10px;">VAROVÁNÍ</h2>
+                <p style="text-align: center; margin: 10px 0;" id="avState">
+                    Stav: připraven
                 </p>
-            </div>
+
+                <div class="progress-outer" style="margin: 10px 0;">
+                    <div class="progress-inner" id="avBar"></div>
+                </div>
+
+                <div style="background: #000; color: #0f0; padding: 12px; font-family: 'Courier New'; margin: 10px 0; height: 140px; overflow:auto;" id="avLog">
+                    > čeká na spuštění<br>
+                </div>
+
+                <div class="status-bar" id="avStatus">0 nalezených hrozeb</div>
+</div>
         </div>
 
         <div class="window" id="notepad">
@@ -774,17 +1238,20 @@
                 </div>
             </div>
             <div class="window-content" style="padding: 5px;">
-                <textarea style="width: 100%; height: 100%; border: none; outline: none; font-family: 'Courier New'; font-size: 13px; resize: none;" placeholder="Začni psát...">Vážený deníčku,
+                
+                <div class="menu-bar">
+                    <span>Soubor</span><span>Úpravy</span><span>Formát</span><span>Zobrazení</span><span>Nápověda</span>
+                </div>
+                <div class="toolbar">
+                    <button class="xp-btn" onclick="notepadNew()">Nový</button>
+                    <button class="xp-btn" onclick="notepadLoad()">Otevřít</button>
+                    <button class="xp-btn" onclick="notepadSave()">Uložit</button>
+                    <button class="xp-btn" onclick="notepadSaveAsTxt()">Uložit jako .txt</button>
+                    <span style="margin-left:auto;font-size:12px;color:#444">UTF-8</span>
+                </div>
+                <textarea id="notepadText" style="width: 100%; height: calc(100% - 78px); border: none; outline: none; font-family: 'Courier New'; font-size: 13px; resize: none;" placeholder="Začni psát..."></textarea>
+                <div class="status-bar" id="notepadStatus">Řádek 1, Sloupec 1</div>
 
-Dnes jsem objevil Windows XP simulátor.
-Je to jako cesta do minulosti...
-
-Vzpomínám si, jak jsem celé dny hrál Hledání min
-a snažil se připojit na internet přes modem.
-
-Ah, nostalgie! 🥺
-
-PS: Stále nevím, kde je ten Clippy...</textarea>
             </div>
         </div>
 
@@ -864,7 +1331,7 @@ PS: Stále nevím, kde je ten Clippy...</textarea>
                                 <td style="padding: 5px; border: 1px solid #888;">1,234,567 KB</td>
                             </tr>
                             <tr>
-                                <td style="padding: 5px; border: 1px solid #888;">určitě_ne_virus.exe</td>
+                                <td style="padding: 5px; border: 1px solid #888;">Antivirus XP</td>
                                 <td style="padding: 5px; border: 1px solid #888;">Spuštěno 🚩</td>
                                 <td style="padding: 5px; border: 1px solid #888;">89%</td>
                                 <td style="padding: 5px; border: 1px solid #888;">999,999 KB</td>
@@ -1062,8 +1529,8 @@ PS: Stále nevím, kde je ten Clippy...</textarea>
                     </div>
                 </div>
                 <div style="margin-top: 20px;">
-                    <button onclick="playClickSound(); alert('Diagnostika sítě: Vše funguje! 👍')">🔧 Diagnostika</button>
-                    <button onclick="playClickSound(); alert('Připojení obnoveno! (možná)')">🔄 Obnovit</button>
+                    <button onclick="playClickSound(); systemMessage('Diagnostika sítě: Vše funguje! ')">🔧 Diagnostika</button>
+                    <button onclick="playClickSound(); systemMessage('Připojení obnoveno! (možná)')">🔄 Obnovit</button>
                 </div>
             </div>
         </div>
@@ -1078,7 +1545,7 @@ PS: Stále nevím, kde je ten Clippy...</textarea>
                 </div>
             </div>
             <div class="window-content" style="background: #000; color: #0f0; font-family: 'Courier New'; padding: 10px;">
-                <div id="cmdOutput">Microsoft Windows XP [Verze 5.1.2600]<br>(C) Copyright 1985-2001 Microsoft Corp.<br><br>C:\Documents and Settings\User&gt;</div>
+                <div id="cmdOutput">Windows 9000 [Verze 5.1.2600]<br>(C) Copyright 1985-2001 Microsoft Corp.<br><br>C:\Documents and Settings\User&gt;</div>
                 <div style="display: flex; margin-top: 5px;">
                     <span>C:\Documents and Settings\User&gt;</span>
                     <input type="text" id="cmdInput" style="flex: 1; background: #000; color: #0f0; border: none; outline: none; font-family: 'Courier New'; margin-left: 5px;" onkeypress="if(event.key==='Enter') executeCmd()">
@@ -1352,8 +1819,8 @@ PS: Stále nevím, kde je ten Clippy...</textarea>
                 </div>
                 
                 <div style="background: #D4D0C8; padding: 10px; border-top: 1px solid #888; text-align: right;">
-                    <button onclick="playClickSound(); alert('Nastavení uloženo! 💾')" style="padding: 5px 20px; margin-right: 5px;">OK</button>
-                    <button onclick="playClickSound(); alert('Použito! ✓')" style="padding: 5px 20px; margin-right: 5px;">Použít</button>
+                    <button onclick="playClickSound(); systemMessage('Nastavení uloženo! 💾')" style="padding: 5px 20px; margin-right: 5px;">OK</button>
+                    <button onclick="playClickSound(); systemMessage('Použito! ✓')" style="padding: 5px 20px; margin-right: 5px;">Použít</button>
                     <button onclick="closeWindow('displayProps')" style="padding: 5px 20px;">Storno</button>
                 </div>
             </div>
@@ -1456,13 +1923,13 @@ PS: Stále nevím, kde je ten Clippy...</textarea>
                             <div style="margin: 3px 0;">Communications Port (COM1)</div>
                         </div>
                         
-                        <div style="margin: 5px 0; color: #c00; cursor: pointer;" onclick="alert('⚠️ Zařízení má problém!\\nKód chyby: 43\\n\\nOvladač může být zastaralý nebo poškozený.')">❌ ⚠️ Neznámé zařízení</div>
+                        <div style="margin: 5px 0; color: #c00; cursor: pointer;" onclick="systemMessage('⚠️ Zařízení má problém!\\nKód chyby: 43\\n\\nOvladač může být zastaralý nebo poškozený.')">❌ ⚠️ Neznámé zařízení</div>
                     </div>
                 </div>
                 
                 <div style="margin-top: 10px;">
-                    <button onclick="playClickSound(); alert('Zařízení aktualizována! 🔄')" style="padding: 5px 15px;">🔄 Aktualizovat</button>
-                    <button onclick="playClickSound(); alert('Hledání nových zařízení... 🔍')" style="padding: 5px 15px; margin-left: 5px;">🔍 Vyhledat změny</button>
+                    <button onclick="playClickSound(); systemMessage('Zařízení aktualizována! 🔄')" style="padding: 5px 15px;">🔄 Aktualizovat</button>
+                    <button onclick="playClickSound(); systemMessage('Hledání nových zařízení... 🔍')" style="padding: 5px 15px; margin-left: 5px;">🔍 Vyhledat změny</button>
                 </div>
             </div>
         </div>
@@ -1477,15 +1944,15 @@ PS: Stále nevím, kde je ten Clippy...</textarea>
             <div class="window-content">
                 <h3>Vyberte úkol...</h3>
                 <div style="margin: 20px 0;">
-                    <div style="padding: 15px; background: #f0f0f0; border: 1px solid #ccc; margin: 10px 0; cursor: pointer;" onclick="playClickSound(); alert('Změna účtu... 👤')">
+                    <div style="padding: 15px; background: #f0f0f0; border: 1px solid #ccc; margin: 10px 0; cursor: pointer;" onclick="playClickSound(); systemMessage('Změna účtu... 👤')">
                         <strong>👤 Změnit účet</strong>
                         <div style="font-size: 12px; color: #666; margin-top: 5px;">Změňte jméno, obrázek, typ nebo heslo účtu</div>
                     </div>
-                    <div style="padding: 15px; background: #f0f0f0; border: 1px solid #ccc; margin: 10px 0; cursor: pointer;" onclick="playClickSound(); alert('Vytváření nového účtu... ➕')">
+                    <div style="padding: 15px; background: #f0f0f0; border: 1px solid #ccc; margin: 10px 0; cursor: pointer;" onclick="playClickSound(); systemMessage('Vytváření nového účtu... ➕')">
                         <strong>➕ Vytvořit nový účet</strong>
                         <div style="font-size: 12px; color: #666; margin-top: 5px;">Vytvořte nový uživatelský účet</div>
                     </div>
-                    <div style="padding: 15px; background: #f0f0f0; border: 1px solid #ccc; margin: 10px 0; cursor: pointer;" onclick="playClickSound(); alert('Změna způsobu přihlášení... 🔐')">
+                    <div style="padding: 15px; background: #f0f0f0; border: 1px solid #ccc; margin: 10px 0; cursor: pointer;" onclick="playClickSound(); systemMessage('Změna způsobu přihlášení... 🔐')">
                         <strong>🔐 Změnit způsob přihlášení a odhlášení uživatelů</strong>
                         <div style="font-size: 12px; color: #666; margin-top: 5px;">Vyberte přihlašovací možnosti</div>
                     </div>
@@ -1514,42 +1981,42 @@ PS: Stále nevím, kde je ten Clippy...</textarea>
                             <strong>📦 Adobe Reader 7.0</strong><br>
                             <span style="font-size: 11px; color: #666;">Velikost: 45.2 MB | Použito: Často</span>
                         </div>
-                        <button onclick="playClickSound(); alert('Odebírání Adobe Reader... 🗑️')" style="padding: 5px 15px;">Odebrat</button>
+                        <button onclick="playClickSound(); systemMessage('Odebírání Adobe Reader... 🗑️')" style="padding: 5px 15px;">Odebrat</button>
                     </div>
                     <div style="padding: 10px; border-bottom: 1px solid #ccc; display: flex; justify-content: space-between; align-items: center;">
                         <div>
                             <strong>🎮 DirectX 9.0c</strong><br>
                             <span style="font-size: 11px; color: #666;">Velikost: 95.5 MB | Použito: Denně</span>
                         </div>
-                        <button onclick="playClickSound(); alert('DirectX nelze odebrat! ⚠️')" style="padding: 5px 15px;">Odebrat</button>
+                        <button onclick="playClickSound(); systemMessage('DirectX nelze odebrat! ⚠️')" style="padding: 5px 15px;">Odebrat</button>
                     </div>
                     <div style="padding: 10px; border-bottom: 1px solid #ccc; display: flex; justify-content: space-between; align-items: center;">
                         <div>
                             <strong>🌐 Internet Explorer 6</strong><br>
                             <span style="font-size: 11px; color: #666;">Velikost: 78.1 MB | Použito: Občas</span>
                         </div>
-                        <button onclick="playClickSound(); alert('IE je součást Windows! 🚫')" style="padding: 5px 15px;" disabled>Odebrat</button>
+                        <button onclick="playClickSound(); systemMessage('IE je součást Windows! 🚫')" style="padding: 5px 15px;" disabled>Odebrat</button>
                     </div>
                     <div style="padding: 10px; border-bottom: 1px solid #ccc; display: flex; justify-content: space-between; align-items: center;">
                         <div>
                             <strong>📟 Windows Messenger</strong><br>
                             <span style="font-size: 11px; color: #666;">Velikost: 12.4 MB | Použito: Nikdy</span>
                         </div>
-                        <button onclick="playClickSound(); alert('Odebírání Windows Messenger... 🗑️')" style="padding: 5px 15px;">Odebrat</button>
+                        <button onclick="playClickSound(); systemMessage('Odebírání Windows Messenger... 🗑️')" style="padding: 5px 15px;">Odebrat</button>
                     </div>
                     <div style="padding: 10px; border-bottom: 1px solid #ccc; display: flex; justify-content: space-between; align-items: center;">
                         <div>
                             <strong>🎵 Winamp 5.12</strong><br>
                             <span style="font-size: 11px; color: #666;">Velikost: 8.9 MB | Použito: Denně</span>
                         </div>
-                        <button onclick="playClickSound(); alert('Odebírání Winamp... 🗑️')" style="padding: 5px 15px;">Odebrat</button>
+                        <button onclick="playClickSound(); systemMessage('Odebírání Winamp... 🗑️')" style="padding: 5px 15px;">Odebrat</button>
                     </div>
                     <div style="padding: 10px; border-bottom: 1px solid #ccc; display: flex; justify-content: space-between; align-items: center;">
                         <div>
-                            <strong>🦠 určitě_ne_virus.exe</strong><br>
+                            <strong>🦠 Antivirus XP</strong><br>
                             <span style="font-size: 11px; color: #666;">Velikost: 666 MB | Použito: Pořád 😈</span>
                         </div>
-                        <button onclick="playClickSound(); alert('Přístup odepřen! Tento program je chráněn! 🔒')" style="padding: 5px 15px;">Odebrat</button>
+                        <button onclick="playClickSound(); systemMessage('Přístup odepřen! Tento program je chráněn! 🔒')" style="padding: 5px 15px;">Odebrat</button>
                     </div>
                 </div>
             </div>
@@ -1583,7 +2050,7 @@ PS: Stále nevím, kde je ten Clippy...</textarea>
                     </select>
                 </div>
                 <div style="text-align: right; margin-top: 30px;">
-                    <button onclick="playClickSound(); alert('Čas nastaven! 🕐')" style="padding: 5px 20px;">OK</button>
+                    <button onclick="playClickSound(); systemMessage('Čas nastaven! 🕐')" style="padding: 5px 20px;">OK</button>
                 </div>
             </div>
         </div>
@@ -1764,6 +2231,33 @@ PS: Stále nevím, kde je ten Clippy...</textarea>
     <script>
         // Sound effects using Web Audio API
         const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+        // --- Added helpers: system dialog + update screen ---
+        function systemMessage(text) {
+            const c = document.getElementById('systemDialogContent');
+            if (c) c.innerHTML = text;
+            if (typeof openWindow === 'function') openWindow('systemDialog');
+        }
+
+        function showUpdateScreen() {
+            const loading = document.getElementById('loading-screen');
+            const bios = document.getElementById('bios-screen');
+            const update = document.getElementById('update-screen');
+            const desktop = document.getElementById('desktop');
+
+            if (loading) loading.style.display = 'none';
+            if (bios) bios.style.display = 'none';
+            if (update) update.style.display = 'block';
+
+            setTimeout(() => {
+                if (update) update.style.display = 'none';
+                if (desktop) desktop.style.display = 'block';
+                if (typeof playStartupSound === 'function') playStartupSound();
+                if (typeof updateClock === 'function') updateClock();
+                if (typeof randomizeIconPositions === 'function') randomizeIconPositions();
+            }, 5000);
+        }
+        // --- end helpers ---
         
         function playBeep(frequency = 800, duration = 0.1, volume = 0.3) {
             const oscillator = audioContext.createOscillator();
@@ -1876,7 +2370,7 @@ PS: Stále nevím, kde je ten Clippy...</textarea>
             },
             {
                 title: "Virus detekován!",
-                message: "Norton Antivirus zjistil podezřelou aktivitu!\n\nSoubor: určitě_ne_virus.exe\nHrozba: Vysoká\n\n(Jen žertuju, je to fake 😄)",
+                message: "Norton Antivirus zjistil podezřelou aktivitu!\n\nSoubor: Antivirus XP\nHrozba: Vysoká\n\n(Jen žertuju, je to fake )",
                 icon: "🦠",
                 buttons: ["Karanténa", "Ignorovat"]
             },
@@ -2035,7 +2529,7 @@ Technical information:
 *** STOP: 0x0000000A (0x00000000, 0x00000002, 0x00000000, 0x804E4E23)
 
 
-***  určitě_ne_virus.exe - Address 804E4E23 base at 80400000, DateStamp 3ee6c002
+***  Antivirus XP - Address 804E4E23 base at 80400000, DateStamp 3ee6c002
 
                 </div>
                 <div style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); text-align: center;">
@@ -2127,11 +2621,7 @@ Technical information:
             
             if (loadingProgress >= 100) {
                 setTimeout(() => {
-                    document.getElementById('loading-screen').style.display = 'none';
-                    document.getElementById('desktop').style.display = 'block';
-                    playStartupSound();
-                    updateClock();
-                    randomizeIconPositions();
+                    showUpdateScreen();
                 }, 500);
             } else {
                 // Slower loading - total ~10 seconds after BIOS
@@ -2164,6 +2654,7 @@ Technical information:
 
         document.addEventListener('mousedown', (e) => {
             const icon = e.target.closest('.icon');
+            if (icon && icon.id === 'win11Icon') return; // Win11 icon: click opens, no dragging
             if (icon && !e.target.closest('.window')) {
                 draggedIcon = icon;
                 const rect = icon.getBoundingClientRect();
@@ -2208,6 +2699,14 @@ Technical information:
         document.addEventListener('mouseup', (e) => {
             if (draggedIcon) {
                 draggedIcon.classList.remove('dragging');
+                // Final clamp so icons never end up out of bounds
+                const rect = draggedIcon.getBoundingClientRect();
+                const maxX = window.innerWidth - rect.width;
+                const maxY = window.innerHeight - rect.height - 40;
+                const clampedX = Math.max(0, Math.min(rect.left, maxX));
+                const clampedY = Math.max(0, Math.min(rect.top, maxY));
+                draggedIcon.style.left = clampedX + 'px';
+                draggedIcon.style.top = clampedY + 'px';
                 
                 // If we didn't drag, handle click/double-click
                 if (!isDraggingIcon) {
@@ -2242,7 +2741,7 @@ Technical information:
             if (iconId === 'gopnik') {
                 window.open('gopnik/loading.html', '_blank');
             } else if (iconId === 'pacman') {
-                window.open('packman/login.html', '_blank');
+                window.open('login.html', '_blank');
             } else if (iconId) {
                 openWindow(iconId);
             }
@@ -2318,7 +2817,7 @@ Technical information:
                 selectedIcon.style.transform = 'scale(0.5)';
                 
                 setTimeout(() => {
-                    alert(`"${iconName}" byl přesunut do koše! 🗑️`);
+                    systemMessage(`"${iconName}" byl přesunut do koše! 🗑️`);
                     selectedIcon.style.display = 'none';
                     selectedIcon.style.transition = '';
                     selectedIcon.style.opacity = '';
@@ -2373,7 +2872,7 @@ Technical information:
             newIcon.style.top = '300px';
             
             document.getElementById('desktopIcons').appendChild(newIcon);
-            alert('Nový soubor vytvořen! 📄');
+            systemMessage('Nový soubor vytvořen! 📄');
             hideAllContextMenus();
         }
 
@@ -2509,13 +3008,13 @@ Technical information:
             if (e.ctrlKey && e.key === 'c') {
                 playClickSound();
                 if (selectedIcon) {
-                    alert('📋 Zkopírováno do schránky!');
+                    systemMessage('📋 Zkopírováno do schránky!');
                 }
             }
             // Ctrl+V - Paste
             if (e.ctrlKey && e.key === 'v') {
                 playClickSound();
-                alert('📋 Vloženo ze schránky! (asi)');
+                systemMessage('📋 Vloženo ze schránky! (asi)');
             }
             // Delete - Delete to recycle bin
             if (e.key === 'Delete') {
@@ -2560,453 +3059,338 @@ Technical information:
 
         // Task Manager functions
         function taskManagerRefresh() {
-            playClickSound();
-            const cpuUsage = document.getElementById('cpuUsage');
-            const newCpu = Math.floor(Math.random() * 100);
-            cpuUsage.textContent = newCpu + '%';
-            
-            // Simulate process updates
-            const tbody = document.getElementById('taskTableBody');
-            const rows = tbody.querySelectorAll('tr');
-            rows.forEach(row => {
-                const cpuCell = row.cells[2];
-                if (cpuCell) {
-                    const randomCpu = Math.floor(Math.random() * 100);
-                    cpuCell.textContent = randomCpu + '%';
-                }
+    const cpu = document.getElementById('cpuUsage');
+    const rows = document.querySelectorAll('#taskTableBody tr');
+    // randomize cpu + memory like XP
+    const cpuVal = Math.floor(Math.random()*60)+10;
+    if (cpu) cpu.textContent = cpuVal + '%';
+    rows.forEach((tr, i)=>{
+        const tds = tr.querySelectorAll('td');
+        if (tds.length >= 4 && i>0){
+            tds[2].textContent = Math.floor(Math.random()*50) + '%';
+            tds[3].textContent = (Math.floor(Math.random()*900000)+5000).toLocaleString('cs-CZ') + ' KB';
+        }
+    });
+    systemMessage('Správce úloh: data aktualizována.');
+}
+
+        function openWindows11File(){
+            window.location.href = 'win11.html';
+        }
+
+        // Win11 icon should open win11.html on single click without moving
+        window.addEventListener('DOMContentLoaded', () => {
+            const w11 = document.getElementById('win11Icon');
+            if (!w11) return;
+
+            // show it if it was hidden
+            if (getComputedStyle(w11).display === 'none') w11.style.display = 'block';
+
+            // stop desktop drag/select handlers from grabbing it
+            ['mousedown','mouseup','mousemove','contextmenu'].forEach(evt => {
+                w11.addEventListener(evt, (e) => { e.stopPropagation(); }, { capture: true });
             });
-            
-            alert('Správce úloh aktualizován! 📊');
-        }
 
-        function endTask() {
-            playErrorSound();
-            alert('Ukončuji úlohu... (ale ve skutečnosti ne) 😄');
-        }
-
-        // Run dialog functions
-        function executeRun() {
-            const input = document.getElementById('runInput').value.toLowerCase();
-            playClickSound();
-            
-            const commands = {
-                'notepad': () => openWindow('notepad'),
-                'calc': () => openWindow('calculator'),
-                'calculator': () => openWindow('calculator'),
-                'mspaint': () => openWindow('paint'),
-                'paint': () => openWindow('paint'),
-                'taskmgr': () => openWindow('taskManager'),
-                'explorer': () => openWindow('myComputer'),
-                'iexplore': () => openWindow('ie'),
-                'wmplayer': () => openWindow('myMusic'),
-                'cmd': () => openWindow('cmd'),
-                'wordpad': () => openWindow('wordpad'),
-                'cleanmgr': () => openWindow('diskCleanup'),
-                'dfrg.msc': () => openWindow('defrag'),
-                'rstrui': () => openWindow('systemRestore'),
-                'regedit': () => alert('Registry Editor je zakázán! ⚠️'),
-                'shutdown': () => shutdown(),
-            };
-            
-            if (commands[input]) {
-                commands[input]();
-                closeWindow('runDialog');
-            } else {
-                playErrorSound();
-                alert(`Soubor "${input}" nebyl nalezen! ❌`);
-            }
-            
-            document.getElementById('runInput').value = '';
-        }
-
-        // Windows Media Player
-        let isPlaying = false;
-        function togglePlay() {
-            isPlaying = !isPlaying;
-            const btn = document.getElementById('playBtn');
-            btn.textContent = isPlaying ? '⏸️' : '▶️';
-            playClickSound();
-            
-            if (isPlaying) {
-                simulateMusicProgress();
-            }
-        }
-
-        function simulateMusicProgress() {
-            if (!isPlaying) return;
-            const bar = document.getElementById('musicProgress');
-            let width = parseInt(bar.style.width || '35');
-            if (width < 100) {
-                bar.style.width = (width + 1) + '%';
-                setTimeout(simulateMusicProgress, 1000);
-            } else {
-                isPlaying = false;
-                document.getElementById('playBtn').textContent = '▶️';
-                bar.style.width = '0%';
-            }
-        }
-
-        // Command Prompt
-        function executeCmd() {
-            const input = document.getElementById('cmdInput');
-            const output = document.getElementById('cmdOutput');
-            const command = input.value.toLowerCase().trim();
-            
-            output.innerHTML += `<br>${input.value}`;
-            
-            const responses = {
-                'dir': '<br>Svazek v jednotce C nemá název.<br>Sériové číslo svazku je 1234-5678<br><br>Adresář: C:\\Documents and Settings\\User<br><br>29.01.2026  13:37    &lt;DIR&gt;          .<br>29.01.2026  13:37    &lt;DIR&gt;          ..<br>15.01.2026  10:00    &lt;DIR&gt;          Dokumenty<br>01.01.2026  00:00         420,690 tahle_slozka.txt<br>               1 soubor(ů)        420,690 bajtů<br>               3 adresář(ů)  1,024,000,000 bajtů volných',
-                'help': '<br>Dostupné příkazy:<br>DIR - zobrazí obsah adresáře<br>CD - změní adresář<br>COPY - kopíruje soubory<br>DEL - smaže soubory<br>CLS - vyčistí obrazovku<br>EXIT - ukončí CMD<br>TREE - zobrazí strukturu adresářů<br>PING - testuje síťové připojení',
-                'cls': 'CLEAR',
-                'exit': 'EXIT',
-                'tree': '<br>C:\\<br>├── Documents and Settings<br>│   └── User<br>│       ├── Dokumenty<br>│       ├── Hudba<br>│       └── Obrázky<br>├── Program Files<br>└── Windows<br>    └── System32',
-                'ping google.com': '<br>Příkaz Ping pro google.com [142.250.185.78] s 32 bajty dat:<br>Odpověď z 142.250.185.78: bajtů=32 čas=15ms TTL=117<br>Odpověď z 142.250.185.78: bajtů=32 čas=16ms TTL=117<br>Odpověď z 142.250.185.78: bajtů=32 čas=14ms TTL=117<br>Statistika:<br>    Přenesených = 3, Přijatých = 3, Ztracených = 0 (0% ztráta)',
-                'ipconfig': '<br>Konfigurace protokolu IP systému Windows<br><br>Adaptér sítě Ethernet - Místní připojení:<br>   IP adresa: 192.168.1.69<br>   Maska podsítě: 255.255.255.0<br>   Výchozí brána: 192.168.1.1',
-                'systeminfo': '<br>Název hostitele: WINDOWS-XP<br>Název operačního systému: Microsoft Windows XP Professional<br>Verze operačního systému: 5.1.2600 Service Pack 3<br>Výrobce operačního systému: Microsoft Corporation<br>Procesor: Pentium 4 2.8 GHz<br>Celková fyzická paměť: 256 MB',
-                'color 0a': 'COLOR_GREEN',
-                'tasklist': '<br>Název bitové kopie              PID  Velikost paměti<br>System Idle Process              0           0 kB<br>explorer.exe                  1234      15,234 kB<br>chrome.exe                    5678   1,234,567 kB<br>určitě_ne_virus.exe           6666     999,999 kB'
-            };
-            
-            if (command === 'cls') {
-                output.innerHTML = 'Microsoft Windows XP [Verze 5.1.2600]<br>(C) Copyright 1985-2001 Microsoft Corp.<br><br>C:\\Documents and Settings\\User&gt;';
-            } else if (command === 'exit') {
-                closeWindow('cmd');
-            } else if (command === 'color 0a') {
-                document.querySelector('#cmd .window-content').style.color = '#0f0';
-            } else if (responses[command]) {
-                output.innerHTML += responses[command];
-            } else if (command) {
-                output.innerHTML += `<br>'${input.value}' není rozpoznán jako vnitřní nebo externí příkaz, spustitelný program nebo dávkový soubor.`;
-            }
-            
-            output.innerHTML += '<br>C:\\Documents and Settings\\User&gt;';
-            input.value = '';
-            output.scrollTop = output.scrollHeight;
-        }
-
-        // System Restore
-        function restoreSystem() {
-            playClickSound();
-            const overlay = document.createElement('div');
-            overlay.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.8);
-                z-index: 100000;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: white;
-                font-size: 24px;
-                flex-direction: column;
-            `;
-            overlay.innerHTML = `
-                <div style="text-align: center;">
-                    <div style="font-size: 48px; margin-bottom: 20px;">🔄</div>
-                    <div>Obnovování systému...</div>
-                    <div style="margin-top: 20px; font-size: 16px; color: #ccc;">Prosím čekejte...</div>
-                    <div style="width: 300px; height: 20px; background: #333; margin: 20px auto; border-radius: 10px; overflow: hidden;">
-                        <div id="restoreProgress" style="width: 0%; height: 100%; background: linear-gradient(to right, #0066cc, #00aaff); transition: width 0.5s;"></div>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(overlay);
-            
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += 10;
-                document.getElementById('restoreProgress').style.width = progress + '%';
-                if (progress >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        overlay.remove();
-                        alert('Systém byl úspěšně obnoven! 🎉\n(Ne doopravdy, ale vypadalo to cool, ne?)');
-                        closeWindow('systemRestore');
-                    }, 500);
-                }
-            }, 300);
-        }
-
-        // Disk Cleanup
-        function startCleanup() {
-            playClickSound();
-            
-            // Random error during cleanup (15% chance)
-            if (Math.random() < 0.15) {
-                setTimeout(() => showRandomError(), 1500);
-                return;
-            }
-            
-            const overlay = document.createElement('div');
-            overlay.style.cssText = `
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: #ECE9D8;
-                border: 2px solid #0054E3;
-                padding: 30px;
-                z-index: 100000;
-                box-shadow: 3px 3px 10px rgba(0,0,0,0.5);
-                min-width: 400px;
-                text-align: center;
-            `;
-            overlay.innerHTML = `
-                <div style="font-size: 48px; margin-bottom: 20px;">🧹</div>
-                <div style="margin-bottom: 20px;">Čištění disku...</div>
-                <div style="width: 100%; height: 20px; background: #fff; border: 2px inset #888; margin-bottom: 10px;">
-                    <div id="cleanupProgress" style="width: 0%; height: 100%; background: linear-gradient(to right, #0066cc, #00aaff);"></div>
-                </div>
-                <div id="cleanupText" style="font-size: 12px; color: #666;">Mazání dočasných souborů...</div>
-            `;
-            document.body.appendChild(overlay);
-            
-            const messages = [
-                'Mazání dočasných souborů...',
-                'Čištění koše...',
-                'Odstraňování miniatur...',
-                'Mazání protokolů...',
-                'Dokončování...'
-            ];
-            
-            let progress = 0;
-            let msgIndex = 0;
-            const interval = setInterval(() => {
-                progress += 20;
-                document.getElementById('cleanupProgress').style.width = progress + '%';
-                if (msgIndex < messages.length) {
-                    document.getElementById('cleanupText').textContent = messages[msgIndex++];
-                }
-                if (progress >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        overlay.remove();
-                        alert('Vyčištění dokončeno! 🎉\nUvolněno: 4.20 GB');
-                        closeWindow('diskCleanup');
-                    }, 500);
-                }
-            }, 600);
-        }
-
-        // Defragmentation
-        function analyzeDefrag() {
-            playClickSound();
-            
-            // Random error during analysis (10% chance)
-            if (Math.random() < 0.1) {
-                showRandomError();
-                return;
-            }
-            
-            alert('📊 Analýza disku:\n\nFragmentace: 45%\n✓ Doporučena defragmentace!\n\nSoubory: 12,345\nFragmentované soubory: 5,678\nVelkost dat: 42 GB');
-        }
-
-        function startDefrag() {
-            playClickSound();
-            
-            // Random error during defrag (15% chance)
-            if (Math.random() < 0.15) {
-                setTimeout(() => showRandomError(), 2000);
-                return;
-            }
-            
-            document.getElementById('defragProgress').style.display = 'block';
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += 5;
-                document.getElementById('defragBar').style.width = progress + '%';
-                if (progress >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => {
-                        alert('✅ Defragmentace dokončena!\n\nDisk C: byl úspěšně defragmentován.\nFragmentace: 0%');
-                        document.getElementById('defragProgress').style.display = 'none';
-                        document.getElementById('defragBar').style.width = '0%';
-                    }, 500);
-                }
-            }, 500);
-        }
-
-        // Display Properties tab switching
-        function switchDisplayTab(tab) {
-            playClickSound();
-            const tabs = ['themes', 'desktop', 'screensaver', 'appearance', 'settings'];
-            
-            tabs.forEach(t => {
-                const btn = document.getElementById('tab' + t.charAt(0).toUpperCase() + t.slice(1));
-                if (btn) {
-                    btn.style.background = t === tab ? '#ECE9D8' : '#D4D0C8';
-                    btn.style.borderStyle = t === tab ? 'inset' : 'outset';
-                }
+            w11.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                openWindows11File();
             });
-            
-            const content = document.getElementById('displayTabContent');
-            const contents = {
-                'themes': '<div id="themesContent"><h3>Motivy</h3><div style="background: #fff; border: 2px inset #888; padding: 100px 20px; text-align: center; margin: 20px 0;"><div style="font-size: 48px;">🪟</div><div style="margin-top: 10px; color: #666;">Náhled motivu Windows XP</div></div><label>Motiv:</label><select style="width: 100%; padding: 5px; margin-top: 5px;"><option>Windows XP</option><option>Windows Classic</option><option>Modrá</option><option>Olivová zelená</option><option>Stříbrná</option></select></div>',
-                'desktop': '<div><h3>Pozadí plochy</h3><p style="margin: 15px 0;">Vyberte obrázek na pozadí:</p><div style="border: 2px inset #888; background: #fff; padding: 10px; max-height: 300px; overflow-y: auto;"><div style="padding: 8px; cursor: pointer; border-bottom: 1px solid #ccc;" onclick="this.style.background=\'#e0e0ff\'">🏞️ Bliss (Výchozí)</div><div style="padding: 8px; cursor: pointer; border-bottom: 1px solid #ccc;" onclick="this.style.background=\'#e0e0ff\'">🌊 Azul</div><div style="padding: 8px; cursor: pointer; border-bottom: 1px solid #ccc;" onclick="this.style.background=\'#e0e0ff\'">🌸 Sakura</div><div style="padding: 8px; cursor: pointer; border-bottom: 1px solid #ccc;" onclick="this.style.background=\'#e0e0ff\'">🏔️ Mountains</div><div style="padding: 8px; cursor: pointer;" onclick="this.style.background=\'#e0e0ff\'">⚫ Žádné</div></div></div>',
-                'screensaver': '<div><h3>Šetřič obrazovky</h3><div style="background: #000; border: 2px inset #888; padding: 80px 20px; text-align: center; margin: 20px 0; color: #0f0; font-family: Courier New;">⭐ Náhled šetřiče ⭐</div><label>Šetřič obrazovky:</label><select style="width: 100%; padding: 5px; margin: 10px 0;"><option>(Žádný)</option><option>3D Text</option><option>Bublinky</option><option>Létající Windows</option><option>Mystify</option><option>Starfield</option></select><label>Čekat: <input type="number" value="10" style="width: 50px; padding: 3px;"> minut</label></div>',
-                'appearance': '<div><h3>Vzhled Windows</h3><p style="margin: 15px 0;">Barvy a styly pro okna a tlačítka:</p><label>Barva a styl:</label><select style="width: 100%; padding: 5px; margin: 10px 0;"><option>Windows XP Modrá</option><option>Windows XP Olivová</option><option>Windows XP Stříbrná</option><option>Windows Classic</option></select><label>Velikost písma:</label><select style="width: 100%; padding: 5px; margin: 10px 0;"><option>Normální</option><option>Velké</option><option>Velmi velké</option></select></div>',
-                'settings': '<div><h3>Nastavení zobrazení</h3><p style="margin: 15px 0;">Monitor: Plug and Play Monitor na Mobile Intel 915GM</p><label>Barevná kvalita:</label><select style="width: 100%; padding: 5px; margin: 10px 0;"><option>Střední (16 bit)</option><option>Nejvyšší (32 bit)</option></select><label>Rozlišení obrazovky:</label><div style="margin: 10px 0;"><input type="range" min="800" max="1920" value="1024" style="width: 100%;"><div style="display: flex; justify-content: space-between; font-size: 12px;"><span>800 × 600</span><span>1024 × 768</span><span>1920 × 1080</span></div></div></div>'
-            };
-            
-            if (contents[tab]) {
-                content.innerHTML = contents[tab];
-            }
-        }
-
-        // Enter key in Run dialog
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                const runDialog = document.getElementById('runDialog');
-                if (runDialog.style.display === 'block') {
-                    executeRun();
-                }
-            }
         });
 
-        // Security screen (Ctrl+Alt+Del)
-        function showSecurityScreen() {
-            playClickSound();
-            const overlay = document.createElement('div');
-            overlay.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: #0A246A;
-                z-index: 99999;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                color: white;
-                font-size: 16px;
-            `;
-            overlay.innerHTML = `
-                <h1 style="margin-bottom: 50px; font-size: 36px;">Windows Zabezpečení</h1>
-                <div style="display: flex; flex-direction: column; gap: 10px;">
-                    <button onclick="this.parentElement.parentElement.remove(); openWindow('taskManager');" style="padding: 15px 50px; font-size: 18px; cursor: pointer;">📊 Správce úloh</button>
-                    <button onclick="this.parentElement.parentElement.remove();" style="padding: 15px 50px; font-size: 18px; cursor: pointer;">🔒 Zamknout počítač</button>
-                    <button onclick="this.parentElement.parentElement.remove(); playClickSound(); alert('Odhlášení... (ne doopravdy)');" style="padding: 15px 50px; font-size: 18px; cursor: pointer;">👤 Odhlásit se</button>
-                    <button onclick="this.parentElement.parentElement.remove(); shutdown();" style="padding: 15px 50px; font-size: 18px; cursor: pointer;">🔴 Vypnout</button>
-                    <button onclick="this.parentElement.parentElement.remove();" style="padding: 15px 50px; font-size: 18px; cursor: pointer; margin-top: 20px;">❌ Zrušit</button>
-                </div>
-            `;
-            document.body.appendChild(overlay);
+        </script>
+
+<script>
+        // --- Shutdown (added) ---
+        function shutdown(){
+            openWindow('shutdownDialog');
         }
+        function doShutdown(){
+            const sel = document.getElementById('shutdownSelect');
+            const v = sel ? sel.value : 'shutdown';
+            closeWindow('shutdownDialog');
 
-        // Screen saver simulation (after 30 seconds of inactivity)
-        let screenSaverTimeout;
-        let screenSaverActive = false;
-
-        function resetScreenSaverTimer() {
-            clearTimeout(screenSaverTimeout);
-            if (screenSaverActive) {
-                exitScreenSaver();
-            }
-            screenSaverTimeout = setTimeout(startScreenSaver, 30000);
-        }
-
-        function startScreenSaver() {
-            screenSaverActive = true;
-            const desktop = document.getElementById('desktop');
-            const overlay = document.createElement('div');
-            overlay.id = 'screenSaver';
-            overlay.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: #000;
-                z-index: 99999;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: #00ff00;
-                font-size: 48px;
-                font-family: 'Courier New';
-                cursor: pointer;
-            `;
-            overlay.innerHTML = 'Windows XP Screensaver<br><span style="font-size: 20px;">Klikni nebo pohni myší</span>';
-            overlay.onclick = exitScreenSaver;
-            document.body.appendChild(overlay);
-        }
-
-        function exitScreenSaver() {
-            const overlay = document.getElementById('screenSaver');
-            if (overlay) {
-                overlay.remove();
-                screenSaverActive = false;
-            }
-            resetScreenSaverTimer();
-        }
-
-        document.addEventListener('mousemove', resetScreenSaverTimer);
-        document.addEventListener('keydown', resetScreenSaverTimer);
-        resetScreenSaverTimer();
-
-        // System sounds on various actions
-        function playSystemSound(type) {
-            switch(type) {
-                case 'maximize':
-                    playBeep(800, 0.05, 0.15);
-                    break;
-                case 'minimize':
-                    playBeep(600, 0.05, 0.15);
-                    break;
-                case 'restore':
-                    playBeep(700, 0.05, 0.15);
-                    break;
-            }
-        }
-
-        // Window functions
-        function openWindow(id) {
-            playClickSound();
-            
-            // Random chance of error when opening certain apps (5% chance)
-            if (Math.random() < 0.05 && ['paint', 'wordpad', 'ie', 'cmd'].includes(id)) {
-                showRandomError();
+            if (v === 'restart'){
+                if (typeof restartWindows === 'function') restartWindows();
                 return;
             }
-            
-            const win = document.getElementById(id);
-            if (!win) return;
-            
+            if (v === 'logoff'){
+                // simulate logoff: hide desktop and show loading then desktop
+                const desktop = document.getElementById('desktop');
+                const loading = document.getElementById('loading-screen');
+                if (desktop) desktop.style.display = 'none';
+                if (loading) loading.style.display = 'block';
+                setTimeout(()=>{ if (loading) loading.style.display = 'none'; if (desktop) desktop.style.display = 'block'; }, 2000);
+                return;
+            }
+            if (v === 'standby'){
+                const desktop = document.getElementById('desktop');
+                if (desktop) {
+                    desktop.style.filter = 'brightness(0.25)';
+                    setTimeout(()=>{ desktop.style.filter = ''; }, 2000);
+                }
+                return;
+            }
+            // shutdown: show black
+            const desk = document.getElementById('desktop');
+            if (desk) desk.style.display = 'none';
+            document.body.style.background = '#000';
+            systemMessage('Počítač byl vypnut.');
+        }
+        // --- end shutdown ---
+
+
+        // --- Wallpaper (added) ---
+        const WALL_KEY = 'xp_wallpaper_v1';
+        function wallpaperValue(kind){
+            if (kind === 'bliss') return "url('https://upload.wikimedia.org/wikipedia/en/2/27/Bliss_%28Windows_XP%29.png')";
+            if (kind === 'solidblue') return "linear-gradient(#2a62c9, #1b3f87)";
+            if (kind === 'solidgreen') return "linear-gradient(#2f8a3a, #1e5d27)";
+            if (kind === 'solidblack') return "linear-gradient(#000, #111)";
+            if (kind === 'gradient') return "linear-gradient(135deg, #5A8BB4 0%, #3A6EA5 50%, #5A8BB4 100%)";
+            return "linear-gradient(#000,#000)";
+        }
+        function previewWallpaper(){
+            const sel = document.getElementById('wallpaperSelect');
+            const prev = document.getElementById('dpPreview');
+            if (!sel || !prev) return;
+            prev.style.backgroundImage = wallpaperValue(sel.value);
+            prev.style.backgroundSize = 'cover';
+            prev.style.backgroundPosition = 'center';
+        }
+        function applyWallpaper(){
+            const sel = document.getElementById('wallpaperSelect');
+            const desk = document.getElementById('desktop');
+            if (!sel || !desk) return;
+            localStorage.setItem(WALL_KEY, sel.value);
+            const val = wallpaperValue(sel.value);
+            desk.style.backgroundImage = val + ", linear-gradient(rgba(58, 110, 165, 0.2), rgba(58, 110, 165, 0.2))";
+            desk.style.backgroundSize = 'cover';
+            desk.style.backgroundPosition = 'center';
+            systemMessage('Pozadí plochy bylo změněno.');
+        }
+        window.addEventListener('load', ()=>{
+            const kind = localStorage.getItem(WALL_KEY) || 'bliss';
+            const desk = document.getElementById('desktop');
+            const sel = document.getElementById('wallpaperSelect');
+            if (sel) sel.value = kind;
+            const val = wallpaperValue(kind);
+            if (desk) {
+                desk.style.backgroundImage = val + ", linear-gradient(rgba(58, 110, 165, 0.2), rgba(58, 110, 165, 0.2))";
+                desk.style.backgroundSize = 'cover';
+                desk.style.backgroundPosition = 'center';
+            }
+            setTimeout(previewWallpaper, 50);
+        });
+        // --- end wallpaper ---
+
+
+        // --- Dragging windows by title bar (added) ---
+        function makeWindowDraggable(win){
+            const title = win.querySelector('.window-title');
+            if (!title) return;
+            let dragging = false, offsetX = 0, offsetY = 0;
+            title.addEventListener('mousedown', (e)=>{
+                if (e.target.classList.contains('window-button')) return;
+                dragging = true;
+                const r = win.getBoundingClientRect();
+                offsetX = e.clientX - r.left;
+                offsetY = e.clientY - r.top;
+                setActiveWindow(win);
+                e.preventDefault();
+            });
+            document.addEventListener('mousemove', (e)=>{
+                if (!dragging) return;
+                win.style.left = Math.max(0, e.clientX - offsetX) + 'px';
+                win.style.top  = Math.max(0, e.clientY - offsetY) + 'px';
+            });
+            document.addEventListener('mouseup', ()=>{ dragging = false; });
+        }
+        window.addEventListener('load', ()=>{
+            document.querySelectorAll('.window').forEach(makeWindowDraggable);
+        });
+        // --- end dragging ---
+
+
+        // --- Error popup spam (added) ---
+        function spawnErrorPopup(message){
+            // clone template
+            const tpl = document.getElementById('errorPopupTemplate');
+            if (!tpl) return;
+            const w = tpl.cloneNode(true);
+            w.id = 'err_' + Math.random().toString(16).slice(2);
+            w.style.display = 'block';
+            w.style.left = Math.floor(Math.random() * (window.innerWidth - 380)) + 'px';
+            w.style.top = Math.floor(Math.random() * (window.innerHeight - 220 - 40)) + 'px';
+            const txt = w.querySelector('#errorPopupText');
+            if (txt) txt.id = w.id + '_text';
+            document.body.appendChild(w);
+            const txt2 = document.getElementById(w.id + '_text');
+            if (txt2) txt2.textContent = message;
+
+            // auto-close after a bit to avoid infinite buildup
+            setTimeout(()=>{ if (w && w.parentNode) w.remove(); }, 5000);
+        }
+        // --- end error popup spam ---
+
+
+        // --- BSOD + reboot (added) ---
+        function triggerBSODAndReboot(){
+            // hide everything except BSOD
+            document.querySelectorAll('.window').forEach(w => w.style.display = 'none');
+            const startMenu = document.getElementById('startMenu');
+            if (startMenu) startMenu.style.display = 'none';
+
+            const desktop = document.getElementById('desktop');
+            if (desktop) desktop.style.display = 'none';
+
+            const update = document.getElementById('update-screen');
+            if (update) update.style.display = 'none';
+
+            const loading = document.getElementById('loading-screen');
+            if (loading) loading.style.display = 'none';
+
+            const bios = document.getElementById('bios-screen');
+            if (bios) bios.style.display = 'none';
+
+            const bsod = document.getElementById('bsod-screen');
+            if (bsod) bsod.style.display = 'block';
+
+            setTimeout(() => {
+                if (bsod) bsod.style.display = 'none';
+                restartWindows();
+            }, 3000);
+        }
+
+        function restartWindows(){
+            // Re-run boot: BIOS -> loading -> update -> desktop
+            const bios = document.getElementById('bios-screen');
+            const biosText = document.getElementById('biosText');
+            const loading = document.getElementById('loading-screen');
+            const loadingBar = document.getElementById('loadingBar');
+            const desktop = document.getElementById('desktop');
+            const update = document.getElementById('update-screen');
+
+            // hide all windows
+            document.querySelectorAll('.window').forEach(w => w.style.display = 'none');
+            const startMenu = document.getElementById('startMenu');
+            if (startMenu) startMenu.style.display = 'none';
+
+            if (desktop) desktop.style.display = 'none';
+            if (update) update.style.display = 'none';
+            if (loading) loading.style.display = 'block';
+
+            if (bios) bios.style.display = 'block';
+            if (biosText) biosText.innerHTML = '';
+
+            if (loadingBar) loadingBar.style.width = '0%';
+
+            // If original boot variables exist, reset them
+            if (typeof loadingProgress !== 'undefined') loadingProgress = 0;
+            if (typeof biosIndex !== 'undefined') biosIndex = 0;
+
+            // Kick BIOS typing if function exists, otherwise just jump to update screen
+            if (typeof displayBiosMessage === 'function') {
+                setTimeout(displayBiosMessage, 200);
+            } else if (typeof showUpdateScreen === 'function') {
+                setTimeout(showUpdateScreen, 600);
+            } else {
+                // fallback: show desktop
+                if (loading) loading.style.display = 'none';
+                if (desktop) desktop.style.display = 'block';
+            }
+        }
+        // --- end BSOD + reboot ---
+
+
+        // --- Window manager (added) ---
+        let topZ = 300;
+
+        function getWindowEl(id) {
+            return document.getElementById(id) || document.getElementById(id + 'Win');
+        }
+
+        function setActiveWindow(win) {
+            document.querySelectorAll('.window').forEach(w => w.classList.remove('active'));
+            if (win) {
+                win.classList.add('active');
+                win.style.zIndex = String(++topZ);
+            }
+        }
+
+        function ensureTaskbarItem(windowId, titleText) {
+            const bar = document.getElementById('taskbarItems');
+            if (!bar) return;
+            let item = bar.querySelector(`.taskbar-item[data-window-id="${windowId}"]`);
+            if (!item) {
+                item = document.createElement('div');
+                item.className = 'taskbar-item active';
+                item.dataset.windowId = windowId;
+                item.innerHTML = `<span>🗔</span><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${titleText}</span>`;
+                item.onclick = () => {
+                    const w = getWindowEl(windowId);
+                    if (!w) return;
+                    if (w.style.display === 'none') {
+                        openWindow(windowId);
+                    } else {
+                        minimizeWindow(windowId);
+                    }
+                };
+                bar.appendChild(item);
+            }
+            bar.querySelectorAll('.taskbar-item').forEach(x => x.classList.remove('active'));
+            item.classList.add('active');
+        }
+
+        function updateTaskbarActive(windowId) {
+            const bar = document.getElementById('taskbarItems');
+            if (!bar) return;
+            bar.querySelectorAll('.taskbar-item').forEach(x => x.classList.remove('active'));
+            const item = bar.querySelector(`.taskbar-item[data-window-id="${windowId}"]`);
+            if (item) item.classList.add('active');
+        }
+
+        function removeTaskbarItem(windowId) {
+            const bar = document.getElementById('taskbarItems');
+            if (!bar) return;
+            const item = bar.querySelector(`.taskbar-item[data-window-id="${windowId}"]`);
+            if (item) item.remove();
+        }
+
+        function openWindow(id) {
+
+            const win = getWindowEl(id);
+            if (!win) {
+                systemMessage('Okno nenalezeno: ' + escapeHtml(id));
+                return;
+            }
             win.style.display = 'block';
-            
-            // Position window if not positioned yet
-            if (!windowPositions[id]) {
-                const offset = activeWindows.length * 30;
-                win.style.left = (50 + offset) + 'px';
-                win.style.top = (50 + offset) + 'px';
-                windowPositions[id] = true;
+            win.classList.remove('minimizing');
+            win.classList.add('maximizing');
+            setTimeout(() => win.classList.remove('maximizing'), 350);
+
+            // Title
+            const titleSpan = win.querySelector('.window-title span');
+            const titleText = titleSpan ? titleSpan.textContent.trim() : id;
+
+            ensureTaskbarItem(id, titleText);
+            setActiveWindow(win);
+            // Auto-run virus.exe sequence immediately
+            if (id === 'virusExeWin' && typeof openVirusExe === 'function') {
+                setTimeout(openVirusExe, 50);
             }
-            
-            if (!activeWindows.includes(id)) {
-                activeWindows.push(id);
-            }
-            
-            createTaskbarItem(id, win.querySelector('.window-title span').textContent);
-            focusWindow(id);
-            document.getElementById('startMenu').style.display = 'none';
         }
 
         function closeWindow(id) {
-            playClickSound();
-            const win = document.getElementById(id);
+            const win = getWindowEl(id);
+            if (!win) return;
             win.style.display = 'none';
-            activeWindows = activeWindows.filter(w => w !== id);
             removeTaskbarItem(id);
         }
 
         function minimizeWindow(id) {
-            playSystemSound('minimize');
-            const win = document.getElementById(id);
+            const win = getWindowEl(id);
+            if (!win) return;
             win.classList.add('minimizing');
             setTimeout(() => {
                 win.style.display = 'none';
@@ -3015,225 +3399,1050 @@ Technical information:
         }
 
         function maximizeWindow(id) {
-            const win = document.getElementById(id);
-            
-            if (win.dataset.maximized === 'true') {
-                // Restore
-                playSystemSound('restore');
-                win.style.width = '500px';
-                win.style.height = '350px';
-                win.style.left = win.dataset.oldLeft;
-                win.style.top = win.dataset.oldTop;
-                win.dataset.maximized = 'false';
+            const win = getWindowEl(id);
+            if (!win) return;
+            // toggle between normal and full
+            if (win.dataset.maximized === '1') {
+                win.style.left = (win.dataset.prevLeft || '100px');
+                win.style.top = (win.dataset.prevTop || '100px');
+                win.style.width = (win.dataset.prevW || '500px');
+                win.style.height = (win.dataset.prevH || '350px');
+                win.dataset.maximized = '0';
             } else {
-                // Maximize
-                playSystemSound('maximize');
-                win.dataset.oldLeft = win.style.left;
-                win.dataset.oldTop = win.style.top;
-                win.style.left = '0';
-                win.style.top = '0';
-                win.style.width = '100%';
-                win.style.height = 'calc(100% - 42px)';
-                win.dataset.maximized = 'true';
+                const r = win.getBoundingClientRect();
+                win.dataset.prevLeft = win.style.left || (r.left + 'px');
+                win.dataset.prevTop = win.style.top || (r.top + 'px');
+                win.dataset.prevW = win.style.width || (r.width + 'px');
+                win.dataset.prevH = win.style.height || (r.height + 'px');
+                win.style.left = '0px';
+                win.style.top = '0px';
+                win.style.width = '100vw';
+                win.style.height = 'calc(100vh - 40px)';
+                win.dataset.maximized = '1';
+            }
+            setActiveWindow(win);
+            updateTaskbarActive(id);
+        }
+
+        // Bring to front on click
+        document.addEventListener('mousedown', (e) => {
+            const win = e.target.closest && e.target.closest('.window');
+            if (win) setActiveWindow(win);
+        });
+        // --- end window manager ---
+
+
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,(c)=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));}
+let virusInterval = null;
+
+
+
+function startAntivirusScan(){
+    let bar = document.getElementById("avBar");
+    let p = 0;
+    let scan = setInterval(()=>{
+        p+=5;
+        bar.style.width = p+"%";
+        if(p>=100){
+            clearInterval(scan);
+            if(virusInterval){
+                clearInterval(virusInterval);
+                virusInterval=null;
+            }
+            systemMessage("Hrozby odstraněny ✔");
+        }
+    },300);
+}
+
+
+        // --- virus.exe sequence (added/override) ---
+        function openVirusExe(){
+            // show CMD and start "attack" immediately
+            openWindow('cmd');
+
+            const out = document.getElementById('cmdOutput');
+            if (!out) return;
+
+            out.innerHTML = "Windows 9000 [Verze 5.1.2600]<br>(C) Copyright 1985-2001 Microsoft Corp.<br><br>C:\\Documents and Settings\\User&gt;";
+
+            const lines = [
+                "cd C:\\Windows\\System32",
+                "taskkill /f /im explorer.exe",
+                "net stop \"Security Center\"",
+                "net stop \"Windows Firewall/Internet Connection Sharing (ICS)\"",
+                "del /q /f C:\\Windows\\Temp\\*.tmp",
+                "echo injecting...",
+                "echo patching kernel...",
+                "echo done."
+            ];
+
+            let i = 0;
+            const start = Date.now();
+
+            function appendCmd(line){
+                out.innerHTML += "<br>" + escapeHtml(line);
+                out.innerHTML += "<br>C:\\Documents and Settings\\User&gt;";
+                out.scrollTop = out.scrollHeight;
+            }
+
+            // error popups during the run
+            const popupMsgs = [
+                "Aplikace nemůže pokračovat: 0xC0000005",
+                "Služba nebyla nalezena.",
+                "Přístup odepřen.",
+                "Systémová chyba: neočekávaný stav.",
+                "Chyba modulu: KERNEL32.DLL",
+                "Chyba ovladače: VIDEO_TDR_FAILURE"
+            ];
+            const popInt = setInterval(()=>{
+                spawnErrorPopup(popupMsgs[Math.floor(Math.random()*popupMsgs.length)]);
+            }, 650);
+
+            const typer = setInterval(()=>{
+                if (i < lines.length){
+                    appendCmd(lines[i]);
+                    i++;
+                }
+                if (Date.now() - start >= 10000){
+                    clearInterval(typer);
+                    clearInterval(popInt);
+                    triggerBSODAndReboot();
+                }
+            }, 800);
+        }
+        // --- end virus.exe sequence ---
+
+
+        // --- Run dialog + Recycle Bin + Rename/Delete (added) ---
+        const BIN_KEY = 'xp_bin_v1';
+        let binSelectedId = null;
+
+        function getBin(){
+            try { return JSON.parse(localStorage.getItem(BIN_KEY) || '[]'); } catch { return []; }
+        }
+        function setBin(items){
+            localStorage.setItem(BIN_KEY, JSON.stringify(items));
+        }
+
+        function nowStr(){
+            const d = new Date();
+            return d.toLocaleString('cs-CZ');
+        }
+
+        function renderBin(){
+            const body = document.getElementById('binTableBody');
+            const countLabel = document.getElementById('binCountLabel');
+            const status = document.getElementById('binStatus');
+            if (!body) return;
+
+            const items = getBin();
+            body.innerHTML = '';
+            items.forEach(it => {
+                const tr = document.createElement('tr');
+                tr.style.border = '1px solid #888';
+                tr.style.cursor = 'default';
+                tr.dataset.id = it.id;
+                tr.innerHTML = `
+                    <td style="padding:6px; border:1px solid #888;">${escapeHtml(it.name)}</td>
+                    <td style="padding:6px; border:1px solid #888;">Plocha</td>
+                    <td style="padding:6px; border:1px solid #888;">${escapeHtml(it.deletedAt)}</td>
+                `;
+                tr.onclick = () => {
+                    body.querySelectorAll('tr').forEach(x => x.style.background = '');
+                    tr.style.background = '#B6D6FB';
+                    binSelectedId = it.id;
+                    if (status) status.textContent = 'Vybráno: ' + it.name;
+                };
+                tr.ondblclick = () => { binSelectedId = it.id; binRestoreSelected(); };
+                body.appendChild(tr);
+            });
+
+            if (countLabel) countLabel.textContent = items.length + ' položek';
+            if (status) status.textContent = 'Připraven';
+        }
+
+        function binRestoreSelected(){
+            const items = getBin();
+            if (!binSelectedId){
+                systemMessage('Vyber položku pro obnovení.');
+                return;
+            }
+            const idx = items.findIndex(x => x.id === binSelectedId);
+            if (idx === -1) return;
+            const it = items.splice(idx, 1)[0];
+            setBin(items);
+
+            // restore icon
+            const icon = document.createElement('div');
+            icon.className = 'icon';
+            icon.setAttribute('data-icon-id', it.iconId);
+            icon.title = it.name;
+            icon.style.left = (it.left || 80) + 'px';
+            icon.style.top  = (it.top || 80) + 'px';
+            icon.innerHTML = `<div class="icon-image">${it.emoji || '📄'}</div><div class="icon-label">${escapeHtml(it.name)}</div>`;
+            const desk = document.querySelector('.desktop-icons');
+            if (desk) desk.appendChild(icon);
+
+            // rebind icon handlers (reuse existing listeners if present)
+            if (typeof setupIconInteractions === 'function') setupIconInteractions(icon);
+
+            binSelectedId = null;
+            renderBin();
+        }
+
+        function binEmpty(){
+            setBin([]);
+            binSelectedId = null;
+            renderBin();
+            systemMessage('Koš byl vyprázdněn.');
+        }
+
+        function deleteSelectedIcon(){
+            if (!window.selectedIcon) return;
+            const icon = window.selectedIcon;
+            const iconId = icon.getAttribute('data-icon-id') || 'file';
+            if (iconId === 'recycleBin') {
+                systemMessage('Koš nelze odstranit.');
+                return;
+            }
+            const nameEl = icon.querySelector('.icon-label');
+            const name = nameEl ? nameEl.textContent.trim() : 'Položka';
+            const emojiEl = icon.querySelector('.icon-image');
+            const emoji = emojiEl ? emojiEl.textContent.trim() : '📄';
+            const rect = icon.getBoundingClientRect();
+
+            // move to bin storage
+            const items = getBin();
+            items.push({
+                id: 'bin_' + Math.random().toString(16).slice(2),
+                iconId,
+                name,
+                emoji,
+                left: rect.left,
+                top: rect.top,
+                deletedAt: nowStr()
+            });
+            setBin(items);
+
+            // remove from desktop
+            icon.remove();
+            window.selectedIcon = null;
+        }
+
+        function renameSelectedIcon(){
+            if (!window.selectedIcon) return;
+            const icon = window.selectedIcon;
+            const nameEl = icon.querySelector('.icon-label');
+            if (!nameEl) return;
+            const current = nameEl.textContent.trim();
+            const next = prompt('Zadej nový název:', current);
+            if (next && next.trim()){
+                nameEl.textContent = next.trim();
+                icon.title = next.trim();
             }
         }
 
-        // Make windows draggable
-        document.querySelectorAll('.window').forEach(win => {
-            const titleBar = win.querySelector('.window-title');
-            let isDragging = false;
-            let currentX;
-            let currentY;
-            let initialX;
-            let initialY;
-            
-            titleBar.addEventListener('mousedown', (e) => {
-                if (e.target.closest('.window-button')) return;
-                
-                isDragging = true;
-                initialX = e.clientX - win.offsetLeft;
-                initialY = e.clientY - win.offsetTop;
-                focusWindow(win.id);
-                
-                // Prevent text selection while dragging
+        function runDialog(){
+            openWindow('runDialog');
+            const inp = document.getElementById('runInput');
+            if (inp) { inp.focus(); inp.select(); }
+        }
+
+        function runExecute(){
+            const inp = document.getElementById('runInput');
+            const v = (inp && inp.value || '').trim().toLowerCase();
+            closeWindow('runDialog');
+
+            if (!v) return;
+
+            if (v === 'cmd') { openWindow('cmd'); return; }
+            if (v === 'notepad') { openWindow('notepad'); return; }
+            if (v === 'iexplore' || v === 'ie') { openWindow('ie'); return; }
+            if (v === 'taskmgr') { openWindow('taskManager'); return; }
+            if (v === 'control' || v === 'desk.cpl') { openWindow('displayProps'); return; }
+            if (v === 'shutdown') { shutdown(); return; }
+
+            systemMessage('Systém Windows nemůže nalézt: ' + v);
+        }
+
+        // Keyboard: Win+R and Delete
+        document.addEventListener('keydown', (e)=>{
+            if (e.key === 'Delete') {
+                deleteSelectedIcon();
+            }
+            if ((e.key === 'r' || e.key === 'R') && e.metaKey) {
+                // ignore on mac
+            }
+            if ((e.key === 'r' || e.key === 'R') && e.altKey) {
+                // ignore
+            }
+            if ((e.key === 'r' || e.key === 'R') && e.ctrlKey) {
+                // ignore
+            }
+            // Win+R: some browsers report as Meta; we also allow Ctrl+Alt+R as fallback
+            if ((e.key === 'r' || e.key === 'R') && (e.metaKey || (e.ctrlKey && e.altKey))) {
                 e.preventDefault();
-            });
-            
-            document.addEventListener('mousemove', (e) => {
-                if (isDragging) {
-                    e.preventDefault();
-                    currentX = e.clientX - initialX;
-                    currentY = e.clientY - initialY;
-                    
-                    // Keep window within bounds
-                    const maxX = window.innerWidth - 100;
-                    const maxY = window.innerHeight - 100;
-                    
-                    currentX = Math.max(0, Math.min(currentX, maxX));
-                    currentY = Math.max(0, Math.min(currentY, maxY));
-                    
-                    win.style.left = currentX + 'px';
-                    win.style.top = currentY + 'px';
-                    win.style.transform = 'none'; // Remove centering transform
-                }
-            });
-            
-            document.addEventListener('mouseup', () => {
-                isDragging = false;
-            });
-            
-            // Focus window on click
-            win.addEventListener('mousedown', () => {
-                focusWindow(win.id);
-            });
+                runDialog();
+            }
         });
 
-        function shutdown() {
-            playShutdownSound();
-            document.getElementById('desktop').style.display = 'none';
-            document.getElementById('loading-screen').style.display = 'flex';
-            
-            const bootScreen = document.querySelector('.xp-boot-screen');
-            bootScreen.innerHTML = `
-                <div style="text-align: center; color: #fff;">
-                    <div style="font-size: 48px; margin-bottom: 30px;">Windows se vypíná</div>
-                    <div style="font-size: 18px;">Můžeš nyní vypnout počítač</div>
-                    <div style="margin-top: 50px; color: #888;">Díky za použití! 😊</div>
-                </div>
-            `;
-        }
+        // Enhance icon context menu: add Rename/Delete if menu exists
+        window.addEventListener('load', ()=>{
+            const menu = document.getElementById('iconContextMenu');
+            if (menu && !menu.dataset.enhanced){
+                const sep = document.createElement('div');
+                sep.className = 'context-menu-separator';
+                const ren = document.createElement('div');
+                ren.className = 'context-menu-item';
+                ren.innerHTML = '<span class="icon-left">✏️</span>Přejmenovat';
+                ren.onclick = ()=>{ playClickSound(); renameSelectedIcon(); menu.style.display='none'; };
+                const del = document.createElement('div');
+                del.className = 'context-menu-item';
+                del.innerHTML = '<span class="icon-left">🗑️</span>Odstranit';
+                del.onclick = ()=>{ playClickSound(); deleteSelectedIcon(); menu.style.display='none'; };
 
-        // Calculator functions
-        let calcExpression = '';
-        let calcDisplay = '0';
-
-        function calcInput(value) {
-            playClickSound();
-            if (calcDisplay === '0' && value !== '.') {
-                calcDisplay = value;
-            } else {
-                calcDisplay += value;
+                menu.appendChild(sep);
+                menu.appendChild(ren);
+                menu.appendChild(del);
+                menu.dataset.enhanced = '1';
             }
-            calcExpression += value;
-            document.getElementById('calcDisplay').value = calcDisplay;
+        });
+
+        // Hook: if your code has a per-icon setup function, expose a minimal one
+        function setupIconInteractions(icon){
+            // basic select + dblclick open
+            icon.addEventListener('click', (e)=>{
+                document.querySelectorAll('.icon').forEach(i=>i.classList.remove('selected'));
+                icon.classList.add('selected');
+                window.selectedIcon = icon;
+                e.stopPropagation();
+            });
+            icon.addEventListener('dblclick', (e)=>{
+                const id = icon.getAttribute('data-icon-id');
+                openIconById(icon);
+                e.stopPropagation();
+            });
+        }
+        // --- end additions ---
+
+
+        // --- More XP features (added) ---
+        // Toast balloon near tray
+        function showToast(text, ms=3500){
+            const t = document.getElementById('xpToast');
+            if (!t) return;
+            t.innerHTML = text;
+            t.style.display = 'block';
+            setTimeout(()=>{ t.style.display='none'; }, ms);
         }
 
-        function calcClear() {
-            playClickSound();
-            calcExpression = '';
-            calcDisplay = '0';
-            document.getElementById('calcDisplay').value = calcDisplay;
+        // System sounds toggle
+        let soundsEnabled = true;
+        function toggleSounds(){
+            soundsEnabled = !soundsEnabled;
+            showToast(soundsEnabled ? '🔊 Zvuky zapnuty' : '🔇 Zvuky vypnuty');
         }
-
-        function calcEqual() {
-            playClickSound();
-            try {
-                const result = eval(calcExpression);
-                calcDisplay = result.toString();
-                calcExpression = result.toString();
-                document.getElementById('calcDisplay').value = calcDisplay;
-            } catch (e) {
-                playErrorSound();
-                calcDisplay = 'Chyba';
-                document.getElementById('calcDisplay').value = calcDisplay;
-                setTimeout(calcClear, 1000);
-            }
-        }
-
-        // Paint application
-        let paintCanvas = null;
-        let paintCtx = null;
-        let isPainting = false;
-        let currentTool = 'pen';
-        let lastX = 0;
-        let lastY = 0;
-
-        // Initialize paint canvas when window opens
-        function initPaintCanvas() {
-            paintCanvas = document.getElementById('paintCanvas');
-            if (!paintCanvas) return;
-            
-            paintCtx = paintCanvas.getContext('2d');
-            paintCtx.lineCap = 'round';
-            paintCtx.lineJoin = 'round';
-            
-            paintCanvas.addEventListener('mousedown', startPainting);
-            paintCanvas.addEventListener('mousemove', paint);
-            paintCanvas.addEventListener('mouseup', stopPainting);
-            paintCanvas.addEventListener('mouseout', stopPainting);
-        }
-
-        function startPainting(e) {
-            isPainting = true;
-            const rect = paintCanvas.getBoundingClientRect();
-            lastX = e.clientX - rect.left;
-            lastY = e.clientY - rect.top;
-        }
-
-        function paint(e) {
-            if (!isPainting) return;
-            
-            const rect = paintCanvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            paintCtx.beginPath();
-            paintCtx.moveTo(lastX, lastY);
-            paintCtx.lineTo(x, y);
-            
-            if (currentTool === 'pen') {
-                paintCtx.strokeStyle = document.getElementById('colorPicker').value;
-                paintCtx.lineWidth = document.getElementById('brushSize').value;
-            } else if (currentTool === 'eraser') {
-                paintCtx.strokeStyle = '#ffffff';
-                paintCtx.lineWidth = 20;
-            }
-            
-            paintCtx.stroke();
-            
-            lastX = x;
-            lastY = y;
-        }
-
-        function stopPainting() {
-            isPainting = false;
-        }
-
-        function selectTool(tool) {
-            playClickSound();
-            currentTool = tool;
-            
-            // Update button states
-            document.getElementById('toolPen').style.background = tool === 'pen' ? '#fff' : '#E0E0E0';
-            document.getElementById('toolEraser').style.background = tool === 'eraser' ? '#fff' : '#E0E0E0';
-        }
-
-        function clearCanvas() {
-            playClickSound();
-            if (paintCtx) {
-                paintCtx.fillStyle = '#ffffff';
-                paintCtx.fillRect(0, 0, paintCanvas.width, paintCanvas.height);
-            }
-        }
-
-        // Initialize paint when paint window is opened
-        const originalOpenWindow = openWindow;
-        openWindow = function(id) {
-            originalOpenWindow(id);
-            if (id === 'paint') {
-                setTimeout(initPaintCanvas, 100);
-            }
+        // wrap playClickSound if exists
+        const __origPlayClickSound = (typeof playClickSound === 'function') ? playClickSound : null;
+        window.playClickSound = function(){
+            if (!soundsEnabled) return;
+            if (__origPlayClickSound) __origPlayClickSound();
         };
 
-        // Blink animation for cursor
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes blink {
-                0%, 50% { opacity: 1; }
-                51%, 100% { opacity: 0; }
+        // Calculator
+        let calcBuf = '0';
+        let calcA = null;
+        let calcOpSym = null;
+        function calcRender(){
+            const d = document.getElementById('calcDisplay');
+            if (d) d.textContent = calcBuf;
+        }
+        function calcPress(ch){
+            if (calcBuf === '0') calcBuf = ch;
+            else calcBuf += ch;
+            calcRender();
+        }
+        function calcClear(){
+            calcBuf = '0';
+            calcA = null;
+            calcOpSym = null;
+            calcRender();
+        }
+        function calcOp(op){
+            calcA = Number(calcBuf);
+            calcBuf = '0';
+            calcOpSym = op;
+            calcRender();
+        }
+        function calcEq(){
+            if (calcA === null || !calcOpSym) return;
+            const b = Number(calcBuf);
+            let r = 0;
+            if (calcOpSym === '+') r = calcA + b;
+            if (calcOpSym === '-') r = calcA - b;
+            if (calcOpSym === '*') r = calcA * b;
+            if (calcOpSym === '/') r = (b === 0) ? NaN : (calcA / b);
+            calcBuf = String(r);
+            calcA = null;
+            calcOpSym = null;
+            calcRender();
+        }
+
+        // Explorer (My Computer)
+        let explStack = ['computer'];
+        function explSetPath(label){
+            const p = document.getElementById('explPath');
+            if (p) p.value = label;
+        }
+        function explOpen(which){
+            explStack.push(which);
+            explRender(which);
+        }
+        function explRender(which){
+            const v = document.getElementById('explView');
+            const st = document.getElementById('explStatus');
+            if (!v) return;
+
+            if (which === 'computer'){
+                explSetPath('Tento počítač');
+                v.innerHTML = `
+                    <h3 style="margin-top:0;">Diskové jednotky</h3>
+                    <div class="explorer-grid">
+                        <div class="drive" onclick="explOpen('c')">💽 Místní disk (C:)<div class="bar"><div></div></div><div style="font-size:11px;color:#444;margin-top:4px;">Volné: 12.3 GB</div></div>
+                        <div class="drive" onclick="explOpen('d')">📀 Jednotka CD (D:)<div style="font-size:11px;color:#444;margin-top:6px;">Žádné médium</div></div>
+                        <div class="drive" onclick="explOpen('net')">🌐 Síťové umístění<div style="font-size:11px;color:#444;margin-top:6px;">WORKGROUP</div></div>
+                    </div>
+                `;
+                if (st) st.textContent = '3 položky';
+                return;
             }
-        `;
-        document.head.appendChild(style);
-    </script>
+            if (which === 'docs'){
+                explSetPath('Dokumenty');
+                v.innerHTML = `
+                    <h3 style="margin-top:0;">Dokumenty</h3>
+                    <div class="xp-list" style="height:300px;">
+                        <div class="row" onclick="openWindow('notepad')"><div class="mini">📄</div><div>notes.txt</div></div>
+                        <div class="row" onclick="openWindow('notepad')"><div class="mini">📄</div><div>todo.txt</div></div>
+                        <div class="row" onclick="openWindow('notepad')"><div class="mini">📄</div><div>readme.txt</div></div>
+                    </div>
+                `;
+                if (st) st.textContent = '3 položky';
+                return;
+            }
+            if (which === 'control'){
+                explSetPath('Ovládací panely');
+                v.innerHTML = `<h3 style="margin-top:0;">Ovládací panely</h3><div style="margin-top:10px;"><button class="xp-btn" onclick="openWindow('control')">Otevřít Ovládací panely</button></div>`;
+                if (st) st.textContent = '1 položka';
+                return;
+            }
+            if (which === 'bin'){
+                explSetPath('Koš');
+                v.innerHTML = `<h3 style="margin-top:0;">Koš</h3><div style="margin-top:10px;"><button class="xp-btn" onclick="openWindow('recycleBin'); renderBin();">Otevřít Koš</button></div>`;
+                if (st) st.textContent = '1 položka';
+                return;
+            }
+            if (which === 'c'){
+                explSetPath('C:\\');
+                v.innerHTML = `
+                    <h3 style="margin-top:0;">C:\\</h3>
+                    <div class="xp-list" style="height:320px;">
+                        <div class="row" onclick="systemMessage('Přístup odepřen.')"><div class="mini">📁</div><div>Windows</div></div>
+                        <div class="row" onclick="explOpen('docs')"><div class="mini">📁</div><div>Documents and Settings</div></div>
+                        <div class="row" onclick="systemMessage('Soubor nelze otevřít.')"><div class="mini">📄</div><div>boot.ini</div></div>
+                    </div>
+                `;
+                if (st) st.textContent = '3 položky';
+                return;
+            }
+            // fallback
+            explSetPath(which);
+            v.innerHTML = `<div>Obsah není dostupný.</div>`;
+            if (st) st.textContent = '0 položek';
+        }
+        function explBack(){
+            if (explStack.length > 1) explStack.pop();
+            const cur = explStack[explStack.length-1];
+            explRender(cur);
+        }
+        function explUp(){ explBack(); }
+        function explRefresh(){
+            const cur = explStack[explStack.length-1] || 'computer';
+            explRender(cur);
+            showToast('Obnoveno');
+        }
+
+        // Help topics
+        function helpOpen(topic){
+            const st = document.getElementById('helpStatus');
+            const map = {
+                updates: 'Aktualizace: používej Windows Update (simulace).',
+                network: 'Síť: zkontroluj kabel a IP nastavení.',
+                sound: 'Zvuk: zapni/vypni zvuky v Ovládacích panelech.',
+                display: 'Zobrazení: změň pozadí ve Vlastnostech zobrazení.',
+                restore: 'Obnovení: použij Restart (simulace).'
+            };
+            if (st) st.textContent = map[topic] || '...';
+        }
+
+        // WMP fake
+        let wmpPlaying = false;
+        function wmpOpen(){
+            const tr = document.getElementById('wmpTrack');
+            const scr = document.getElementById('wmpScreen');
+            const st = document.getElementById('wmpStatus');
+            const name = tr ? tr.value : 'track01.mp3';
+            if (scr) scr.textContent = 'Loaded: ' + name;
+            if (st) st.textContent = 'Načteno';
+            showToast('Načteno: ' + escapeHtml(name));
+        }
+        function wmpPlay(){
+            const scr = document.getElementById('wmpScreen');
+            const st = document.getElementById('wmpStatus');
+            wmpPlaying = true;
+            if (scr) scr.textContent = 'Playing...';
+            if (st) st.textContent = 'Přehrávání';
+        }
+        function wmpPause(){
+            const scr = document.getElementById('wmpScreen');
+            const st = document.getElementById('wmpStatus');
+            wmpPlaying = false;
+            if (scr) scr.textContent = 'Paused';
+            if (st) st.textContent = 'Pozastaveno';
+        }
+        function wmpStop(){
+            const scr = document.getElementById('wmpScreen');
+            const st = document.getElementById('wmpStatus');
+            wmpPlaying = false;
+            if (scr) scr.textContent = 'Stopped';
+            if (st) st.textContent = 'Zastaveno';
+        }
+
+        // Init explorer content when opening
+        window.addEventListener('load', ()=>{
+            // show a tray balloon like XP
+            setTimeout(()=>{ showToast('🔔 Systém je připraven.'); }, 1800);
+        });
+        // --- end more XP features ---
+
+
+        // --- XP Shop logic ---
+        const WIN11_KEY = 'xp_win11_license';
+
+        function hasWin11(){
+            return localStorage.getItem(WIN11_KEY) === '1';
+        }
+
+        function buyWin11(){
+            if (hasWin11()){
+                systemMessage('Licence Windows 11 je již aktivní.');
+                const icon = document.getElementById('win11Icon');
+                if (icon) icon.style.display = 'block';
+                return;
+            }
+            localStorage.setItem(WIN11_KEY, '1');
+
+            // show Windows 11 icon on XP desktop
+            const icon = document.getElementById('win11Icon');
+            if (icon) icon.style.display = 'block';
+
+            const st = document.getElementById('shopStatus');
+            if (st) st.textContent = 'Licence aktivována';
+
+            showToast('✅ Windows 11 licence zakoupena');
+            systemMessage('Děkujeme za nákup. Windows 11 byl přidán na plochu.');
+        }
+
+        // restore icon on load
+        window.addEventListener('load', ()=>{
+            if (hasWin11()){
+                const icon = document.getElementById('win11Icon');
+                if (icon) icon.style.display = 'block';
+            }
+        });
+        // --- end shop ---
+
+
+        // --- Windows 11 mode (added) ---
+        const WIN11_MODE_KEY = 'xp_win11_mode';
+
+        function enterWindows11(){
+            // require license
+            const lic = localStorage.getItem('xp_win11_license') === '1';
+            if (!lic){
+                systemMessage('Nemáš licenci Windows 11. Kup ji v Obchodu.');
+                return;
+            }
+            // hide XP desktop
+            const desk = document.getElementById('desktop');
+            const desk11 = document.getElementById('desktop11');
+            const startMenu = document.getElementById('startMenu');
+            if (startMenu) startMenu.style.display = 'none';
+            document.querySelectorAll('.window').forEach(w => w.style.display = 'none');
+            if (desk) desk.style.display = 'none';
+
+            // show Win11 desktop
+            if (desk11) desk11.style.display = 'block';
+            document.body.classList.add('win11');
+            localStorage.setItem(WIN11_MODE_KEY, '1');
+            showToast('✅ Přepnuto do Windows 11');
+        }
+
+        function exitWindows11(){
+            const desk = document.getElementById('desktop');
+            const desk11 = document.getElementById('desktop11');
+            const panel = document.getElementById('w11StartPanel');
+            if (panel) panel.style.display = 'none';
+            if (desk11) desk11.style.display = 'none';
+            if (desk) desk.style.display = 'block';
+            document.body.classList.remove('win11');
+            localStorage.setItem(WIN11_MODE_KEY, '0');
+            showToast('↩️ Zpět do Windows XP');
+        }
+
+        function toggleWin11Start(){
+            const p = document.getElementById('w11StartPanel');
+            if (!p) return;
+            p.style.display = (p.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function openShitGame(){
+            const w = document.getElementById('shitgameWin11');
+            if (!w) return;
+            w.style.display = 'block';
+        }
+        function closeWin11Window(id){
+            const w = document.getElementById(id);
+            if (w) w.style.display = 'none';
+        }
+
+        // Restore mode on load (if licensed and last mode was Win11)
+        window.addEventListener('load', ()=>{
+            const was = localStorage.getItem(WIN11_MODE_KEY) === '1';
+            const lic = localStorage.getItem('xp_win11_license') === '1';
+            if (was && lic){
+                enterWindows11();
+            }
+        });
+        // --- end Windows 11 mode ---
+
+        // Win11 clock
+        function updateW11Clock(){
+            const el = document.getElementById('w11Clock');
+            if (!el) return;
+            const d = new Date();
+            const hh = String(d.getHours()).padStart(2,'0');
+            const mm = String(d.getMinutes()).padStart(2,'0');
+            el.textContent = hh + ':' + mm;
+        }
+        setInterval(updateW11Clock, 1000);
+        window.addEventListener('load', updateW11Clock);
+
+        function openWindows11File(){
+            window.location.href = 'win11.html';
+        }
+        </script>
+
+<div class="window" id="virusExeWin" style="width:400px;height:200px;">
+    <div class="window-title">
+        <span>🧪 virus.exe</span>
+        <div class="window-buttons">
+            <div class="window-button" onclick="closeWindow('virusExeWin')">✕</div>
+        </div>
+    </div>
+    <div class="window-content">
+        <p>Spuštění souboru virus.exe.</p>
+        <button onclick="openVirusExe()">Spustit</button>
+    </div>
+</div>
+
+<div class="window" id="antivirus" style="width:450px;height:250px;">
+    <div class="window-title">
+        <span>🛡️ Antivirus Windows XP</span>
+        <div class="window-buttons">
+            <div class="window-button" onclick="closeWindow('antivirus')">✕</div>
+        </div>
+    </div>
+    <div class="window-content">
+        <p>Skenování systému:</p>
+        <div style="border:2px inset #888;height:25px;">
+            <div id="avBar" style="height:100%;width:0%;background:linear-gradient(to right,#0f0,#090);"></div>
+        </div>
+        <br>
+        <button onclick="startAntivirusScan()">Spustit kontrolu</button>
+    </div>
+</div>
+
+
+    <!-- System Dialog (replaces alert) -->
+    <div class="window" id="systemDialog" style="width: 420px; height: 180px; display:none; left: 220px; top: 180px;">
+        <div class="window-title">
+            <span>Windows</span>
+            <div class="window-buttons">
+                <div class="window-button" onclick="closeWindow('systemDialog')">✕</div>
+            </div>
+        </div>
+        <div class="window-content" id="systemDialogContent" style="height: calc(100% - 30px);">
+            Text
+        </div>
+    </div>
+
+
+
+    <!-- BSOD Screen -->
+    <div id="bsod-screen" style="
+        position: fixed;
+        inset: 0;
+        background: #0000AA;
+        color: #fff;
+        font-family: 'Courier New', monospace;
+        display: none;
+        z-index: 20000;
+        padding: 28px 36px;
+        line-height: 1.5;
+        font-size: 16px;
+        overflow: auto;
+    ">
+        <div style="background:#fff;color:#000;display:inline-block;padding:2px 8px;margin-bottom:16px;">Windows</div>
+        <div style="margin-bottom:18px;">
+            A problem has been detected and Windows has been shut down to prevent damage to your computer.
+        </div>
+        <div style="margin-bottom:18px;">
+            If this is the first time you've seen this Stop error screen, restart your computer.
+            If this screen appears again, follow these steps:
+        </div>
+        <div style="margin-bottom:18px;">
+            Check to be sure you have adequate disk space. If a driver is identified in the Stop message,
+            disable the driver or check with the manufacturer for driver updates.
+        </div>
+        <div style="margin-bottom:18px;">
+            Technical information:
+            <div style="margin-top:8px;">*** STOP: 0x0000008E (0xC0000005, 0xBF8010A7, 0xBA4D3F70, 0x00000000)</div>
+        </div>
+        <div style="opacity:0.9;">Collecting data for crash dump ...</div>
+    </div>
+
+
+    <!-- Error popup template -->
+    <div class="window" id="errorPopupTemplate" style="display:none; width: 360px; height: 160px;">
+        <div class="window-title">
+            <span>⚠️ Chyba aplikace</span>
+            <div class="window-buttons">
+                <div class="window-button" onclick="closeWindow('errorPopupTemplate')">✕</div>
+            </div>
+        </div>
+        <div class="window-content" style="font-size: 12px;">
+            <div id="errorPopupText">Nastala chyba.</div>
+            <div style="text-align:right; margin-top: 18px;">
+                <button class="xp-btn" onclick="closeWindow(this.closest('.window').id)">OK</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Shutdown Dialog -->
+    <div class="window" id="shutdownDialog" style="width: 420px; height: 240px; display:none; left: 260px; top: 180px;">
+        <div class="window-title">
+            <span>Vypnout počítač</span>
+            <div class="window-buttons">
+                <div class="window-button" onclick="closeWindow('shutdownDialog')">✕</div>
+            </div>
+        </div>
+        <div class="window-content">
+            <div style="display:flex; gap:12px; align-items:flex-start;">
+                <div style="font-size:48px; line-height:1;">🔴</div>
+                <div style="flex:1;">
+                    <div style="font-weight:bold; margin-bottom:8px;">Co chcete udělat?</div>
+                    <select id="shutdownSelect" class="xp-input" style="width:100%;">
+                        <option value="shutdown">Vypnout</option>
+                        <option value="restart">Restartovat</option>
+                        <option value="logoff">Odhlásit</option>
+                        <option value="standby">Režim spánku</option>
+                    </select>
+                    <div style="font-size:12px; color:#444; margin-top:10px;">
+                        Poznámka: Toto je simulace.
+                    </div>
+                </div>
+            </div>
+            <div style="text-align:right; margin-top:18px;">
+                <button class="xp-btn" onclick="doShutdown()">OK</button>
+                <button class="xp-btn" onclick="closeWindow('shutdownDialog')">Storno</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Recycle Bin -->
+    <div class="window" id="recycleBinWin" style="width: 720px; height: 460px; display:none; left: 120px; top: 90px;">
+        <div class="window-title">
+            <span>Koš</span>
+            <div class="window-buttons">
+                <div class="window-button" onclick="minimizeWindow('recycleBin')">_</div>
+                <div class="window-button" onclick="maximizeWindow('recycleBin')">□</div>
+                <div class="window-button" onclick="closeWindow('recycleBin')">✕</div>
+            </div>
+        </div>
+        <div class="window-content" style="padding:0;">
+            <div class="menu-bar">
+                <span>Soubor</span><span>Úpravy</span><span>Zobrazení</span><span>Nápověda</span>
+            </div>
+            <div class="toolbar">
+                <button class="xp-btn" onclick="binRestoreSelected()">Obnovit</button>
+                <button class="xp-btn" onclick="binEmpty()">Vyprázdnit koš</button>
+                <span style="margin-left:auto;font-size:12px;color:#444;" id="binCountLabel">0 položek</span>
+            </div>
+            <div style="padding:10px;">
+                <table style="width:100%; border-collapse: collapse; font-size:12px;">
+                    <thead>
+                        <tr style="background:#D4D0C8; border:1px solid #888;">
+                            <th style="text-align:left; padding:6px; border:1px solid #888;">Název</th>
+                            <th style="text-align:left; padding:6px; border:1px solid #888;">Původní umístění</th>
+                            <th style="text-align:left; padding:6px; border:1px solid #888;">Datum odstranění</th>
+                        </tr>
+                    </thead>
+                    <tbody id="binTableBody"></tbody>
+                </table>
+                <div style="margin-top:10px; font-size:11px; color:#444;">Tip: dvojklik obnoví položku.</div>
+            </div>
+            <div class="status-bar" id="binStatus">Připraven</div>
+        </div>
+    </div>
+
+
+    <!-- My Computer (Explorer) -->
+    <div class="window" id="myComputerWin" style="width: 860px; height: 540px; display:none; left: 80px; top: 70px;">
+        <div class="window-title">
+            <span>Tento počítač</span>
+            <div class="window-buttons">
+                <div class="window-button" onclick="minimizeWindow('myComputer')">_</div>
+                <div class="window-button" onclick="maximizeWindow('myComputer')">□</div>
+                <div class="window-button" onclick="closeWindow('myComputer')">✕</div>
+            </div>
+        </div>
+        <div class="window-content" style="padding:0;">
+            <div class="menu-bar">
+                <span>Soubor</span><span>Úpravy</span><span>Zobrazení</span><span>Oblíbené</span><span>Nástroje</span><span>Nápověda</span>
+            </div>
+            <div class="toolbar">
+                <button class="xp-btn" onclick="explBack()">◀</button>
+                <button class="xp-btn" onclick="explUp()">⬆</button>
+                <input class="xp-input" id="explPath" style="flex:1; min-width:200px;" value="Tento počítač" />
+                <button class="xp-btn" onclick="explRefresh()">Obnovit</button>
+            </div>
+            <div class="explorer-split">
+                <div class="tree">
+                    <div class="node" onclick="explOpen('computer')">🖥️ Tento počítač</div>
+                    <div class="node" onclick="explOpen('docs')">📁 Dokumenty</div>
+                    <div class="node" onclick="explOpen('control')">⚙️ Ovládací panely</div>
+                    <div class="node" onclick="explOpen('bin')">🗑️ Koš</div>
+                </div>
+                <div class="explorer-main">
+                    <div id="explView"></div>
+                </div>
+            </div>
+            <div class="status-bar" id="explStatus">Připraven</div>
+        </div>
+    </div>
+
+
+    <!-- Calculator -->
+    <div class="window" id="calcWin" style="width: 320px; height: 420px; display:none; left: 320px; top: 140px;">
+        <div class="window-title">
+            <span>Kalkulačka</span>
+            <div class="window-buttons">
+                <div class="window-button" onclick="minimizeWindow('calc')">_</div>
+                <div class="window-button" onclick="closeWindow('calc')">✕</div>
+            </div>
+        </div>
+        <div class="window-content" style="padding:0;">
+            <div class="menu-bar"><span>Zobrazení</span><span>Upravit</span><span>Nápověda</span></div>
+            <div class="calc-display" id="calcDisplay">0</div>
+            <div class="calc-grid">
+                <button class="xp-btn" onclick="calcPress('7')">7</button>
+                <button class="xp-btn" onclick="calcPress('8')">8</button>
+                <button class="xp-btn" onclick="calcPress('9')">9</button>
+                <button class="xp-btn" onclick="calcOp('/')">/</button>
+                <button class="xp-btn" onclick="calcPress('4')">4</button>
+                <button class="xp-btn" onclick="calcPress('5')">5</button>
+                <button class="xp-btn" onclick="calcPress('6')">6</button>
+                <button class="xp-btn" onclick="calcOp('*')">*</button>
+                <button class="xp-btn" onclick="calcPress('1')">1</button>
+                <button class="xp-btn" onclick="calcPress('2')">2</button>
+                <button class="xp-btn" onclick="calcPress('3')">3</button>
+                <button class="xp-btn" onclick="calcOp('-')">-</button>
+                <button class="xp-btn" onclick="calcClear()">C</button>
+                <button class="xp-btn" onclick="calcPress('0')">0</button>
+                <button class="xp-btn" onclick="calcEq()">=</button>
+                <button class="xp-btn" onclick="calcOp('+')">+</button>
+            </div>
+            <div class="status-bar">Standardní</div>
+        </div>
+    </div>
+
+
+    <!-- Windows Media Player (fake) -->
+    <div class="window" id="wmpWin" style="width: 720px; height: 480px; display:none; left: 140px; top: 110px;">
+        <div class="window-title">
+            <span>Windows Media Player</span>
+            <div class="window-buttons">
+                <div class="window-button" onclick="minimizeWindow('wmp')">_</div>
+                <div class="window-button" onclick="maximizeWindow('wmp')">□</div>
+                <div class="window-button" onclick="closeWindow('wmp')">✕</div>
+            </div>
+        </div>
+        <div class="window-content" style="padding:0;">
+            <div class="menu-bar"><span>Soubor</span><span>Zobrazit</span><span>Přehrávání</span><span>Nástroje</span><span>Nápověda</span></div>
+            <div style="padding:10px;">
+                <div style="border:2px inset #888; background:#000; height:260px; display:flex; align-items:center; justify-content:center; color:#0f0; font-family:'Courier New';">
+                    <div id="wmpScreen">No media</div>
+                </div>
+                <div class="toolbar" style="margin-top:10px;">
+                    <button class="xp-btn" onclick="wmpPlay()">▶</button>
+                    <button class="xp-btn" onclick="wmpPause()">⏸</button>
+                    <button class="xp-btn" onclick="wmpStop()">⏹</button>
+                    <input class="xp-input" id="wmpTrack" style="flex:1;" value="track01.mp3" />
+                    <button class="xp-btn" onclick="wmpOpen()">Otevřít</button>
+                </div>
+                <div class="status-bar" id="wmpStatus">Připraven</div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Help and Support -->
+    <div class="window" id="helpWin" style="width: 760px; height: 520px; display:none; left: 110px; top: 85px;">
+        <div class="window-title">
+            <span>Nápověda a podpora</span>
+            <div class="window-buttons">
+                <div class="window-button" onclick="minimizeWindow('help')">_</div>
+                <div class="window-button" onclick="maximizeWindow('help')">□</div>
+                <div class="window-button" onclick="closeWindow('help')">✕</div>
+            </div>
+        </div>
+        <div class="window-content" style="padding:0;">
+            <div class="menu-bar"><span>Soubor</span><span>Zobrazení</span><span>Nástroje</span><span>Nápověda</span></div>
+            <div style="padding:12px;">
+                <h3>Nápověda a podpora</h3>
+                <div class="xp-list" style="height:320px;">
+                    <div class="row" onclick="helpOpen('updates')"><div class="mini">🛡️</div><div>Aktualizace a zabezpečení</div></div>
+                    <div class="row" onclick="helpOpen('network')"><div class="mini">🌐</div><div>Problémy se sítí</div></div>
+                    <div class="row" onclick="helpOpen('sound')"><div class="mini">🔊</div><div>Zvuky a zařízení</div></div>
+                    <div class="row" onclick="helpOpen('display')"><div class="mini">🖥️</div><div>Zobrazení a motivy</div></div>
+                    <div class="row" onclick="helpOpen('restore')"><div class="mini">🕒</div><div>Obnovení systému</div></div>
+                </div>
+                <div class="status-bar" id="helpStatus">Vyber položku.</div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Control Panel -->
+    <div class="window" id="controlWin" style="width: 760px; height: 520px; display:none; left: 120px; top: 90px;">
+        <div class="window-title">
+            <span>Ovládací panely</span>
+            <div class="window-buttons">
+                <div class="window-button" onclick="minimizeWindow('control')">_</div>
+                <div class="window-button" onclick="maximizeWindow('control')">□</div>
+                <div class="window-button" onclick="closeWindow('control')">✕</div>
+            </div>
+        </div>
+        <div class="window-content" style="padding:0;">
+            <div class="menu-bar"><span>Soubor</span><span>Úpravy</span><span>Zobrazení</span><span>Nápověda</span></div>
+            <div style="padding:12px;">
+                <h3>Ovládací panely</h3>
+                <div class="explorer-grid" id="controlGrid">
+                    <div class="drive" onclick="openWindow('displayProps')">🖼️ Zobrazení<div style="font-size:11px;color:#444;">Pozadí, motivy</div></div>
+                    <div class="drive" onclick="openWindow('helpWin')">❓ Nápověda<div style="font-size:11px;color:#444;">Centrum podpory</div></div>
+                    <div class="drive" onclick="openWindow('shutdownDialog')">🔴 Vypnutí<div style="font-size:11px;color:#444;">Vypnout / restart</div></div>
+                    <div class="drive" onclick="systemMessage('Správa uživatelů není dostupná.')">👤 Uživatelé<div style="font-size:11px;color:#444;">Účty</div></div>
+                    <div class="drive" onclick="toggleSounds()">🔊 Zvuky<div style="font-size:11px;color:#444;">Zap/Vyp</div></div>
+                </div>
+                <div class="status-bar" id="controlStatus">Připraven</div>
+            </div>
+        </div>
+    </div>
+
+<div class="toast" id="xpToast"></div>
+
+    <!-- XP Shop -->
+    <div class="window" id="shopWin" style="width: 760px; height: 520px; display:none; left: 120px; top: 90px;">
+        <div class="window-title">
+            <span>Microsoft Store (XP)</span>
+            <div class="window-buttons">
+                <div class="window-button" onclick="minimizeWindow('shop')">_</div>
+                <div class="window-button" onclick="maximizeWindow('shop')">□</div>
+                <div class="window-button" onclick="closeWindow('shop')">✕</div>
+            </div>
+        </div>
+        <div class="window-content">
+            <div class="menu-bar">
+                <span>Obchod</span><span>Licence</span><span>Nápověda</span>
+            </div>
+
+            <div class="product-card">
+                <h3>Windows 11 Pro <span class="badge">Digitální licence</span></h3>
+                <p>Upgrade balíček z Windows XP. Po zakoupení se přidá ikona Windows 11 na plochu.</p>
+                <div style="display:flex; align-items:center; gap:16px;">
+                    <div class="price-tag">1 499 Kč</div>
+                    <button class="xp-btn" onclick="buyWin11()">Koupit</button>
+                </div>
+            </div>
+
+            <div class="status-bar" id="shopStatus">Připraven</div>
+        </div>
+    </div>
+
+
+    <!-- Windows 11 Desktop (mode) -->
+    <div id="desktop11">
+        <div class="w11-icons" id="w11Icons">
+            <div class="w11-icon" id="shitgameIcon" ondblclick="openShitGame()">
+                <div class="img">🎮</div>
+                <div class="lbl">shitgame.exe</div>
+            </div>
+        </div>
+
+        <div class="w11-panel" id="w11StartPanel">
+            <div class="search">🔎 Hledat aplikace, nastavení a dokumenty</div>
+            <h3>Připnuté</h3>
+            <div class="grid">
+                <div class="app" onclick="openShitGame()"><div class="aico">🎮</div>shitgame</div>
+                <div class="app" onclick="systemMessage('Settings (Win11) není dostupné.')"><div class="aico">⚙️</div>Settings</div>
+                <div class="app" onclick="systemMessage('Store (Win11) není dostupný.')"><div class="aico">🛒</div>Store</div>
+                <div class="app" onclick="systemMessage('Windows Security není dostupné.')"><div class="aico">🛡️</div>Security</div>
+                <div class="app" onclick="systemMessage('Files není dostupné.')"><div class="aico">📁</div>Files</div>
+                <div class="app" onclick="exitWindows11()"><div class="aico">↩️</div>Zpět do XP</div>
+            </div>
+        </div>
+
+        <div class="w11-taskbar">
+            <div class="tb-btn" onclick="toggleWin11Start()">⊞</div>
+            <div class="tb-btn" onclick="openShitGame()">🎮</div>
+            <div class="tb-btn" onclick="systemMessage('Vyhledávání není dostupné.')">🔎</div>
+            <div class="tb-btn" onclick="exitWindows11()">↩️</div>
+        <div class="w11-tray"><span id="w11Clock">00:00</span> <span>📶</span> <span>🔊</span></div>
+        </div>
+
+        <div class="w11-window" id="shitgameWin11">
+            <div class="title">
+                <div class="left">shitgame.exe</div>
+                <div class="btns">
+                    <div class="b" onclick="closeWin11Window('shitgameWin11')">✕</div>
+                </div>
+            </div>
+            <div class="content">
+                <div style="font-size:16px;font-weight:600;margin-bottom:6px;">ShitGame</div>
+                <div style="opacity:0.9;margin-bottom:10px;">Windows 11 mód: spuštění aplikace (simulace).</div>
+                <div style="padding:10px;border-radius:12px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);">
+                    <div>Soubor: <strong>shitgame.exe</strong></div>
+                    <div>Stav: <strong>Running</strong></div>
+                    <div style="margin-top:10px;">
+                        <button class="xp-btn" onclick="systemMessage('Aplikace spadla (simulace).')">Crash</button>
+                        <button class="xp-btn" onclick="systemMessage('Přístup odepřen.')">Admin</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
